@@ -6,7 +6,7 @@ int list read_list(int n) {
 	i =  -435.7;
 	int list new;
 	new = NIL;
-	for (i = 0; i < n ; i = i + 2;) {
+	for (i = 0; i < n ; i = i + 1) {
 		int elem;
 		writeln("Digite o elemento da lista: ");
 		read(elem);
@@ -40,7 +40,7 @@ int main() {
 	if (FL10 != 1) {
 		float list AUXL;
 		int n; n = 0;
-		for (AUXL=FL10; AUXL != 1; AUXL = !AUXL;) {
+		for (AUXL=FL10; AUXL != 1; AUXL = !AUXL) {
 			n = n + 1;
 			write(?AUXL); write(" ");
 		}

@@ -153,17 +153,30 @@ expressao:
     exp PONTOVIRGULA {
 
     }
-    | ID ATRIBUICAO nil {
-        
-    }
     | expressaoList {
 
     }
+    | ID ATRIBUICAO expressao {
+
+    }
+    | ID ATRIBUICAO nil {
+        
+    }
 ;
 
-//TODO ARRUMAR PQ TA BUGADASSO
+
 for:
-    FOR ABRE_PARENTESES expressao exp PONTOVIRGULA expressao FECHA_PARENTESES corpo {
+    FOR ABRE_PARENTESES expressao expressao ID ATRIBUICAO ID FECHA_PARENTESES corpo {
+        
+    }
+    | FOR ABRE_PARENTESES expressao expressao ID ATRIBUICAO ID OP_B_SOMA_SUB ID FECHA_PARENTESES corpo {
+        
+    }
+    | FOR ABRE_PARENTESES expressao expressao ID ATRIBUICAO ID OP_B_SOMA_SUB numero FECHA_PARENTESES corpo {
+        
+    }
+    | FOR ABRE_PARENTESES expressao expressao ID ATRIBUICAO OP_LOGICA_NEG ID FECHA_PARENTESES corpo {
+        
     }
 ;
 
@@ -174,14 +187,10 @@ condicional:
     | IF ABRE_PARENTESES exp FECHA_PARENTESES declaracoes ELSE declaracoes {
         
     }
-
 ;
 
 exp:
     expressao_logica {
-
-    }
-    | ID ATRIBUICAO exp {
 
     }
     | OP_LOGICA_NEG exp {
