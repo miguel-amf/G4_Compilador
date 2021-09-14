@@ -4,8 +4,9 @@
     #include <stdio.h>
     #include <stdlib.h>
     #include <string.h>
-    #include "sintatico.tab.h"
+    #include "../lib/sintatico.tab.h"
     #include "../lib/tabelaSimbolo.h"
+    #include "../lib/arvore.h"
 
     int linha = 1, coluna = 1;
 %}

@@ -9,6 +9,6 @@ int main(){
     read(y);
     writeln();
     write(y);
-    writeln("Vamo q vamo familia");
+    writeln("Vamo q vamo!");
     return 0;
 }

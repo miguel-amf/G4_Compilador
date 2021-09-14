@@ -1,11 +1,11 @@
 int main(){ 
-    int List.x;
+    int list x;
     float y;
-    float list a.a.a.a;
+    float list a;
 
-    y = 30.29 $$ 25;
+    y = 30.29 + 25;
     read(y);
-    a = y : a;
+    a = y :: a;
 
     return 0;
 }
