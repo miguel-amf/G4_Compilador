@@ -9,6 +9,6 @@ typedef struct AST{
 
 AST* criaNo(char* nome_regra);
 void mostraAST(AST *ast, int altura);
-void liberaAST(AST *ast);
+void liberaAST();
 
 #endif

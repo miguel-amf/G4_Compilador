@@ -94,7 +94,7 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 17 "sintatico.y"
+#line 19 "sintatico.y"
 
     struct AST* ast;
 

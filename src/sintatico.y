@@ -7,11 +7,13 @@
     #include <stdlib.h>
     #include <string.h>
     #include "../lib/arvore.h"
+    #include "../lib/tabelaSimbolo.h"
     extern int yylex();
     extern int yylex_destroy();
     extern void yyerror(const char* s);
     extern FILE *yyin;
     AST* raiz;
+    node* head;
 %}
 
 %union{
@@ -128,6 +130,7 @@ declaracaoVariavel:
     TIPO ID PONTOVIRGULA {
         $$ = criaNo("Declaracao de Variavel");
         $$->pai = $1;
+        head = InsertSymbol(head, 0, "aaaaaa", 0, 0);
     }
 ;
 
@@ -170,42 +173,35 @@ dentroCorpo:
         $$->filho = $2;
     }
     | declaracoes {
-        $$ = $1;
+        $$ = criaNo("declaracoes");
+        $$->pai = $1;
     }
 ;
 
 declaracoes:
     corpo {
-        $$ = criaNo("declaracoes");
-        $$->pai = $1;
+        $$ = $1;
     }
     | declaracaoVariavel {
-        $$ = criaNo("declaracoes");
-        $$->pai = $1;
+        $$ = $1;
     }
     | expressao {
-        $$ = criaNo("declaracoes");
-        $$->pai = $1;
+        $$ = $1;
     }
     | entrada {
-        $$ = criaNo("declaracoes");
-        $$->pai = $1;
+        $$ = $1;
     }
     | retorno {
-        $$ = criaNo("declaracoes");
-        $$->pai = $1;
+        $$ = $1;
     }
     | saida {
-        $$ = criaNo("declaracoes");
-        $$->pai = $1;
+        $$ = $1;
     }    
     | for {
-        $$ = criaNo("declaracoes");
-        $$->pai = $1;
+        $$ = $1;
     }
     | condicional {
-        $$ = criaNo("declaracoes");
-        $$->pai = $1;
+        $$ = $1;
     }
 ;
 
@@ -258,16 +254,16 @@ for:
 ;
 
 condicional:
-    IF ABRE_PARENTESES expressao FECHA_PARENTESES declaracoes {
+    IF ABRE_PARENTESES exp FECHA_PARENTESES ABRE_CHAVES declaracoes FECHA_CHAVES {
         $$ = criaNo("IF");
         $$->pai = $3;
-        $3->filho = $5;
+        $3->filho = $6;
     }
-    | IF ABRE_PARENTESES exp FECHA_PARENTESES declaracoes ELSE declaracoes {
+    | IF ABRE_PARENTESES exp FECHA_PARENTESES ABRE_CHAVES declaracoes FECHA_CHAVES ELSE ABRE_CHAVES declaracoes FECHA_CHAVES {
         $$ = criaNo("IF-ELSE");
         $$->pai = $3;
-        $3->filho = $5;
-        $5->filho = $7;
+        $3->filho = $6;
+        $6->filho = $10;
     }
 ;
 
@@ -436,7 +432,9 @@ int main(int argc, char ** argv) {
     
     yyparse();
     mostraAST(raiz, 0);
-    liberaAST(raiz);
+    display(head);
+    limpaTabela(head);
+    liberaAST();
     fclose(yyin);
     yylex_destroy();
     printf("\n\n");
