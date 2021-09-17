@@ -3,11 +3,11 @@ int main(){
     float y;
     float a;
     x = 5;
-    int x;
+    int m;
     {
         int m;
         {
-            int hj;
+            int m;
             int asd;
         }
     }

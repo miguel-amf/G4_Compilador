@@ -10,6 +10,7 @@
 
     int linha = 1, coluna = 1;
     int escopo = 0;
+    int parametros = 0;
 
     extern TabelaSimbolo* id;
 %}
@@ -254,6 +255,7 @@ TABESPACO           [\t]+|[ ]+
     printf("Linha: %d, Coluna: %d\t", linha, coluna);
     printf("Parenteses: %s\n", yytext);
     coluna += yyleng;
+    parametros++;
     return ABRE_PARENTESES;
 }
 
@@ -261,6 +263,7 @@ TABESPACO           [\t]+|[ ]+
     printf("Linha: %d, Coluna: %d\t", linha, coluna);
     printf("Parenteses: %s\n", yytext);
     coluna += yyleng;
+    parametros--;
     return FECHA_PARENTESES;
 }
 

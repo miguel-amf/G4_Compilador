@@ -14,7 +14,7 @@
     extern FILE *yyin;
     AST* raiz;
     TabelaSimbolo* id;
-    // int escopo = 0;
+    int erros = 0;
 %}
 
 %union{
@@ -130,14 +130,16 @@ declaracao:
     | declaracaoFuncao {
         $$ = $1;
     }
-    | error {}
+    | error {
+        erros++;
+    }
 ;
 
 declaracaoVariavel: 
     TIPO ID PONTOVIRGULA {
         $$ = criaNo("Declaracao de Variavel");
         $$->pai = $1;
-        id = insereSimbolo(id, $2.escopo, $2.id, "Variavel", $2.linha, $2.coluna);
+        id = insereSimbolo(id, $2.escopo, $2.id, "Variavel", $2.linha, $2.coluna, 0);
     }
 ;
 
@@ -147,7 +149,7 @@ declaracaoFuncao:
         $$->pai = $1;
         $1->filho = $4;
         $4->filho = $6;
-        id = insereSimbolo(id, $2.escopo, $2.id, "Funcao", $2.linha, $2.coluna);
+        id = insereSimbolo(id, $2.escopo, $2.id, "Funcao", $2.linha, $2.coluna, 0);
     }
 ;
 
@@ -156,12 +158,12 @@ listaDeParametros:
         $$ = criaNo("Lista de Parametros");
         $$->pai = $1;
         $1->filho = $4;
-        id = insereSimbolo(id, $2.escopo, $2.id, "Variavel", $2.linha, $2.coluna);
+        id = insereSimbolo(id, $2.escopo, $2.id, "Variavel", $2.linha, $2.coluna, 1);
     }
     | TIPO ID {
         $$ = criaNo("Lista de Parametros");
         $$->pai = $1;
-        id = insereSimbolo(id, $2.escopo, $2.id, "Variavel", $2.linha, $2.coluna);
+        id = insereSimbolo(id, $2.escopo, $2.id, "Variavel", $2.linha, $2.coluna, 1);
     }
     |  {
         $$ = criaNo("Lista de Parametros vazia");
@@ -173,7 +175,9 @@ corpo:
         $$ = criaNo("dentro das chaves");
         $$->pai = $2;
     }
-    | error {}
+    | error {
+        erros++;
+    }
 ;
 
 dentroCorpo:
@@ -441,7 +445,9 @@ int main(int argc, char ** argv) {
     yyin = fopen(argv[1], "r");
     
     yyparse();
-    mostraAST(raiz, 0);
+    if(erros == 0){
+        mostraAST(raiz, 0);
+    }
     mostraTabela(id);
     limpaTabela(id);
     liberaAST();

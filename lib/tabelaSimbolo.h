@@ -10,11 +10,10 @@ typedef struct TabelaSimbolo{
     struct TabelaSimbolo* proximo; 
 } TabelaSimbolo;
 
-TabelaSimbolo* insereSimbolo(TabelaSimbolo* id, int escopo, char* simbolo, char* tipoEntrada, int linha, int coluna);
+TabelaSimbolo* insereSimbolo(TabelaSimbolo* id, int escopo, char* simbolo, char* tipoEntrada, int linha, int coluna, int parametros);
 
 void mostraTabela(TabelaSimbolo* id);
 
 void limpaTabela(TabelaSimbolo* id);
-
 
 #endif

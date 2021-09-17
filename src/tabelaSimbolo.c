@@ -3,7 +3,9 @@
 #include <stdlib.h>
 #include "../lib/tabelaSimbolo.h"
 
-TabelaSimbolo* insereSimbolo(TabelaSimbolo* id, int escopo, char* simbolo, char* tipoEntrada, int linha, int coluna){
+TabelaSimbolo* insereSimbolo(TabelaSimbolo* id, int escopo, char* simbolo, char* tipoEntrada, int linha, int coluna, int parametros){
+    if(parametros>0)
+        escopo++;
     if(id == NULL){
         TabelaSimbolo* temp = (TabelaSimbolo*)malloc(sizeof(TabelaSimbolo));
         temp->escopo = escopo;
