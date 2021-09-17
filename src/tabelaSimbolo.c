@@ -3,74 +3,66 @@
 #include <stdlib.h>
 #include "../lib/tabelaSimbolo.h"
 
-node* InsertSymbol(node* head, int scope, char* symbol, int lineno, int paran){
-    // if(paran>0){
-    //     scope++;
-    // }
-    // else{;
-    // }
-    if(head == NULL){
-        node* temp = (node*)malloc(sizeof(node));
-        temp->index = 1;
-        temp->scope = scope;
-        strcpy(temp->symbol,symbol);
-        char str[4];
-        sprintf(str, "%d", lineno);
-        strcpy(temp->lineno,str);
-        temp->next = NULL;
-        head = temp;
+TabelaSimbolo* insereSimbolo(TabelaSimbolo* id, int escopo, char* simbolo, char* tipoEntrada, int linha, int coluna){
+    if(id == NULL){
+        TabelaSimbolo* temp = (TabelaSimbolo*)malloc(sizeof(TabelaSimbolo));
+        temp->escopo = escopo;
+        strcpy(temp->simbolo, simbolo);
+        strcpy(temp->tipoEntrada, tipoEntrada);
+        temp->linha = linha;
+        temp->coluna = coluna;
+        temp->proximo = NULL;
+        id = temp;
     }
     else{
-        node* cur= head;
-        node* prev = NULL;
+        TabelaSimbolo* cur = id;
+        TabelaSimbolo* prev = NULL;
         int present = 0;
         while(cur != NULL){
-            if((cur->scope == scope) && (strcmp(cur->symbol,symbol)==0)){
-                char str[4];
-                sprintf(str, ", %d", lineno);
-                strcat(cur->lineno,str);
+            if((cur->escopo == escopo) && (strcmp(cur->simbolo,simbolo)==0)){
                 present = 1;
             }
             prev = cur;
-            cur = cur->next;
+            cur = cur->proximo;
         }
         if(present == 0){
-            node* temp = (node*)malloc(sizeof(node));
-            temp->index = (prev->index)+1;
-            temp->scope = scope;
-            strcpy(temp->symbol,symbol);
-            char str[4];
-            sprintf(str, "%d", lineno);
-            strcpy(temp->lineno,str);
-            temp->next = NULL;
-            prev->next = temp;
+            TabelaSimbolo* temp = (TabelaSimbolo*)malloc(sizeof(TabelaSimbolo));
+            temp->escopo = escopo;
+            strcpy(temp->simbolo, simbolo);
+            strcpy(temp->tipoEntrada, tipoEntrada);
+            temp->linha = linha;
+            temp->coluna = coluna;
+            temp->proximo = NULL;
+            prev->proximo = temp;
         }
     }
-    return head;
+    
+    return id;
 }
 
-void display(node* head){
-    node* p = head;
-    printf("\t\t\t SYMBOL TABLE \t\t\t\n\n");
-    printf("\t Index \t\t Symbol \t Scope \t\t Line Number \n");
+void mostraTabela(TabelaSimbolo* id){
+    TabelaSimbolo* p = id;
+    printf("\n\n\n");
+    printf("\t\t\t Tabela de Simbolos \t\t\t\n\n");
+    printf("\t Simbolo \t\t Tipo Entrada \t\t Escopo \t\t Linha \t\t Coluna \n");
     if(p == NULL){
         return;
     }
     else{
         while(p != NULL){
-            printf("\t %d \t\t %s \t\t %d \t\t %s \n",p->index,p->symbol,p->scope,p->lineno);
-            p = p->next;
+            printf("\t %s \t\t\t %s \t\t %d \t\t\t %d \t\t %d \n", p->simbolo, p->tipoEntrada, p->escopo, p->linha, p->coluna);
+            p = p->proximo;
         }
     }
 }
 
-void limpaTabela(node* head){
-    node* p = head;
+void limpaTabela(TabelaSimbolo* id){
+    TabelaSimbolo* p = id;
     if(p == NULL){
         return;
     }
-    if(p->next != NULL){
-        limpaTabela(p->next);
+    if(p->proximo != NULL){
+        limpaTabela(p->proximo);
     }
     free(p);
 }

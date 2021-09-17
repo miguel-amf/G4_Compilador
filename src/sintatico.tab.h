@@ -94,11 +94,17 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 16 "sintatico.y"
+#line 20 "sintatico.y"
 
     struct AST* ast;
+    struct Token {
+        int linha;
+        int coluna;
+        char id[100];
+        int escopo;
+    } token;
 
-#line 102 "sintatico.tab.h"
+#line 108 "sintatico.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;

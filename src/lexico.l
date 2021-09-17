@@ -4,17 +4,14 @@
     #include <stdio.h>
     #include <stdlib.h>
     #include <string.h>
-    #include "../lib/sintatico.tab.h"
+    #include "sintatico.tab.h"
     #include "../lib/tabelaSimbolo.h"
     #include "../lib/arvore.h"
 
     int linha = 1, coluna = 1;
-    int scope = 0;
-    int lineno = 1;
-    int paran = 0;
-    int scopeB = 0;
+    int escopo = 0;
 
-    extern node* head;
+    extern TabelaSimbolo* id;
 %}
 
 COMENTARIO          "//".*|"/\*".*|"*/".*
@@ -221,6 +218,17 @@ TABESPACO           [\t]+|[ ]+
     return STRING;
 }
 
+{ID} {
+    printf("Linha: %d, Coluna: %d\t", linha, coluna);
+    printf("Identificador: %s\n", yytext);
+    yylval.token.linha = linha;
+    yylval.token.coluna = coluna;
+    yylval.token.escopo = escopo;
+    strcpy(yylval.token.id, yytext);
+    coluna += yyleng;
+    return ID;
+}
+
 {ATRIBUICAO} {
     printf("Linha: %d, Coluna: %d\t", linha, coluna);
     printf("Igual de atribuicao: %s\n", yytext);
@@ -246,7 +254,6 @@ TABESPACO           [\t]+|[ ]+
     printf("Linha: %d, Coluna: %d\t", linha, coluna);
     printf("Parenteses: %s\n", yytext);
     coluna += yyleng;
-    paran++;
     return ABRE_PARENTESES;
 }
 
@@ -254,7 +261,6 @@ TABESPACO           [\t]+|[ ]+
     printf("Linha: %d, Coluna: %d\t", linha, coluna);
     printf("Parenteses: %s\n", yytext);
     coluna += yyleng;
-    paran--;
     return FECHA_PARENTESES;
 }
 
@@ -262,7 +268,7 @@ TABESPACO           [\t]+|[ ]+
     printf("Linha: %d, Coluna: %d\t", linha, coluna);
     printf("Chaves: %s\n", yytext);
     coluna += yyleng;
-    scope++;
+    escopo++;
     return ABRE_CHAVES;
 }
 
@@ -270,17 +276,11 @@ TABESPACO           [\t]+|[ ]+
     printf("Linha: %d, Coluna: %d\t", linha, coluna);
     printf("Chaves: %s\n", yytext);
     coluna += yyleng;
-    scope--;
+    escopo--;
     return FECHA_CHAVES;
 }
 
-{ID} {
-    printf("Linha: %d, Coluna: %d\t", linha, coluna);
-    printf("Identificador: %s\n", yytext);
-    coluna += yyleng;
-    head = InsertSymbol(head,(scope),yytext,linha,paran);
-    return ID;
-}
+
 
 {COLCHETES} {
     printf("Linha: %d, Coluna: %d\t", linha, coluna);

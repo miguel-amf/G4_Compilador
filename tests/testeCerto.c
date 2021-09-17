@@ -2,6 +2,8 @@ int main(){
     int x;
     float y;
     float a;
+    x = 5;
+    int x;
     {
         int m;
         {
@@ -10,11 +12,13 @@ int main(){
         }
     }
     a = a * x;
-    if(a == a){
+    if(a == r){
         y = 30.29;
-    }else {
+    } 
+    else {
         x = 5;
     }
+    int abc;
     x = 0;
     c = b;
     x = 0;

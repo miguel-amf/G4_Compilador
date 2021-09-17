@@ -1,6 +1,6 @@
 %define lr.type canonical-lr
 %define parse.error verbose
-%defines "../lib/sintatico.tab.h"
+%defines
 
 %{
     #include <stdio.h>
@@ -13,45 +13,52 @@
     extern void yyerror(const char* s);
     extern FILE *yyin;
     AST* raiz;
-    node* head;
+    TabelaSimbolo* id;
+    // int escopo = 0;
 %}
 
 %union{
     struct AST* ast;
+    struct Token {
+        int linha;
+        int coluna;
+        char id[100];
+        int escopo;
+    } token;
 }
 
-%token ID
-%token INT
-%token FLOAT
-%token TIPO_INT
-%token TIPO_FLOAT
-%token TIPO_LIST_INT
-%token TIPO_LIST_FLOAT
-%token OP_B_SOMA_SUB
-%token OP_B_MULT_DIV
-%token OP_LOGICA_AND
-%token OP_LOGICA_NEG
-%token OP_LOGICA_OR
-%token OP_B_RELACIONAIS
-%token IF
-%token ELSE
-%token FOR
-%token RETORNO
-%token ENTRADA
-%token SAIDA
-%token CONSTRUTOR_LISTA
-%token OP_LISTA
-%token FUNCOES_LISTA
-%token STRING
-%token NIL
-%token ABRE_PARENTESES
-%token FECHA_PARENTESES
-%token ABRE_CHAVES
-%token FECHA_CHAVES
-%token ATRIBUICAO
-%token VIRGULA
-%token PONTOVIRGULA
-%token COLCHETES
+%token <token>  ID
+%token <token>  INT
+%token <token>  FLOAT
+%token <token>  TIPO_INT
+%token <token>  TIPO_FLOAT
+%token <token>  TIPO_LIST_INT
+%token <token>  TIPO_LIST_FLOAT
+%token <token>  OP_B_SOMA_SUB
+%token <token>  OP_B_MULT_DIV
+%token <token>  OP_LOGICA_AND
+%token <token>  OP_LOGICA_NEG
+%token <token>  OP_LOGICA_OR
+%token <token>  OP_B_RELACIONAIS
+%token <token>  IF
+%token <token>  ELSE
+%token <token>  FOR
+%token <token>  RETORNO
+%token <token>  ENTRADA
+%token <token>  SAIDA
+%token <token>  CONSTRUTOR_LISTA
+%token <token>  OP_LISTA
+%token <token>  FUNCOES_LISTA
+%token <token>  STRING
+%token <token>  NIL
+%token <token>  ABRE_PARENTESES
+%token <token>  FECHA_PARENTESES
+%token <token>  ABRE_CHAVES
+%token <token>  FECHA_CHAVES
+%token <token>  ATRIBUICAO
+%token <token>  VIRGULA
+%token <token>  PONTOVIRGULA
+%token <token>  COLCHETES
 
 %type <ast> programa;
 %type <ast> listaDeDeclaracoes;
@@ -130,7 +137,7 @@ declaracaoVariavel:
     TIPO ID PONTOVIRGULA {
         $$ = criaNo("Declaracao de Variavel");
         $$->pai = $1;
-        head = InsertSymbol(head, 0, "aaaaaa", 0, 0);
+        id = insereSimbolo(id, $2.escopo, $2.id, "Variavel", $2.linha, $2.coluna);
     }
 ;
 
@@ -140,6 +147,7 @@ declaracaoFuncao:
         $$->pai = $1;
         $1->filho = $4;
         $4->filho = $6;
+        id = insereSimbolo(id, $2.escopo, $2.id, "Funcao", $2.linha, $2.coluna);
     }
 ;
 
@@ -148,10 +156,12 @@ listaDeParametros:
         $$ = criaNo("Lista de Parametros");
         $$->pai = $1;
         $1->filho = $4;
+        id = insereSimbolo(id, $2.escopo, $2.id, "Variavel", $2.linha, $2.coluna);
     }
     | TIPO ID {
         $$ = criaNo("Lista de Parametros");
         $$->pai = $1;
+        id = insereSimbolo(id, $2.escopo, $2.id, "Variavel", $2.linha, $2.coluna);
     }
     |  {
         $$ = criaNo("Lista de Parametros vazia");
@@ -254,16 +264,16 @@ for:
 ;
 
 condicional:
-    IF ABRE_PARENTESES exp FECHA_PARENTESES ABRE_CHAVES declaracoes FECHA_CHAVES {
+    IF ABRE_PARENTESES expressao FECHA_PARENTESES declaracoes {
         $$ = criaNo("IF");
         $$->pai = $3;
-        $3->filho = $6;
+        $3->filho = $5;
     }
-    | IF ABRE_PARENTESES exp FECHA_PARENTESES ABRE_CHAVES declaracoes FECHA_CHAVES ELSE ABRE_CHAVES declaracoes FECHA_CHAVES {
+    | IF ABRE_PARENTESES exp FECHA_PARENTESES declaracoes ELSE declaracoes {
         $$ = criaNo("IF-ELSE");
         $$->pai = $3;
-        $3->filho = $6;
-        $6->filho = $10;
+        $3->filho = $5;
+        $5->filho = $7;
     }
 ;
 
@@ -432,8 +442,8 @@ int main(int argc, char ** argv) {
     
     yyparse();
     mostraAST(raiz, 0);
-    display(head);
-    limpaTabela(head);
+    mostraTabela(id);
+    limpaTabela(id);
     liberaAST();
     fclose(yyin);
     yylex_destroy();

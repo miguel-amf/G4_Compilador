@@ -1,30 +1,20 @@
 #ifndef TABELA_SIMBOLO_H
 #define TABELA_SIMBOLO_H
-#define MAX 1000
 
-typedef struct{
-    char *id;
-    char *token;
-    struct TabelaSimbolo *proximo;
+typedef struct TabelaSimbolo{
+    int escopo;
+    char simbolo[100];
+    int linha;
+    int coluna;
+    char tipoEntrada[50];
+    struct TabelaSimbolo* proximo; 
 } TabelaSimbolo;
 
-// TabelaSimbolo *inicio, *final;
+TabelaSimbolo* insereSimbolo(TabelaSimbolo* id, int escopo, char* simbolo, char* tipoEntrada, int linha, int coluna);
 
-typedef struct node{
-    int index;
-    int scope;
-    char symbol[MAX];
-    char lineno[MAX];
-    char type[MAX];
-    char value[MAX];
-    struct node* next; 
-}node;
+void mostraTabela(TabelaSimbolo* id);
 
-node* InsertSymbol(node*,int,char*,int,int);
-
-void display(node* head);
-
-void limpaTabela(node* head);
+void limpaTabela(TabelaSimbolo* id);
 
 
 #endif
