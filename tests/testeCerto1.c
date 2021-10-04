@@ -8,7 +8,6 @@ int main() {
     for (i = 0; i < n ; i = i + 1) {
 		int a;
 		read(a);
-		b = elem : b;
 	}
 
 	return 0;
