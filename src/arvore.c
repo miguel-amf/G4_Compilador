@@ -12,6 +12,9 @@ AST* criaNo(char* nome_regra){
     no->pai = NULL;
     no->nome_regra = strdup(nome_regra);
     no->filho = NULL;
+    strcpy(no->simbolo, "");
+    strcpy(no->tipo,"");
+    strcpy(no->cast,"");
     nos[cont] = no;
     cont++;
 
@@ -26,7 +29,10 @@ void mostraAST(AST *ast, int altura) {
     printf("\n");
       for (int i = 2; i < altura; i++)
           printf("---");
-      printf("%s %s", ast->nome_regra, ast->simbolo);
+      printf("%s", ast->nome_regra);
+      if(strcmp(ast->simbolo, "") != 0){
+          printf(" --> %s", ast->simbolo);
+      }
     altura -= 1;
     mostraAST(ast->pai, altura+1);
     mostraAST(ast->filho, altura);

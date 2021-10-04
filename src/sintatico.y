@@ -146,6 +146,7 @@ declaracaoVariavel:
         $$ = criaNo("Declaracao de Variavel");
         $$->pai = $1;
         id = insereSimbolo(id, $2.escopo, $2.id, "Variavel", tipos[tipo], $2.linha, $2.coluna, 0);
+        strcpy($1->simbolo, $2.id);
         tipo = 0;
     }
 ;
@@ -157,6 +158,7 @@ declaracaoFuncao:
         $1->filho = $4;
         $4->filho = $6;
         id = insereSimbolo(id, $2.escopo, $2.id, "Funcao", tipos[tipo], $2.linha, $2.coluna, 0);
+        strcpy($1->simbolo, $2.id);
         tipo = 0;
     }
 ;
@@ -168,11 +170,13 @@ listaDeParametros:
         $1->filho = $4;
         tipo = 0;
         id = insereSimbolo(id, $2.escopo, $2.id, "Variavel", tipos[tipo], $2.linha, $2.coluna, 1);
+        strcpy($1->simbolo, $2.id);
     }
     | TIPO ID {
         $$ = criaNo("Lista de Parametros");
         $$->pai = $1;
         id = insereSimbolo(id, $2.escopo, $2.id, "Variavel", tipos[tipo], $2.linha, $2.coluna, 1);
+        strcpy($1->simbolo, $2.id);
         tipo = 0;
     }
     |  {
@@ -455,6 +459,12 @@ int main(int argc, char ** argv) {
     yyin = fopen(argv[1], "r");
     
     yyparse();
+
+    if(procuraMain(id) == 0){
+        printf("Erro Semantico - Funcao Main nao encontrada!!!\n");
+        erros++;
+    }
+
     if(erros == 0){
         mostraAST(raiz, 0);
     }

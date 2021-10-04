@@ -23,6 +23,11 @@ TabelaSimbolo* insereSimbolo(TabelaSimbolo* id, int escopo, char* simbolo, char*
         int present = 0;
         while(cur != NULL){
             if((cur->escopo == escopo) && (strcmp(cur->simbolo,simbolo)==0)){
+                if(strcmp(tipoEntrada, "Funcao") == 0){
+                    printf("Linha: %d - Coluna: %d - Identificador: %s - Erro Semantico - Funcao ja declarada!!!\n", linha, coluna, simbolo);
+                }else{
+                    printf("Linha: %d - Coluna: %d - Identificador: %s - Erro Semantico - Variavel ja declarada!!!\n", linha, coluna, simbolo);
+                }
                 present = 1;
             }
             prev = cur;
@@ -69,4 +74,14 @@ void limpaTabela(TabelaSimbolo* id){
         limpaTabela(p->proximo);
     }
     free(p);
+}
+
+int procuraMain(TabelaSimbolo* id){
+    while(id != NULL){
+        if((id->escopo == 0) && (strcmp(id->simbolo, "main") == 0) && (strcmp(id->tipoEntrada, "Funcao") == 0)){
+            return 1;
+        }
+        id = id->proximo;
+    }
+    return 0;
 }

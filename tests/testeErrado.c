@@ -1,4 +1,4 @@
-int main(){ 
+int man(){ 
     int list x;
     float y;
     float list a;

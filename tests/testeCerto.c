@@ -2,7 +2,7 @@ int f(int i){
 	int n;
 }
 
-int fa(int i){
+int f(int i){
 	int n;
 }
 

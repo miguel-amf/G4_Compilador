@@ -17,4 +17,6 @@ void mostraTabela(TabelaSimbolo* id);
 
 void limpaTabela(TabelaSimbolo* id);
 
+int procuraMain(TabelaSimbolo* id);
+
 #endif
