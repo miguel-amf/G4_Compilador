@@ -53,13 +53,13 @@ void mostraTabela(TabelaSimbolo* id){
     TabelaSimbolo* p = id;
     printf("\n\n\n");
     printf("\t\t\t Tabela de Simbolos \t\t\t\n\n");
-    printf("\t Simbolo \t\t Tipo Entrada \t\t Tipo \t\t Escopo \t\t Linha \t\t Coluna \n");
+    printf("\t Simbolo \t\t Tipo Entrada \t\t Tipo \t\t Escopo \t Linha \t\t Coluna \n");
     if(p == NULL){
         return;
     }
     else{
         while(p != NULL){
-            printf("\t %s \t\t\t %s \t\t %s \t\t %d \t\t\t %d \t\t %d \n", p->simbolo, p->tipoEntrada, p->tipo, p->escopo, p->linha, p->coluna);
+            printf("\t %-20s  \t %-20s \t %-10s \t %-10d \t %-10d \t %-10d \n", p->simbolo, p->tipoEntrada, p->tipo, p->escopo, p->linha, p->coluna);
             p = p->proximo;
         }
     }

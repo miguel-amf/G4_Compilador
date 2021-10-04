@@ -2,7 +2,7 @@ int f(int i){
 	int n;
 }
 
-int f(int i){
+int fa(int i){
 	int n;
 }
 
@@ -20,18 +20,16 @@ int main(){
         }
     }
     a = a * x;
-    if(a == r){
+    if(a == x){
         y = 30.29;
-        asdasd = asdasd;
+        int ifas;
     } 
     else {
         x = 5;
     }
     int abc;
-    x = faaaa();
-    c = b;
     x = 0;
-    read(f);
+    read(abc);
     writeln("");
     write(y);
     writeln("Vamo q vamo!");

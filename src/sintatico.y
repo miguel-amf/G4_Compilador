@@ -17,6 +17,9 @@
     int erros = 0;
     char tipos[4][10] = {"INT", "FLOAT", "INT LIST", "FLOAT LIST"};
     int tipo = 0;
+    extern int escopoL[1000];
+    extern int escopoAtual;
+    extern int escopo;
 %}
 
 %union{
@@ -168,16 +171,19 @@ listaDeParametros:
         $$ = criaNo("Lista de Parametros");
         $$->pai = $1;
         $1->filho = $4;
-        tipo = 0;
         id = insereSimbolo(id, $2.escopo, $2.id, "Variavel", tipos[tipo], $2.linha, $2.coluna, 1);
+        tipo = 0;
         strcpy($1->simbolo, $2.id);
     }
     | TIPO ID {
         $$ = criaNo("Lista de Parametros");
         $$->pai = $1;
-        id = insereSimbolo(id, $2.escopo, $2.id, "Variavel", tipos[tipo], $2.linha, $2.coluna, 1);
+        escopoL[++escopoAtual] = escopo++;
+        id = insereSimbolo(id, escopoL[escopoAtual], $2.id, "Variavel", tipos[tipo], $2.linha, $2.coluna, 1);
         strcpy($1->simbolo, $2.id);
         tipo = 0;
+        escopoAtual--;
+        escopo--;
     }
     |  {
         $$ = criaNo("Lista de Parametros vazia");
@@ -480,13 +486,13 @@ void yyerror(const char* s){
 }
 
 int main(int argc, char ** argv) {
+    
     yyin = fopen(argv[1], "r");
     
     yyparse();
 
     if(procuraMain(id) == 0){
         printf("Erro Semantico - Funcao Main nao encontrada!!!\n");
-        erros++;
     }
 
     if(erros == 0){

@@ -522,8 +522,8 @@ char *yytext;
     int linha = 1, coluna = 1;
     int escopo = 0;
     int parametros = 0;
-    // extern int escopoL[1000];
-    // extern int escopoAtual = 0;
+    int escopoL[1000];
+    int escopoAtual = 0;
     extern TabelaSimbolo* id;
 #line 529 "lex.yy.c"
 #line 530 "lex.yy.c"
@@ -808,7 +808,7 @@ YY_RULE_SETUP
     // printf("Comentario: %s\n", yytext);
     yylval.token.linha = linha;
     yylval.token.coluna = coluna;
-    yylval.token.escopo = escopo;
+    yylval.token.escopo = escopoL[escopoAtual];
     strcpy(yylval.token.id, yytext);
     coluna += yyleng;
 }
@@ -821,7 +821,7 @@ YY_RULE_SETUP
     // printf("Tipo: %s\n", yytext);
     yylval.token.linha = linha;
     yylval.token.coluna = coluna;
-    yylval.token.escopo = escopo;
+    yylval.token.escopo = escopoL[escopoAtual];
     strcpy(yylval.token.id, yytext);
     coluna += yyleng;
     return TIPO_INT;
@@ -835,7 +835,7 @@ YY_RULE_SETUP
     // printf("Tipo: %s\n", yytext);
     yylval.token.linha = linha;
     yylval.token.coluna = coluna;
-    yylval.token.escopo = escopo;
+    yylval.token.escopo = escopoL[escopoAtual];
     strcpy(yylval.token.id, yytext);
     coluna += yyleng;
     return TIPO_FLOAT;
@@ -849,7 +849,7 @@ YY_RULE_SETUP
     // printf("Tipo: %s\n", yytext);
     yylval.token.linha = linha;
     yylval.token.coluna = coluna;
-    yylval.token.escopo = escopo;
+    yylval.token.escopo = escopoL[escopoAtual];
     strcpy(yylval.token.id, yytext);
     coluna += yyleng;
     return TIPO_LIST_INT;
@@ -863,7 +863,7 @@ YY_RULE_SETUP
     // printf("Tipo: %s\n", yytext);
     yylval.token.linha = linha;
     yylval.token.coluna = coluna;
-    yylval.token.escopo = escopo;
+    yylval.token.escopo = escopoL[escopoAtual];
     strcpy(yylval.token.id, yytext);
     coluna += yyleng;
     return TIPO_LIST_FLOAT;
@@ -877,7 +877,7 @@ YY_RULE_SETUP
     // printf("Inteiro: %s\n", yytext);
     yylval.token.linha = linha;
     yylval.token.coluna = coluna;
-    yylval.token.escopo = escopo;
+    yylval.token.escopo = escopoL[escopoAtual];
     strcpy(yylval.token.id, yytext);
     coluna += yyleng;
     return INT;
@@ -891,7 +891,7 @@ YY_RULE_SETUP
     // printf("Float: %s\n", yytext);
     yylval.token.linha = linha;
     yylval.token.coluna = coluna;
-    yylval.token.escopo = escopo;
+    yylval.token.escopo = escopoL[escopoAtual];
     strcpy(yylval.token.id, yytext);
     coluna += yyleng;
     return FLOAT;
@@ -905,7 +905,7 @@ YY_RULE_SETUP
     // printf("Operacao Binaria Aritmetica: %s\n", yytext);
     yylval.token.linha = linha;
     yylval.token.coluna = coluna;
-    yylval.token.escopo = escopo;
+    yylval.token.escopo = escopoL[escopoAtual];
     strcpy(yylval.token.id, yytext);
     coluna += yyleng;
     return OP_B_SOMA_SUB;
@@ -919,7 +919,7 @@ YY_RULE_SETUP
     // printf("Operacao Binaria Aritmetica: %s\n", yytext);
     yylval.token.linha = linha;
     yylval.token.coluna = coluna;
-    yylval.token.escopo = escopo;
+    yylval.token.escopo = escopoL[escopoAtual];
     strcpy(yylval.token.id, yytext);
     coluna += yyleng;
     return OP_B_MULT_DIV;
@@ -933,7 +933,7 @@ YY_RULE_SETUP
     // printf("Operacao Logica Aritmetica: %s\n", yytext);
     yylval.token.linha = linha;
     yylval.token.coluna = coluna;
-    yylval.token.escopo = escopo;
+    yylval.token.escopo = escopoL[escopoAtual];
     strcpy(yylval.token.id, yytext);
     coluna += yyleng;
     return OP_LOGICA_AND;
@@ -947,7 +947,7 @@ YY_RULE_SETUP
     // printf("Operacao Logica Aritmetica: %s\n", yytext);
     yylval.token.linha = linha;
     yylval.token.coluna = coluna;
-    yylval.token.escopo = escopo;
+    yylval.token.escopo = escopoL[escopoAtual];
     strcpy(yylval.token.id, yytext);
     coluna += yyleng;
     return OP_LOGICA_NEG;
@@ -961,7 +961,7 @@ YY_RULE_SETUP
     // printf("Operacao Logica Aritmetica: %s\n", yytext);
     yylval.token.linha = linha;
     yylval.token.coluna = coluna;
-    yylval.token.escopo = escopo;
+    yylval.token.escopo = escopoL[escopoAtual];
     strcpy(yylval.token.id, yytext);
     coluna += yyleng;
     return OP_LOGICA_OR;
@@ -975,7 +975,7 @@ YY_RULE_SETUP
     // printf("Operacao Relacional: %s\n", yytext);
     yylval.token.linha = linha;
     yylval.token.coluna = coluna;
-    yylval.token.escopo = escopo;
+    yylval.token.escopo = escopoL[escopoAtual];
     strcpy(yylval.token.id, yytext);
     coluna += yyleng;
     return OP_B_RELACIONAIS;
@@ -989,7 +989,7 @@ YY_RULE_SETUP
     // printf("Comando de controle de fluxo: %s\n", yytext);
     yylval.token.linha = linha;
     yylval.token.coluna = coluna;
-    yylval.token.escopo = escopo;
+    yylval.token.escopo = escopoL[escopoAtual];
     strcpy(yylval.token.id, yytext);
     coluna += yyleng;
     return IF;
@@ -1003,7 +1003,7 @@ YY_RULE_SETUP
     // printf("Comando de controle de fluxo: %s\n", yytext);
     yylval.token.linha = linha;
     yylval.token.coluna = coluna;
-    yylval.token.escopo = escopo;
+    yylval.token.escopo = escopoL[escopoAtual];
     strcpy(yylval.token.id, yytext);
     coluna += yyleng;
     return ELSE;
@@ -1017,7 +1017,7 @@ YY_RULE_SETUP
     // printf("Comando de controle de fluxo: %s\n", yytext);
     yylval.token.linha = linha;
     yylval.token.coluna = coluna;
-    yylval.token.escopo = escopo;
+    yylval.token.escopo = escopoL[escopoAtual];
     strcpy(yylval.token.id, yytext);
     coluna += yyleng;
     return FOR;
@@ -1031,7 +1031,7 @@ YY_RULE_SETUP
     // printf("Comando de controle de fluxo: %s\n", yytext);
     yylval.token.linha = linha;
     yylval.token.coluna = coluna;
-    yylval.token.escopo = escopo;
+    yylval.token.escopo = escopoL[escopoAtual];
     strcpy(yylval.token.id, yytext);
     coluna += yyleng;
     return RETORNO;
@@ -1045,7 +1045,7 @@ YY_RULE_SETUP
     // printf("Entrada(READ): %s\n", yytext);
     yylval.token.linha = linha;
     yylval.token.coluna = coluna;
-    yylval.token.escopo = escopo;
+    yylval.token.escopo = escopoL[escopoAtual];
     strcpy(yylval.token.id, yytext);
     coluna += yyleng;
     return ENTRADA;
@@ -1059,7 +1059,7 @@ YY_RULE_SETUP
     // printf("Saida(WRITE ou WRITELN): %s\n", yytext);
     yylval.token.linha = linha;
     yylval.token.coluna = coluna;
-    yylval.token.escopo = escopo;
+    yylval.token.escopo = escopoL[escopoAtual];
     strcpy(yylval.token.id, yytext);
     coluna += yyleng;
     return SAIDA;
@@ -1073,7 +1073,7 @@ YY_RULE_SETUP
     // printf("Construtor da Lista: %s\n", yytext);
     yylval.token.linha = linha;
     yylval.token.coluna = coluna;
-    yylval.token.escopo = escopo;
+    yylval.token.escopo = escopoL[escopoAtual];
     strcpy(yylval.token.id, yytext);
     coluna += yyleng;
     return CONSTRUTOR_LISTA;
@@ -1087,7 +1087,7 @@ YY_RULE_SETUP
     // printf("Operacao da Lista: %s\n", yytext);
     yylval.token.linha = linha;
     yylval.token.coluna = coluna;
-    yylval.token.escopo = escopo;
+    yylval.token.escopo = escopoL[escopoAtual];
     strcpy(yylval.token.id, yytext);
     coluna += yyleng;
     return OP_LISTA;
@@ -1101,7 +1101,7 @@ YY_RULE_SETUP
     // printf("Funcao da Lista: %s\n", yytext);
     yylval.token.linha = linha;
     yylval.token.coluna = coluna;
-    yylval.token.escopo = escopo;
+    yylval.token.escopo = escopoL[escopoAtual];
     strcpy(yylval.token.id, yytext);
     coluna += yyleng;
     return FUNCOES_LISTA;
@@ -1115,7 +1115,7 @@ YY_RULE_SETUP
     // printf("Constante NIL: %s\n", yytext);
     yylval.token.linha = linha;
     yylval.token.coluna = coluna;
-    yylval.token.escopo = escopo;
+    yylval.token.escopo = escopoL[escopoAtual];
     strcpy(yylval.token.id, yytext);
     coluna += yyleng;
     return NIL;
@@ -1130,7 +1130,7 @@ YY_RULE_SETUP
     // printf("String: %s\n", yytext);
     yylval.token.linha = linha;
     yylval.token.coluna = coluna;
-    yylval.token.escopo = escopo;
+    yylval.token.escopo = escopoL[escopoAtual];
     strcpy(yylval.token.id, yytext);
     coluna += yyleng;
     return STRING;
@@ -1144,7 +1144,7 @@ YY_RULE_SETUP
     // printf("Identificador: %s\n", yytext);
     yylval.token.linha = linha;
     yylval.token.coluna = coluna;
-    yylval.token.escopo = escopo;
+    yylval.token.escopo = escopoL[escopoAtual];
     strcpy(yylval.token.id, yytext);
     coluna += yyleng;
     return ID;
@@ -1158,7 +1158,7 @@ YY_RULE_SETUP
     // printf("Igual de atribuicao: %s\n", yytext);
     yylval.token.linha = linha;
     yylval.token.coluna = coluna;
-    yylval.token.escopo = escopo;
+    yylval.token.escopo = escopoL[escopoAtual];
     strcpy(yylval.token.id, yytext);
     coluna += yyleng;
     return ATRIBUICAO;
@@ -1172,7 +1172,7 @@ YY_RULE_SETUP
     // printf("Virgula: %s\n", yytext);
     yylval.token.linha = linha;
     yylval.token.coluna = coluna;
-    yylval.token.escopo = escopo;
+    yylval.token.escopo = escopoL[escopoAtual];
     strcpy(yylval.token.id, yytext);
     coluna += yyleng;
     return VIRGULA;
@@ -1186,7 +1186,7 @@ YY_RULE_SETUP
     // printf("Ponto e virgula: %s\n", yytext);
     yylval.token.linha = linha;
     yylval.token.coluna = coluna;
-    yylval.token.escopo = escopo;
+    yylval.token.escopo = escopoL[escopoAtual];
     strcpy(yylval.token.id, yytext);
     coluna += yyleng;
     return PONTOVIRGULA;
@@ -1200,7 +1200,7 @@ YY_RULE_SETUP
     // printf("Parenteses: %s\n", yytext);
     yylval.token.linha = linha;
     yylval.token.coluna = coluna;
-    yylval.token.escopo = escopo;
+    yylval.token.escopo = escopoL[escopoAtual];
     strcpy(yylval.token.id, yytext);
     coluna += yyleng;
     parametros++;
@@ -1215,7 +1215,7 @@ YY_RULE_SETUP
     // printf("Parenteses: %s\n", yytext);
     yylval.token.linha = linha;
     yylval.token.coluna = coluna;
-    yylval.token.escopo = escopo;
+    yylval.token.escopo = escopoL[escopoAtual];
     strcpy(yylval.token.id, yytext);
     coluna += yyleng;
     parametros--;
@@ -1230,10 +1230,10 @@ YY_RULE_SETUP
     // printf("Chaves: %s\n", yytext);
     yylval.token.linha = linha;
     yylval.token.coluna = coluna;
-    yylval.token.escopo = escopo;
+    yylval.token.escopo = escopoL[escopoAtual];
     strcpy(yylval.token.id, yytext);
     coluna += yyleng;
-    escopo++;
+    escopoL[++escopoAtual] = ++escopo;
     return ABRE_CHAVES;
 }
 	YY_BREAK
@@ -1245,10 +1245,10 @@ YY_RULE_SETUP
     // printf("Chaves: %s\n", yytext);
     yylval.token.linha = linha;
     yylval.token.coluna = coluna;
-    yylval.token.escopo = escopo;
+    yylval.token.escopo = escopoL[escopoAtual];
     strcpy(yylval.token.id, yytext);
     coluna += yyleng;
-    escopo--;
+    escopoAtual--;
     return FECHA_CHAVES;
 }
 	YY_BREAK
@@ -1260,7 +1260,7 @@ YY_RULE_SETUP
     // printf("Chaves: %s\n", yytext);
     yylval.token.linha = linha;
     yylval.token.coluna = coluna;
-    yylval.token.escopo = escopo;
+    yylval.token.escopo = escopoL[escopoAtual];
     strcpy(yylval.token.id, yytext);
     coluna += yyleng;
     return COLCHETES;

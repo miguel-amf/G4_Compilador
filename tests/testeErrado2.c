@@ -1,11 +1,7 @@
-int main(){
-    int a;
-    a = 5;;
-	int b;
-    b = a;
-    if(b === 5){
-        int asd;
-    }
+int f(int i, int x, int a, int b){
+	int n;
+}
 
-    return .30;
+int f(int y, int x){
+	int n;
 }

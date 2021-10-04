@@ -11,8 +11,8 @@
     int linha = 1, coluna = 1;
     int escopo = 0;
     int parametros = 0;
-    // extern int escopoL[1000];
-    // extern int escopoAtual = 0;
+    int escopoL[1000];
+    int escopoAtual = 0;
     extern TabelaSimbolo* id;
 %}
 
@@ -58,7 +58,7 @@ TABESPACO           [\t]+|[ ]+
     // printf("Comentario: %s\n", yytext);
     yylval.token.linha = linha;
     yylval.token.coluna = coluna;
-    yylval.token.escopo = escopo;
+    yylval.token.escopo = escopoL[escopoAtual];
     strcpy(yylval.token.id, yytext);
     coluna += yyleng;
 }
@@ -68,7 +68,7 @@ TABESPACO           [\t]+|[ ]+
     // printf("Tipo: %s\n", yytext);
     yylval.token.linha = linha;
     yylval.token.coluna = coluna;
-    yylval.token.escopo = escopo;
+    yylval.token.escopo = escopoL[escopoAtual];
     strcpy(yylval.token.id, yytext);
     coluna += yyleng;
     return TIPO_INT;
@@ -79,7 +79,7 @@ TABESPACO           [\t]+|[ ]+
     // printf("Tipo: %s\n", yytext);
     yylval.token.linha = linha;
     yylval.token.coluna = coluna;
-    yylval.token.escopo = escopo;
+    yylval.token.escopo = escopoL[escopoAtual];
     strcpy(yylval.token.id, yytext);
     coluna += yyleng;
     return TIPO_FLOAT;
@@ -90,7 +90,7 @@ TABESPACO           [\t]+|[ ]+
     // printf("Tipo: %s\n", yytext);
     yylval.token.linha = linha;
     yylval.token.coluna = coluna;
-    yylval.token.escopo = escopo;
+    yylval.token.escopo = escopoL[escopoAtual];
     strcpy(yylval.token.id, yytext);
     coluna += yyleng;
     return TIPO_LIST_INT;
@@ -101,7 +101,7 @@ TABESPACO           [\t]+|[ ]+
     // printf("Tipo: %s\n", yytext);
     yylval.token.linha = linha;
     yylval.token.coluna = coluna;
-    yylval.token.escopo = escopo;
+    yylval.token.escopo = escopoL[escopoAtual];
     strcpy(yylval.token.id, yytext);
     coluna += yyleng;
     return TIPO_LIST_FLOAT;
@@ -112,7 +112,7 @@ TABESPACO           [\t]+|[ ]+
     // printf("Inteiro: %s\n", yytext);
     yylval.token.linha = linha;
     yylval.token.coluna = coluna;
-    yylval.token.escopo = escopo;
+    yylval.token.escopo = escopoL[escopoAtual];
     strcpy(yylval.token.id, yytext);
     coluna += yyleng;
     return INT;
@@ -123,7 +123,7 @@ TABESPACO           [\t]+|[ ]+
     // printf("Float: %s\n", yytext);
     yylval.token.linha = linha;
     yylval.token.coluna = coluna;
-    yylval.token.escopo = escopo;
+    yylval.token.escopo = escopoL[escopoAtual];
     strcpy(yylval.token.id, yytext);
     coluna += yyleng;
     return FLOAT;
@@ -134,7 +134,7 @@ TABESPACO           [\t]+|[ ]+
     // printf("Operacao Binaria Aritmetica: %s\n", yytext);
     yylval.token.linha = linha;
     yylval.token.coluna = coluna;
-    yylval.token.escopo = escopo;
+    yylval.token.escopo = escopoL[escopoAtual];
     strcpy(yylval.token.id, yytext);
     coluna += yyleng;
     return OP_B_SOMA_SUB;
@@ -145,7 +145,7 @@ TABESPACO           [\t]+|[ ]+
     // printf("Operacao Binaria Aritmetica: %s\n", yytext);
     yylval.token.linha = linha;
     yylval.token.coluna = coluna;
-    yylval.token.escopo = escopo;
+    yylval.token.escopo = escopoL[escopoAtual];
     strcpy(yylval.token.id, yytext);
     coluna += yyleng;
     return OP_B_MULT_DIV;
@@ -156,7 +156,7 @@ TABESPACO           [\t]+|[ ]+
     // printf("Operacao Logica Aritmetica: %s\n", yytext);
     yylval.token.linha = linha;
     yylval.token.coluna = coluna;
-    yylval.token.escopo = escopo;
+    yylval.token.escopo = escopoL[escopoAtual];
     strcpy(yylval.token.id, yytext);
     coluna += yyleng;
     return OP_LOGICA_AND;
@@ -167,7 +167,7 @@ TABESPACO           [\t]+|[ ]+
     // printf("Operacao Logica Aritmetica: %s\n", yytext);
     yylval.token.linha = linha;
     yylval.token.coluna = coluna;
-    yylval.token.escopo = escopo;
+    yylval.token.escopo = escopoL[escopoAtual];
     strcpy(yylval.token.id, yytext);
     coluna += yyleng;
     return OP_LOGICA_NEG;
@@ -178,7 +178,7 @@ TABESPACO           [\t]+|[ ]+
     // printf("Operacao Logica Aritmetica: %s\n", yytext);
     yylval.token.linha = linha;
     yylval.token.coluna = coluna;
-    yylval.token.escopo = escopo;
+    yylval.token.escopo = escopoL[escopoAtual];
     strcpy(yylval.token.id, yytext);
     coluna += yyleng;
     return OP_LOGICA_OR;
@@ -189,7 +189,7 @@ TABESPACO           [\t]+|[ ]+
     // printf("Operacao Relacional: %s\n", yytext);
     yylval.token.linha = linha;
     yylval.token.coluna = coluna;
-    yylval.token.escopo = escopo;
+    yylval.token.escopo = escopoL[escopoAtual];
     strcpy(yylval.token.id, yytext);
     coluna += yyleng;
     return OP_B_RELACIONAIS;
@@ -200,7 +200,7 @@ TABESPACO           [\t]+|[ ]+
     // printf("Comando de controle de fluxo: %s\n", yytext);
     yylval.token.linha = linha;
     yylval.token.coluna = coluna;
-    yylval.token.escopo = escopo;
+    yylval.token.escopo = escopoL[escopoAtual];
     strcpy(yylval.token.id, yytext);
     coluna += yyleng;
     return IF;
@@ -211,7 +211,7 @@ TABESPACO           [\t]+|[ ]+
     // printf("Comando de controle de fluxo: %s\n", yytext);
     yylval.token.linha = linha;
     yylval.token.coluna = coluna;
-    yylval.token.escopo = escopo;
+    yylval.token.escopo = escopoL[escopoAtual];
     strcpy(yylval.token.id, yytext);
     coluna += yyleng;
     return ELSE;
@@ -222,7 +222,7 @@ TABESPACO           [\t]+|[ ]+
     // printf("Comando de controle de fluxo: %s\n", yytext);
     yylval.token.linha = linha;
     yylval.token.coluna = coluna;
-    yylval.token.escopo = escopo;
+    yylval.token.escopo = escopoL[escopoAtual];
     strcpy(yylval.token.id, yytext);
     coluna += yyleng;
     return FOR;
@@ -233,7 +233,7 @@ TABESPACO           [\t]+|[ ]+
     // printf("Comando de controle de fluxo: %s\n", yytext);
     yylval.token.linha = linha;
     yylval.token.coluna = coluna;
-    yylval.token.escopo = escopo;
+    yylval.token.escopo = escopoL[escopoAtual];
     strcpy(yylval.token.id, yytext);
     coluna += yyleng;
     return RETORNO;
@@ -244,7 +244,7 @@ TABESPACO           [\t]+|[ ]+
     // printf("Entrada(READ): %s\n", yytext);
     yylval.token.linha = linha;
     yylval.token.coluna = coluna;
-    yylval.token.escopo = escopo;
+    yylval.token.escopo = escopoL[escopoAtual];
     strcpy(yylval.token.id, yytext);
     coluna += yyleng;
     return ENTRADA;
@@ -255,7 +255,7 @@ TABESPACO           [\t]+|[ ]+
     // printf("Saida(WRITE ou WRITELN): %s\n", yytext);
     yylval.token.linha = linha;
     yylval.token.coluna = coluna;
-    yylval.token.escopo = escopo;
+    yylval.token.escopo = escopoL[escopoAtual];
     strcpy(yylval.token.id, yytext);
     coluna += yyleng;
     return SAIDA;
@@ -266,7 +266,7 @@ TABESPACO           [\t]+|[ ]+
     // printf("Construtor da Lista: %s\n", yytext);
     yylval.token.linha = linha;
     yylval.token.coluna = coluna;
-    yylval.token.escopo = escopo;
+    yylval.token.escopo = escopoL[escopoAtual];
     strcpy(yylval.token.id, yytext);
     coluna += yyleng;
     return CONSTRUTOR_LISTA;
@@ -277,7 +277,7 @@ TABESPACO           [\t]+|[ ]+
     // printf("Operacao da Lista: %s\n", yytext);
     yylval.token.linha = linha;
     yylval.token.coluna = coluna;
-    yylval.token.escopo = escopo;
+    yylval.token.escopo = escopoL[escopoAtual];
     strcpy(yylval.token.id, yytext);
     coluna += yyleng;
     return OP_LISTA;
@@ -288,7 +288,7 @@ TABESPACO           [\t]+|[ ]+
     // printf("Funcao da Lista: %s\n", yytext);
     yylval.token.linha = linha;
     yylval.token.coluna = coluna;
-    yylval.token.escopo = escopo;
+    yylval.token.escopo = escopoL[escopoAtual];
     strcpy(yylval.token.id, yytext);
     coluna += yyleng;
     return FUNCOES_LISTA;
@@ -299,7 +299,7 @@ TABESPACO           [\t]+|[ ]+
     // printf("Constante NIL: %s\n", yytext);
     yylval.token.linha = linha;
     yylval.token.coluna = coluna;
-    yylval.token.escopo = escopo;
+    yylval.token.escopo = escopoL[escopoAtual];
     strcpy(yylval.token.id, yytext);
     coluna += yyleng;
     return NIL;
@@ -310,7 +310,7 @@ TABESPACO           [\t]+|[ ]+
     // printf("String: %s\n", yytext);
     yylval.token.linha = linha;
     yylval.token.coluna = coluna;
-    yylval.token.escopo = escopo;
+    yylval.token.escopo = escopoL[escopoAtual];
     strcpy(yylval.token.id, yytext);
     coluna += yyleng;
     return STRING;
@@ -321,7 +321,7 @@ TABESPACO           [\t]+|[ ]+
     // printf("Identificador: %s\n", yytext);
     yylval.token.linha = linha;
     yylval.token.coluna = coluna;
-    yylval.token.escopo = escopo;
+    yylval.token.escopo = escopoL[escopoAtual];
     strcpy(yylval.token.id, yytext);
     coluna += yyleng;
     return ID;
@@ -332,7 +332,7 @@ TABESPACO           [\t]+|[ ]+
     // printf("Igual de atribuicao: %s\n", yytext);
     yylval.token.linha = linha;
     yylval.token.coluna = coluna;
-    yylval.token.escopo = escopo;
+    yylval.token.escopo = escopoL[escopoAtual];
     strcpy(yylval.token.id, yytext);
     coluna += yyleng;
     return ATRIBUICAO;
@@ -343,7 +343,7 @@ TABESPACO           [\t]+|[ ]+
     // printf("Virgula: %s\n", yytext);
     yylval.token.linha = linha;
     yylval.token.coluna = coluna;
-    yylval.token.escopo = escopo;
+    yylval.token.escopo = escopoL[escopoAtual];
     strcpy(yylval.token.id, yytext);
     coluna += yyleng;
     return VIRGULA;
@@ -354,7 +354,7 @@ TABESPACO           [\t]+|[ ]+
     // printf("Ponto e virgula: %s\n", yytext);
     yylval.token.linha = linha;
     yylval.token.coluna = coluna;
-    yylval.token.escopo = escopo;
+    yylval.token.escopo = escopoL[escopoAtual];
     strcpy(yylval.token.id, yytext);
     coluna += yyleng;
     return PONTOVIRGULA;
@@ -365,7 +365,7 @@ TABESPACO           [\t]+|[ ]+
     // printf("Parenteses: %s\n", yytext);
     yylval.token.linha = linha;
     yylval.token.coluna = coluna;
-    yylval.token.escopo = escopo;
+    yylval.token.escopo = escopoL[escopoAtual];
     strcpy(yylval.token.id, yytext);
     coluna += yyleng;
     parametros++;
@@ -377,7 +377,7 @@ TABESPACO           [\t]+|[ ]+
     // printf("Parenteses: %s\n", yytext);
     yylval.token.linha = linha;
     yylval.token.coluna = coluna;
-    yylval.token.escopo = escopo;
+    yylval.token.escopo = escopoL[escopoAtual];
     strcpy(yylval.token.id, yytext);
     coluna += yyleng;
     parametros--;
@@ -389,10 +389,10 @@ TABESPACO           [\t]+|[ ]+
     // printf("Chaves: %s\n", yytext);
     yylval.token.linha = linha;
     yylval.token.coluna = coluna;
-    yylval.token.escopo = escopo;
+    yylval.token.escopo = escopoL[escopoAtual];
     strcpy(yylval.token.id, yytext);
     coluna += yyleng;
-    escopo++;
+    escopoL[++escopoAtual] = ++escopo;
     return ABRE_CHAVES;
 }
 
@@ -401,10 +401,10 @@ TABESPACO           [\t]+|[ ]+
     // printf("Chaves: %s\n", yytext);
     yylval.token.linha = linha;
     yylval.token.coluna = coluna;
-    yylval.token.escopo = escopo;
+    yylval.token.escopo = escopoL[escopoAtual];
     strcpy(yylval.token.id, yytext);
     coluna += yyleng;
-    escopo--;
+    escopoAtual--;
     return FECHA_CHAVES;
 }
 
@@ -415,7 +415,7 @@ TABESPACO           [\t]+|[ ]+
     // printf("Chaves: %s\n", yytext);
     yylval.token.linha = linha;
     yylval.token.coluna = coluna;
-    yylval.token.escopo = escopo;
+    yylval.token.escopo = escopoL[escopoAtual];
     strcpy(yylval.token.id, yytext);
     coluna += yyleng;
     return COLCHETES;
