@@ -28,10 +28,10 @@ int main(){
         x = 5;
     }
     int abc;
-    x = 0;
+    x = faaaa();
     c = b;
     x = 0;
-    read(y);
+    read(f);
     writeln("");
     write(y);
     writeln("Vamo q vamo!");

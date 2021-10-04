@@ -11,7 +11,8 @@
     int linha = 1, coluna = 1;
     int escopo = 0;
     int parametros = 0;
-
+    // extern int escopoL[1000];
+    // extern int escopoAtual = 0;
     extern TabelaSimbolo* id;
 %}
 

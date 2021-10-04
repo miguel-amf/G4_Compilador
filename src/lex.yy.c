@@ -522,10 +522,11 @@ char *yytext;
     int linha = 1, coluna = 1;
     int escopo = 0;
     int parametros = 0;
-
+    // extern int escopoL[1000];
+    // extern int escopoAtual = 0;
     extern TabelaSimbolo* id;
-#line 528 "lex.yy.c"
 #line 529 "lex.yy.c"
+#line 530 "lex.yy.c"
 
 #define INITIAL 0
 
@@ -740,9 +741,9 @@ YY_DECL
 		}
 
 	{
-#line 54 "lexico.l"
+#line 55 "lexico.l"
 
-#line 746 "lex.yy.c"
+#line 747 "lex.yy.c"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -801,7 +802,7 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 55 "lexico.l"
+#line 56 "lexico.l"
 {
     // printf("Linha: %d, Coluna: %d\t", linha, coluna);
     // printf("Comentario: %s\n", yytext);
@@ -814,7 +815,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 65 "lexico.l"
+#line 66 "lexico.l"
 {
     // printf("Linha: %d, Coluna: %d\t", linha, coluna);
     // printf("Tipo: %s\n", yytext);
@@ -828,7 +829,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 76 "lexico.l"
+#line 77 "lexico.l"
 {
     // printf("Linha: %d, Coluna: %d\t", linha, coluna);
     // printf("Tipo: %s\n", yytext);
@@ -842,7 +843,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 87 "lexico.l"
+#line 88 "lexico.l"
 {
     // printf("Linha: %d, Coluna: %d\t", linha, coluna);
     // printf("Tipo: %s\n", yytext);
@@ -856,7 +857,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 98 "lexico.l"
+#line 99 "lexico.l"
 {
     // printf("Linha: %d, Coluna: %d\t", linha, coluna);
     // printf("Tipo: %s\n", yytext);
@@ -870,7 +871,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 109 "lexico.l"
+#line 110 "lexico.l"
 {
     // printf("Linha: %d, Coluna: %d\t", linha, coluna);
     // printf("Inteiro: %s\n", yytext);
@@ -884,7 +885,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 120 "lexico.l"
+#line 121 "lexico.l"
 {
     // printf("Linha: %d, Coluna: %d\t", linha, coluna);
     // printf("Float: %s\n", yytext);
@@ -898,7 +899,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 131 "lexico.l"
+#line 132 "lexico.l"
 {
     // printf("Linha: %d, Coluna: %d\t", linha, coluna);
     // printf("Operacao Binaria Aritmetica: %s\n", yytext);
@@ -912,7 +913,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 142 "lexico.l"
+#line 143 "lexico.l"
 {
     // printf("Linha: %d, Coluna: %d\t", linha, coluna);
     // printf("Operacao Binaria Aritmetica: %s\n", yytext);
@@ -926,7 +927,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 153 "lexico.l"
+#line 154 "lexico.l"
 {
     // printf("Linha: %d, Coluna: %d\t", linha, coluna);
     // printf("Operacao Logica Aritmetica: %s\n", yytext);
@@ -940,7 +941,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 164 "lexico.l"
+#line 165 "lexico.l"
 {
     // printf("Linha: %d, Coluna: %d\t", linha, coluna);
     // printf("Operacao Logica Aritmetica: %s\n", yytext);
@@ -954,7 +955,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 175 "lexico.l"
+#line 176 "lexico.l"
 {
     // printf("Linha: %d, Coluna: %d\t", linha, coluna);
     // printf("Operacao Logica Aritmetica: %s\n", yytext);
@@ -968,7 +969,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 186 "lexico.l"
+#line 187 "lexico.l"
 {
     // printf("Linha: %d, Coluna: %d\t", linha, coluna);
     // printf("Operacao Relacional: %s\n", yytext);
@@ -982,7 +983,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 197 "lexico.l"
+#line 198 "lexico.l"
 {
     // printf("Linha: %d, Coluna: %d\t", linha, coluna);
     // printf("Comando de controle de fluxo: %s\n", yytext);
@@ -996,7 +997,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 208 "lexico.l"
+#line 209 "lexico.l"
 {
     // printf("Linha: %d, Coluna: %d\t", linha, coluna);
     // printf("Comando de controle de fluxo: %s\n", yytext);
@@ -1010,7 +1011,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 219 "lexico.l"
+#line 220 "lexico.l"
 {
     // printf("Linha: %d, Coluna: %d\t", linha, coluna);
     // printf("Comando de controle de fluxo: %s\n", yytext);
@@ -1024,7 +1025,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 230 "lexico.l"
+#line 231 "lexico.l"
 {
     // printf("Linha: %d, Coluna: %d\t", linha, coluna);
     // printf("Comando de controle de fluxo: %s\n", yytext);
@@ -1038,7 +1039,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 241 "lexico.l"
+#line 242 "lexico.l"
 {
     // printf("Linha: %d, Coluna: %d\t", linha, coluna);
     // printf("Entrada(READ): %s\n", yytext);
@@ -1052,7 +1053,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 252 "lexico.l"
+#line 253 "lexico.l"
 {
     // printf("Linha: %d, Coluna: %d\t", linha, coluna);
     // printf("Saida(WRITE ou WRITELN): %s\n", yytext);
@@ -1066,7 +1067,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 263 "lexico.l"
+#line 264 "lexico.l"
 {
     // printf("Linha: %d, Coluna: %d\t", linha, coluna);
     // printf("Construtor da Lista: %s\n", yytext);
@@ -1080,7 +1081,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 274 "lexico.l"
+#line 275 "lexico.l"
 {
     // printf("Linha: %d, Coluna: %d\t", linha, coluna);
     // printf("Operacao da Lista: %s\n", yytext);
@@ -1094,7 +1095,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 285 "lexico.l"
+#line 286 "lexico.l"
 {
     // printf("Linha: %d, Coluna: %d\t", linha, coluna);
     // printf("Funcao da Lista: %s\n", yytext);
@@ -1108,7 +1109,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 296 "lexico.l"
+#line 297 "lexico.l"
 {
     // printf("Linha: %d, Coluna: %d\t", linha, coluna);
     // printf("Constante NIL: %s\n", yytext);
@@ -1123,7 +1124,7 @@ YY_RULE_SETUP
 case 24:
 /* rule 24 can match eol */
 YY_RULE_SETUP
-#line 307 "lexico.l"
+#line 308 "lexico.l"
 {
     // printf("Linha: %d, Coluna: %d\t", linha, coluna);
     // printf("String: %s\n", yytext);
@@ -1137,7 +1138,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
-#line 318 "lexico.l"
+#line 319 "lexico.l"
 {
     // printf("Linha: %d, Coluna: %d\t", linha, coluna);
     // printf("Identificador: %s\n", yytext);
@@ -1151,7 +1152,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
-#line 329 "lexico.l"
+#line 330 "lexico.l"
 {
     // printf("Linha: %d, Coluna: %d\t", linha, coluna);
     // printf("Igual de atribuicao: %s\n", yytext);
@@ -1165,7 +1166,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
-#line 340 "lexico.l"
+#line 341 "lexico.l"
 {
     // printf("Linha: %d, Coluna: %d\t", linha, coluna);
     // printf("Virgula: %s\n", yytext);
@@ -1179,7 +1180,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
-#line 351 "lexico.l"
+#line 352 "lexico.l"
 {
     // printf("Linha: %d, Coluna: %d\t", linha, coluna);
     // printf("Ponto e virgula: %s\n", yytext);
@@ -1193,7 +1194,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
-#line 362 "lexico.l"
+#line 363 "lexico.l"
 {
     // printf("Linha: %d, Coluna: %d\t", linha, coluna);
     // printf("Parenteses: %s\n", yytext);
@@ -1208,7 +1209,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 30:
 YY_RULE_SETUP
-#line 374 "lexico.l"
+#line 375 "lexico.l"
 {
     // printf("Linha: %d, Coluna: %d\t", linha, coluna);
     // printf("Parenteses: %s\n", yytext);
@@ -1223,7 +1224,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 31:
 YY_RULE_SETUP
-#line 386 "lexico.l"
+#line 387 "lexico.l"
 {
     // printf("Linha: %d, Coluna: %d\t", linha, coluna);
     // printf("Chaves: %s\n", yytext);
@@ -1238,7 +1239,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 32:
 YY_RULE_SETUP
-#line 398 "lexico.l"
+#line 399 "lexico.l"
 {
     // printf("Linha: %d, Coluna: %d\t", linha, coluna);
     // printf("Chaves: %s\n", yytext);
@@ -1253,7 +1254,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 33:
 YY_RULE_SETUP
-#line 412 "lexico.l"
+#line 413 "lexico.l"
 {
     // printf("Linha: %d, Coluna: %d\t", linha, coluna);
     // printf("Chaves: %s\n", yytext);
@@ -1268,7 +1269,7 @@ YY_RULE_SETUP
 case 34:
 /* rule 34 can match eol */
 YY_RULE_SETUP
-#line 423 "lexico.l"
+#line 424 "lexico.l"
 {
     linha += 1;
     coluna = 1;
@@ -1276,14 +1277,14 @@ YY_RULE_SETUP
 	YY_BREAK
 case 35:
 YY_RULE_SETUP
-#line 428 "lexico.l"
+#line 429 "lexico.l"
 {
     coluna += yyleng;
 }
 	YY_BREAK
 case 36:
 YY_RULE_SETUP
-#line 432 "lexico.l"
+#line 433 "lexico.l"
 {
     // printf("\nLinha: %d, Coluna: %d\t", linha, coluna);
     // printf("Erro no token %s\n\n", yytext);
@@ -1292,10 +1293,10 @@ YY_RULE_SETUP
 	YY_BREAK
 case 37:
 YY_RULE_SETUP
-#line 438 "lexico.l"
+#line 439 "lexico.l"
 ECHO;
 	YY_BREAK
-#line 1299 "lex.yy.c"
+#line 1300 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -2263,5 +2264,5 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 438 "lexico.l"
+#line 439 "lexico.l"
 

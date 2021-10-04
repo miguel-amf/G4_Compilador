@@ -245,6 +245,10 @@ expressao:
     | ID ATRIBUICAO expressao {
         $$ = criaNo("ATRIBUICAO");
         $$->pai = $3;
+        int c = procuraVariavel(id, $1.id);
+        if(c == 0){
+            printf("Linha: %d - Coluna: %d - Identificador: %s - Erro Semantico - Variavel nao declarada!!!\n", $1.linha, $1.coluna, $1.id);
+        }
     }
     | ID ATRIBUICAO nil {
         $$ = criaNo("NULO");
@@ -373,6 +377,10 @@ opMultDiv:
 argumento:
     ID {
         $$ = criaNo("ID");
+        int c = procuraVariavel(id, $1.id);
+        if(c == 0){
+            printf("Linha: %d - Coluna: %d - Identificador: %s - Erro Semantico - Variavel nao declarada!!!\n", $1.linha, $1.coluna, $1.id);
+        }
     }
     | numero {
         $$ = criaNo("argumento");
@@ -392,12 +400,27 @@ chamadaDeFuncao:
     ID ABRE_PARENTESES exp FECHA_PARENTESES {
         $$ = criaNo("chamada de funcao");
         $$->pai = $3;
+        int c = procuraVariavel(id, $1.id);
+        if(c == 0){
+            printf("Linha: %d - Coluna: %d - Identificador: %s - Erro Semantico - Funcao nao declarada!!!\n", $1.linha, $1.coluna, $1.id);
+        }
+    }
+    | ID ABRE_PARENTESES FECHA_PARENTESES {
+        $$ = criaNo("chamada de funcao");
+        int c = procuraVariavel(id, $1.id);
+        if(c == 0){
+            printf("Linha: %d - Coluna: %d - Identificador: %s - Erro Semantico - Funcao nao declarada!!!\n", $1.linha, $1.coluna, $1.id);
+        }
     }
 ;
 
 entrada:
     ENTRADA ABRE_PARENTESES ID FECHA_PARENTESES PONTOVIRGULA {
         $$ = criaNo("entrada");
+        int c = procuraVariavel(id, $3.id);
+        if(c == 0){
+            printf("Linha: %d - Coluna: %d - Identificador: %s - Erro Semantico - Variavel nao declarada!!!\n", $3.linha, $3.coluna, $3.id);
+        }
     }
 ;
 
@@ -407,13 +430,14 @@ saida:
     }
     | SAIDA ABRE_PARENTESES ID FECHA_PARENTESES PONTOVIRGULA {
         $$ = criaNo("saida");
+        int c = procuraVariavel(id, $3.id);
+        if(c == 0){
+            printf("Linha: %d - Coluna: %d - Identificador: %s - Erro Semantico - Variavel nao declarada!!!\n", $3.linha, $3.coluna, $3.id);
+        }
     }
     | SAIDA ABRE_PARENTESES expressao FECHA_PARENTESES PONTOVIRGULA {
         $$ = criaNo("saida");
         $$->pai = $3;
-    }
-    | SAIDA ABRE_PARENTESES FECHA_PARENTESES PONTOVIRGULA {
-        $$ = criaNo("saida");
     }
     | SAIDA ABRE_PARENTESES OP_LISTA ID FECHA_PARENTESES PONTOVIRGULA {
         $$ = criaNo("saida");

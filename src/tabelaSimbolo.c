@@ -85,3 +85,13 @@ int procuraMain(TabelaSimbolo* id){
     }
     return 0;
 }
+
+int procuraVariavel(TabelaSimbolo* id, char* simbolo){
+    while(id != NULL){
+        if((strcmp(id->simbolo, simbolo) == 0)){
+            return 1;
+        }
+        id = id->proximo;
+    }
+    return 0;
+}
