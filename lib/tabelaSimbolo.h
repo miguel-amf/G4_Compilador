@@ -7,10 +7,11 @@ typedef struct TabelaSimbolo{
     int linha;
     int coluna;
     char tipoEntrada[50];
+    char tipo[10];
     struct TabelaSimbolo* proximo; 
 } TabelaSimbolo;
 
-TabelaSimbolo* insereSimbolo(TabelaSimbolo* id, int escopo, char* simbolo, char* tipoEntrada, int linha, int coluna, int parametros);
+TabelaSimbolo* insereSimbolo(TabelaSimbolo* id, int escopo, char* simbolo, char* tipoEntrada, char* tipo, int linha, int coluna, int parametros);
 
 void mostraTabela(TabelaSimbolo* id);
 

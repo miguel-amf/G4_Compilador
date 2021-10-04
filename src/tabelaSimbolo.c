@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include "../lib/tabelaSimbolo.h"
 
-TabelaSimbolo* insereSimbolo(TabelaSimbolo* id, int escopo, char* simbolo, char* tipoEntrada, int linha, int coluna, int parametros){
+TabelaSimbolo* insereSimbolo(TabelaSimbolo* id, int escopo, char* simbolo, char* tipoEntrada, char* tipo, int linha, int coluna, int parametros){
     if(parametros>0)
         escopo++;
     if(id == NULL){
@@ -11,6 +11,7 @@ TabelaSimbolo* insereSimbolo(TabelaSimbolo* id, int escopo, char* simbolo, char*
         temp->escopo = escopo;
         strcpy(temp->simbolo, simbolo);
         strcpy(temp->tipoEntrada, tipoEntrada);
+        strcpy(temp->tipo, tipo);
         temp->linha = linha;
         temp->coluna = coluna;
         temp->proximo = NULL;
@@ -32,6 +33,7 @@ TabelaSimbolo* insereSimbolo(TabelaSimbolo* id, int escopo, char* simbolo, char*
             temp->escopo = escopo;
             strcpy(temp->simbolo, simbolo);
             strcpy(temp->tipoEntrada, tipoEntrada);
+            strcpy(temp->tipo, tipo);
             temp->linha = linha;
             temp->coluna = coluna;
             temp->proximo = NULL;
@@ -46,13 +48,13 @@ void mostraTabela(TabelaSimbolo* id){
     TabelaSimbolo* p = id;
     printf("\n\n\n");
     printf("\t\t\t Tabela de Simbolos \t\t\t\n\n");
-    printf("\t Simbolo \t\t Tipo Entrada \t\t Escopo \t\t Linha \t\t Coluna \n");
+    printf("\t Simbolo \t\t Tipo Entrada \t\t Tipo \t\t Escopo \t\t Linha \t\t Coluna \n");
     if(p == NULL){
         return;
     }
     else{
         while(p != NULL){
-            printf("\t %s \t\t\t %s \t\t %d \t\t\t %d \t\t %d \n", p->simbolo, p->tipoEntrada, p->escopo, p->linha, p->coluna);
+            printf("\t %s \t\t\t %s \t\t %s \t\t %d \t\t\t %d \t\t %d \n", p->simbolo, p->tipoEntrada, p->tipo, p->escopo, p->linha, p->coluna);
             p = p->proximo;
         }
     }

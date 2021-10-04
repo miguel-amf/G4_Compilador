@@ -15,6 +15,8 @@
     AST* raiz;
     TabelaSimbolo* id;
     int erros = 0;
+    char tipos[4][10] = {"INT", "FLOAT", "INT LIST", "FLOAT LIST"};
+    int tipo = 0;
 %}
 
 %union{
@@ -111,15 +113,19 @@ listaDeDeclaracoes:
 TIPO:
     TIPO_INT {
         $$ = criaNo("INT");
+        tipo += 0;
     }
     | TIPO_FLOAT {
         $$ = criaNo("FLOAT");
+        tipo += 1;
     }
     | TIPO_LIST_INT {
         $$ = criaNo("INT LIST");
+        tipo += 2;
     }
     | TIPO_LIST_FLOAT {
         $$ = criaNo("FLOAT LIST");
+        tipo += 3;
     }
 ;
 
@@ -139,7 +145,8 @@ declaracaoVariavel:
     TIPO ID PONTOVIRGULA {
         $$ = criaNo("Declaracao de Variavel");
         $$->pai = $1;
-        id = insereSimbolo(id, $2.escopo, $2.id, "Variavel", $2.linha, $2.coluna, 0);
+        id = insereSimbolo(id, $2.escopo, $2.id, "Variavel", tipos[tipo], $2.linha, $2.coluna, 0);
+        tipo = 0;
     }
 ;
 
@@ -149,7 +156,8 @@ declaracaoFuncao:
         $$->pai = $1;
         $1->filho = $4;
         $4->filho = $6;
-        id = insereSimbolo(id, $2.escopo, $2.id, "Funcao", $2.linha, $2.coluna, 0);
+        id = insereSimbolo(id, $2.escopo, $2.id, "Funcao", tipos[tipo], $2.linha, $2.coluna, 0);
+        tipo = 0;
     }
 ;
 
@@ -158,12 +166,14 @@ listaDeParametros:
         $$ = criaNo("Lista de Parametros");
         $$->pai = $1;
         $1->filho = $4;
-        id = insereSimbolo(id, $2.escopo, $2.id, "Variavel", $2.linha, $2.coluna, 1);
+        tipo = 0;
+        id = insereSimbolo(id, $2.escopo, $2.id, "Variavel", tipos[tipo], $2.linha, $2.coluna, 1);
     }
     | TIPO ID {
         $$ = criaNo("Lista de Parametros");
         $$->pai = $1;
-        id = insereSimbolo(id, $2.escopo, $2.id, "Variavel", $2.linha, $2.coluna, 1);
+        id = insereSimbolo(id, $2.escopo, $2.id, "Variavel", tipos[tipo], $2.linha, $2.coluna, 1);
+        tipo = 0;
     }
     |  {
         $$ = criaNo("Lista de Parametros vazia");
@@ -438,7 +448,7 @@ numero:
 %%
 
 void yyerror(const char* s){
-    fprintf(stderr, "%s\n", s);
+    fprintf(stderr, "Linha: %d - Coluna: %d - Token: %s - Erro: %s\n", yylval.token.linha, yylval.token.coluna, yylval.token.id, s);
 }
 
 int main(int argc, char ** argv) {

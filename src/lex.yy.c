@@ -803,227 +803,319 @@ case 1:
 YY_RULE_SETUP
 #line 55 "lexico.l"
 {
-    printf("Linha: %d, Coluna: %d\t", linha, coluna);
-    printf("Comentario: %s\n", yytext);
+    // printf("Linha: %d, Coluna: %d\t", linha, coluna);
+    // printf("Comentario: %s\n", yytext);
+    yylval.token.linha = linha;
+    yylval.token.coluna = coluna;
+    yylval.token.escopo = escopo;
+    strcpy(yylval.token.id, yytext);
     coluna += yyleng;
 }
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 61 "lexico.l"
+#line 65 "lexico.l"
 {
-    printf("Linha: %d, Coluna: %d\t", linha, coluna);
-    printf("Tipo: %s\n", yytext);
+    // printf("Linha: %d, Coluna: %d\t", linha, coluna);
+    // printf("Tipo: %s\n", yytext);
+    yylval.token.linha = linha;
+    yylval.token.coluna = coluna;
+    yylval.token.escopo = escopo;
+    strcpy(yylval.token.id, yytext);
     coluna += yyleng;
     return TIPO_INT;
 }
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 68 "lexico.l"
+#line 76 "lexico.l"
 {
-    printf("Linha: %d, Coluna: %d\t", linha, coluna);
-    printf("Tipo: %s\n", yytext);
+    // printf("Linha: %d, Coluna: %d\t", linha, coluna);
+    // printf("Tipo: %s\n", yytext);
+    yylval.token.linha = linha;
+    yylval.token.coluna = coluna;
+    yylval.token.escopo = escopo;
+    strcpy(yylval.token.id, yytext);
     coluna += yyleng;
     return TIPO_FLOAT;
 }
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 75 "lexico.l"
+#line 87 "lexico.l"
 {
-    printf("Linha: %d, Coluna: %d\t", linha, coluna);
-    printf("Tipo: %s\n", yytext);
+    // printf("Linha: %d, Coluna: %d\t", linha, coluna);
+    // printf("Tipo: %s\n", yytext);
+    yylval.token.linha = linha;
+    yylval.token.coluna = coluna;
+    yylval.token.escopo = escopo;
+    strcpy(yylval.token.id, yytext);
     coluna += yyleng;
     return TIPO_LIST_INT;
 }
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 82 "lexico.l"
+#line 98 "lexico.l"
 {
-    printf("Linha: %d, Coluna: %d\t", linha, coluna);
-    printf("Tipo: %s\n", yytext);
+    // printf("Linha: %d, Coluna: %d\t", linha, coluna);
+    // printf("Tipo: %s\n", yytext);
+    yylval.token.linha = linha;
+    yylval.token.coluna = coluna;
+    yylval.token.escopo = escopo;
+    strcpy(yylval.token.id, yytext);
     coluna += yyleng;
     return TIPO_LIST_FLOAT;
 }
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 89 "lexico.l"
+#line 109 "lexico.l"
 {
-    printf("Linha: %d, Coluna: %d\t", linha, coluna);
-    printf("Inteiro: %s\n", yytext);
+    // printf("Linha: %d, Coluna: %d\t", linha, coluna);
+    // printf("Inteiro: %s\n", yytext);
+    yylval.token.linha = linha;
+    yylval.token.coluna = coluna;
+    yylval.token.escopo = escopo;
+    strcpy(yylval.token.id, yytext);
     coluna += yyleng;
     return INT;
 }
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 96 "lexico.l"
+#line 120 "lexico.l"
 {
-    printf("Linha: %d, Coluna: %d\t", linha, coluna);
-    printf("Float: %s\n", yytext);
+    // printf("Linha: %d, Coluna: %d\t", linha, coluna);
+    // printf("Float: %s\n", yytext);
+    yylval.token.linha = linha;
+    yylval.token.coluna = coluna;
+    yylval.token.escopo = escopo;
+    strcpy(yylval.token.id, yytext);
     coluna += yyleng;
     return FLOAT;
 }
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 103 "lexico.l"
+#line 131 "lexico.l"
 {
-    printf("Linha: %d, Coluna: %d\t", linha, coluna);
-    printf("Operacao Binaria Aritmetica: %s\n", yytext);
+    // printf("Linha: %d, Coluna: %d\t", linha, coluna);
+    // printf("Operacao Binaria Aritmetica: %s\n", yytext);
+    yylval.token.linha = linha;
+    yylval.token.coluna = coluna;
+    yylval.token.escopo = escopo;
+    strcpy(yylval.token.id, yytext);
     coluna += yyleng;
     return OP_B_SOMA_SUB;
 }
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 110 "lexico.l"
+#line 142 "lexico.l"
 {
-    printf("Linha: %d, Coluna: %d\t", linha, coluna);
-    printf("Operacao Binaria Aritmetica: %s\n", yytext);
+    // printf("Linha: %d, Coluna: %d\t", linha, coluna);
+    // printf("Operacao Binaria Aritmetica: %s\n", yytext);
+    yylval.token.linha = linha;
+    yylval.token.coluna = coluna;
+    yylval.token.escopo = escopo;
+    strcpy(yylval.token.id, yytext);
     coluna += yyleng;
     return OP_B_MULT_DIV;
 }
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 117 "lexico.l"
+#line 153 "lexico.l"
 {
-    printf("Linha: %d, Coluna: %d\t", linha, coluna);
-    printf("Operacao Logica Aritmetica: %s\n", yytext);
+    // printf("Linha: %d, Coluna: %d\t", linha, coluna);
+    // printf("Operacao Logica Aritmetica: %s\n", yytext);
+    yylval.token.linha = linha;
+    yylval.token.coluna = coluna;
+    yylval.token.escopo = escopo;
+    strcpy(yylval.token.id, yytext);
     coluna += yyleng;
     return OP_LOGICA_AND;
 }
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 124 "lexico.l"
+#line 164 "lexico.l"
 {
-    printf("Linha: %d, Coluna: %d\t", linha, coluna);
-    printf("Operacao Logica Aritmetica: %s\n", yytext);
+    // printf("Linha: %d, Coluna: %d\t", linha, coluna);
+    // printf("Operacao Logica Aritmetica: %s\n", yytext);
+    yylval.token.linha = linha;
+    yylval.token.coluna = coluna;
+    yylval.token.escopo = escopo;
+    strcpy(yylval.token.id, yytext);
     coluna += yyleng;
     return OP_LOGICA_NEG;
 }
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 131 "lexico.l"
+#line 175 "lexico.l"
 {
-    printf("Linha: %d, Coluna: %d\t", linha, coluna);
-    printf("Operacao Logica Aritmetica: %s\n", yytext);
+    // printf("Linha: %d, Coluna: %d\t", linha, coluna);
+    // printf("Operacao Logica Aritmetica: %s\n", yytext);
+    yylval.token.linha = linha;
+    yylval.token.coluna = coluna;
+    yylval.token.escopo = escopo;
+    strcpy(yylval.token.id, yytext);
     coluna += yyleng;
     return OP_LOGICA_OR;
 }
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 138 "lexico.l"
+#line 186 "lexico.l"
 {
-    printf("Linha: %d, Coluna: %d\t", linha, coluna);
-    printf("Operacao Relacional: %s\n", yytext);
+    // printf("Linha: %d, Coluna: %d\t", linha, coluna);
+    // printf("Operacao Relacional: %s\n", yytext);
+    yylval.token.linha = linha;
+    yylval.token.coluna = coluna;
+    yylval.token.escopo = escopo;
+    strcpy(yylval.token.id, yytext);
     coluna += yyleng;
     return OP_B_RELACIONAIS;
 }
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 145 "lexico.l"
+#line 197 "lexico.l"
 {
-    printf("Linha: %d, Coluna: %d\t", linha, coluna);
-    printf("Comando de controle de fluxo: %s\n", yytext);
+    // printf("Linha: %d, Coluna: %d\t", linha, coluna);
+    // printf("Comando de controle de fluxo: %s\n", yytext);
+    yylval.token.linha = linha;
+    yylval.token.coluna = coluna;
+    yylval.token.escopo = escopo;
+    strcpy(yylval.token.id, yytext);
     coluna += yyleng;
     return IF;
 }
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 152 "lexico.l"
+#line 208 "lexico.l"
 {
-    printf("Linha: %d, Coluna: %d\t", linha, coluna);
-    printf("Comando de controle de fluxo: %s\n", yytext);
+    // printf("Linha: %d, Coluna: %d\t", linha, coluna);
+    // printf("Comando de controle de fluxo: %s\n", yytext);
+    yylval.token.linha = linha;
+    yylval.token.coluna = coluna;
+    yylval.token.escopo = escopo;
+    strcpy(yylval.token.id, yytext);
     coluna += yyleng;
     return ELSE;
 }
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 159 "lexico.l"
+#line 219 "lexico.l"
 {
-    printf("Linha: %d, Coluna: %d\t", linha, coluna);
-    printf("Comando de controle de fluxo: %s\n", yytext);
+    // printf("Linha: %d, Coluna: %d\t", linha, coluna);
+    // printf("Comando de controle de fluxo: %s\n", yytext);
+    yylval.token.linha = linha;
+    yylval.token.coluna = coluna;
+    yylval.token.escopo = escopo;
+    strcpy(yylval.token.id, yytext);
     coluna += yyleng;
     return FOR;
 }
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 166 "lexico.l"
+#line 230 "lexico.l"
 {
-    printf("Linha: %d, Coluna: %d\t", linha, coluna);
-    printf("Comando de controle de fluxo: %s\n", yytext);
+    // printf("Linha: %d, Coluna: %d\t", linha, coluna);
+    // printf("Comando de controle de fluxo: %s\n", yytext);
+    yylval.token.linha = linha;
+    yylval.token.coluna = coluna;
+    yylval.token.escopo = escopo;
+    strcpy(yylval.token.id, yytext);
     coluna += yyleng;
     return RETORNO;
 }
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 173 "lexico.l"
+#line 241 "lexico.l"
 {
-    printf("Linha: %d, Coluna: %d\t", linha, coluna);
-    printf("Entrada(READ): %s\n", yytext);
+    // printf("Linha: %d, Coluna: %d\t", linha, coluna);
+    // printf("Entrada(READ): %s\n", yytext);
+    yylval.token.linha = linha;
+    yylval.token.coluna = coluna;
+    yylval.token.escopo = escopo;
+    strcpy(yylval.token.id, yytext);
     coluna += yyleng;
     return ENTRADA;
 }
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 180 "lexico.l"
+#line 252 "lexico.l"
 {
-    printf("Linha: %d, Coluna: %d\t", linha, coluna);
-    printf("Saida(WRITE ou WRITELN): %s\n", yytext);
+    // printf("Linha: %d, Coluna: %d\t", linha, coluna);
+    // printf("Saida(WRITE ou WRITELN): %s\n", yytext);
+    yylval.token.linha = linha;
+    yylval.token.coluna = coluna;
+    yylval.token.escopo = escopo;
+    strcpy(yylval.token.id, yytext);
     coluna += yyleng;
     return SAIDA;
 }
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 187 "lexico.l"
+#line 263 "lexico.l"
 {
-    printf("Linha: %d, Coluna: %d\t", linha, coluna);
-    printf("Construtor da Lista: %s\n", yytext);
+    // printf("Linha: %d, Coluna: %d\t", linha, coluna);
+    // printf("Construtor da Lista: %s\n", yytext);
+    yylval.token.linha = linha;
+    yylval.token.coluna = coluna;
+    yylval.token.escopo = escopo;
+    strcpy(yylval.token.id, yytext);
     coluna += yyleng;
     return CONSTRUTOR_LISTA;
 }
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 194 "lexico.l"
+#line 274 "lexico.l"
 {
-    printf("Linha: %d, Coluna: %d\t", linha, coluna);
-    printf("Operacao da Lista: %s\n", yytext);
+    // printf("Linha: %d, Coluna: %d\t", linha, coluna);
+    // printf("Operacao da Lista: %s\n", yytext);
+    yylval.token.linha = linha;
+    yylval.token.coluna = coluna;
+    yylval.token.escopo = escopo;
+    strcpy(yylval.token.id, yytext);
     coluna += yyleng;
     return OP_LISTA;
 }
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 201 "lexico.l"
+#line 285 "lexico.l"
 {
-    printf("Linha: %d, Coluna: %d\t", linha, coluna);
-    printf("Funcao da Lista: %s\n", yytext);
+    // printf("Linha: %d, Coluna: %d\t", linha, coluna);
+    // printf("Funcao da Lista: %s\n", yytext);
+    yylval.token.linha = linha;
+    yylval.token.coluna = coluna;
+    yylval.token.escopo = escopo;
+    strcpy(yylval.token.id, yytext);
     coluna += yyleng;
     return FUNCOES_LISTA;
 }
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 208 "lexico.l"
+#line 296 "lexico.l"
 {
-    printf("Linha: %d, Coluna: %d\t", linha, coluna);
-    printf("Constante NIL: %s\n", yytext);
+    // printf("Linha: %d, Coluna: %d\t", linha, coluna);
+    // printf("Constante NIL: %s\n", yytext);
+    yylval.token.linha = linha;
+    yylval.token.coluna = coluna;
+    yylval.token.escopo = escopo;
+    strcpy(yylval.token.id, yytext);
     coluna += yyleng;
     return NIL;
 }
@@ -1031,20 +1123,24 @@ YY_RULE_SETUP
 case 24:
 /* rule 24 can match eol */
 YY_RULE_SETUP
-#line 215 "lexico.l"
+#line 307 "lexico.l"
 {
-    printf("Linha: %d, Coluna: %d\t", linha, coluna);
-    printf("String: %s\n", yytext);
+    // printf("Linha: %d, Coluna: %d\t", linha, coluna);
+    // printf("String: %s\n", yytext);
+    yylval.token.linha = linha;
+    yylval.token.coluna = coluna;
+    yylval.token.escopo = escopo;
+    strcpy(yylval.token.id, yytext);
     coluna += yyleng;
     return STRING;
 }
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
-#line 222 "lexico.l"
+#line 318 "lexico.l"
 {
-    printf("Linha: %d, Coluna: %d\t", linha, coluna);
-    printf("Identificador: %s\n", yytext);
+    // printf("Linha: %d, Coluna: %d\t", linha, coluna);
+    // printf("Identificador: %s\n", yytext);
     yylval.token.linha = linha;
     yylval.token.coluna = coluna;
     yylval.token.escopo = escopo;
@@ -1055,40 +1151,56 @@ YY_RULE_SETUP
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
-#line 233 "lexico.l"
+#line 329 "lexico.l"
 {
-    printf("Linha: %d, Coluna: %d\t", linha, coluna);
-    printf("Igual de atribuicao: %s\n", yytext);
+    // printf("Linha: %d, Coluna: %d\t", linha, coluna);
+    // printf("Igual de atribuicao: %s\n", yytext);
+    yylval.token.linha = linha;
+    yylval.token.coluna = coluna;
+    yylval.token.escopo = escopo;
+    strcpy(yylval.token.id, yytext);
     coluna += yyleng;
     return ATRIBUICAO;
 }
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
-#line 240 "lexico.l"
+#line 340 "lexico.l"
 {
-    printf("Linha: %d, Coluna: %d\t", linha, coluna);
-    printf("Virgula: %s\n", yytext);
+    // printf("Linha: %d, Coluna: %d\t", linha, coluna);
+    // printf("Virgula: %s\n", yytext);
+    yylval.token.linha = linha;
+    yylval.token.coluna = coluna;
+    yylval.token.escopo = escopo;
+    strcpy(yylval.token.id, yytext);
     coluna += yyleng;
     return VIRGULA;
 }
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
-#line 247 "lexico.l"
+#line 351 "lexico.l"
 {
-    printf("Linha: %d, Coluna: %d\t", linha, coluna);
-    printf("Ponto e virgula: %s\n", yytext);
+    // printf("Linha: %d, Coluna: %d\t", linha, coluna);
+    // printf("Ponto e virgula: %s\n", yytext);
+    yylval.token.linha = linha;
+    yylval.token.coluna = coluna;
+    yylval.token.escopo = escopo;
+    strcpy(yylval.token.id, yytext);
     coluna += yyleng;
     return PONTOVIRGULA;
 }
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
-#line 254 "lexico.l"
+#line 362 "lexico.l"
 {
-    printf("Linha: %d, Coluna: %d\t", linha, coluna);
-    printf("Parenteses: %s\n", yytext);
+    // printf("Linha: %d, Coluna: %d\t", linha, coluna);
+    // printf("Parenteses: %s\n", yytext);
+    yylval.token.linha = linha;
+    yylval.token.coluna = coluna;
+    yylval.token.escopo = escopo;
+    strcpy(yylval.token.id, yytext);
     coluna += yyleng;
     parametros++;
     return ABRE_PARENTESES;
@@ -1096,10 +1208,14 @@ YY_RULE_SETUP
 	YY_BREAK
 case 30:
 YY_RULE_SETUP
-#line 262 "lexico.l"
+#line 374 "lexico.l"
 {
-    printf("Linha: %d, Coluna: %d\t", linha, coluna);
-    printf("Parenteses: %s\n", yytext);
+    // printf("Linha: %d, Coluna: %d\t", linha, coluna);
+    // printf("Parenteses: %s\n", yytext);
+    yylval.token.linha = linha;
+    yylval.token.coluna = coluna;
+    yylval.token.escopo = escopo;
+    strcpy(yylval.token.id, yytext);
     coluna += yyleng;
     parametros--;
     return FECHA_PARENTESES;
@@ -1107,10 +1223,14 @@ YY_RULE_SETUP
 	YY_BREAK
 case 31:
 YY_RULE_SETUP
-#line 270 "lexico.l"
+#line 386 "lexico.l"
 {
-    printf("Linha: %d, Coluna: %d\t", linha, coluna);
-    printf("Chaves: %s\n", yytext);
+    // printf("Linha: %d, Coluna: %d\t", linha, coluna);
+    // printf("Chaves: %s\n", yytext);
+    yylval.token.linha = linha;
+    yylval.token.coluna = coluna;
+    yylval.token.escopo = escopo;
+    strcpy(yylval.token.id, yytext);
     coluna += yyleng;
     escopo++;
     return ABRE_CHAVES;
@@ -1118,10 +1238,14 @@ YY_RULE_SETUP
 	YY_BREAK
 case 32:
 YY_RULE_SETUP
-#line 278 "lexico.l"
+#line 398 "lexico.l"
 {
-    printf("Linha: %d, Coluna: %d\t", linha, coluna);
-    printf("Chaves: %s\n", yytext);
+    // printf("Linha: %d, Coluna: %d\t", linha, coluna);
+    // printf("Chaves: %s\n", yytext);
+    yylval.token.linha = linha;
+    yylval.token.coluna = coluna;
+    yylval.token.escopo = escopo;
+    strcpy(yylval.token.id, yytext);
     coluna += yyleng;
     escopo--;
     return FECHA_CHAVES;
@@ -1129,10 +1253,14 @@ YY_RULE_SETUP
 	YY_BREAK
 case 33:
 YY_RULE_SETUP
-#line 288 "lexico.l"
+#line 412 "lexico.l"
 {
-    printf("Linha: %d, Coluna: %d\t", linha, coluna);
-    printf("Chaves: %s\n", yytext);
+    // printf("Linha: %d, Coluna: %d\t", linha, coluna);
+    // printf("Chaves: %s\n", yytext);
+    yylval.token.linha = linha;
+    yylval.token.coluna = coluna;
+    yylval.token.escopo = escopo;
+    strcpy(yylval.token.id, yytext);
     coluna += yyleng;
     return COLCHETES;
 }
@@ -1140,7 +1268,7 @@ YY_RULE_SETUP
 case 34:
 /* rule 34 can match eol */
 YY_RULE_SETUP
-#line 295 "lexico.l"
+#line 423 "lexico.l"
 {
     linha += 1;
     coluna = 1;
@@ -1148,26 +1276,26 @@ YY_RULE_SETUP
 	YY_BREAK
 case 35:
 YY_RULE_SETUP
-#line 300 "lexico.l"
+#line 428 "lexico.l"
 {
     coluna += yyleng;
 }
 	YY_BREAK
 case 36:
 YY_RULE_SETUP
-#line 304 "lexico.l"
+#line 432 "lexico.l"
 {
-    printf("\nLinha: %d, Coluna: %d\t", linha, coluna);
-    printf("Erro no token %s\n\n", yytext);
+    // printf("\nLinha: %d, Coluna: %d\t", linha, coluna);
+    // printf("Erro no token %s\n\n", yytext);
     coluna += yyleng;
 }
 	YY_BREAK
 case 37:
 YY_RULE_SETUP
-#line 310 "lexico.l"
+#line 438 "lexico.l"
 ECHO;
 	YY_BREAK
-#line 1171 "lex.yy.c"
+#line 1299 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -2135,5 +2263,5 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 310 "lexico.l"
+#line 438 "lexico.l"
 

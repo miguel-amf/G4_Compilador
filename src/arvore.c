@@ -26,7 +26,7 @@ void mostraAST(AST *ast, int altura) {
     printf("\n");
       for (int i = 2; i < altura; i++)
           printf("---");
-      printf("%s", ast->nome_regra);
+      printf("%s %s", ast->nome_regra, ast->simbolo);
     altura -= 1;
     mostraAST(ast->pai, altura+1);
     mostraAST(ast->filho, altura);
