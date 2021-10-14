@@ -20,6 +20,7 @@
     extern int escopoL[1000];
     extern int escopoAtual;
     extern int escopo;
+    extern char type_symbol[20];
 %}
 
 %union{
@@ -116,18 +117,22 @@ listaDeDeclaracoes:
 TIPO:
     TIPO_INT {
         $$ = criaNo("INT");
+        strcpy($$->tipo, "INT");
         tipo += 0;
     }
     | TIPO_FLOAT {
         $$ = criaNo("FLOAT");
+        strcpy($$->tipo, "FLOAT");
         tipo += 1;
     }
     | TIPO_LIST_INT {
         $$ = criaNo("INT LIST");
+        strcpy($$->tipo, "INT LIST");
         tipo += 2;
     }
     | TIPO_LIST_FLOAT {
         $$ = criaNo("FLOAT LIST");
+        strcpy($$->tipo, "FLOAT LIST");
         tipo += 3;
     }
 ;
@@ -243,22 +248,37 @@ expressao:
     exp PONTOVIRGULA {
         $$ = criaNo("expressao");
         $$->pai = $1;
+        strcpy($$->tipo, $1->tipo);
+        castDeTudo($$->tipo, $$, $1);
+        strcpy($$->simbolo, $1->simbolo);
     }
     | expressaoList {
         $$ = criaNo("expressao");
         $$->pai = $1;
+        strcpy($$->tipo, $1->tipo);
     }
     | ID ATRIBUICAO expressao {
         $$ = criaNo("ATRIBUICAO");
         $$->pai = $3;
-        int c = procuraVariavel(id, $1.id);
+        TabelaSimbolo* c = procuraVariavel(id, $1.id);
         if(c == 0){
             printf("Linha: %d - Coluna: %d - Identificador: %s - Erro Semantico - Variavel nao declarada!!!\n", $1.linha, $1.coluna, $1.id);
+        } else{
+            strcpy($$->tipo, c->tipo);
+            castDeTudo($$->tipo, $$, $3);
+            strcpy($$->simbolo, $1.id);
         }
     }
     | ID ATRIBUICAO nil {
         $$ = criaNo("NULO");
         $$->pai = $3;
+        TabelaSimbolo* c = procuraVariavel(id, $1.id);
+        if(c == 0){
+            printf("Linha: %d - Coluna: %d - Identificador: %s - Erro Semantico - Variavel nao declarada!!!\n", $1.linha, $1.coluna, $1.id);
+        } else{
+            strcpy($$->tipo, c->tipo);
+            castDeTudo($$->tipo, $$, $3);
+        }
     }
 ;
 
@@ -309,24 +329,31 @@ exp:
     expressao_logica {
         $$ = criaNo("exp");
         $$->pai = $1;
+        strcpy($$->tipo, $1->tipo);
+        strcpy($$->simbolo, $1->simbolo);
     }
     | OP_LOGICA_NEG exp {
         $$ = criaNo("exp");
         $$->pai = $2;
+        strcpy($$->tipo, $2->tipo);
+        strcpy($$->simbolo, $2->simbolo);
     }
 ;
 
 expressaoList:
     OP_LISTA ID PONTOVIRGULA {
         $$ = criaNo("expressaoList");
+        strcpy($$->tipo, "OPERACAOLISTA");
     }
     | exp CONSTRUTOR_LISTA ID PONTOVIRGULA {
         $$ = criaNo("expressaoList");
         $$->pai = $1;
+        strcpy($$->tipo, "CONSTRUTORLISTA");
     }
     | exp FUNCOES_LISTA ID PONTOVIRGULA {
         $$ = criaNo("expressaoList");
         $$->pai = $1;
+        strcpy($$->tipo, "FUNCAOLISTA");
     }
 ;
 
@@ -335,36 +362,53 @@ expressao_logica:
         $$ = criaNo("expressaoLogica");
         $$->pai = $1;
         $1->filho = $3;
+        //strcpy($$->tipo, "INT");
+        castDeTudo($$->tipo, $$, $3);
+        
     }
     | expressao_logica OP_LOGICA_AND expressao_relacional {
         $$ = criaNo("expressaoLogica");
         $$->pai = $1;
         $1->filho = $3;
+        //strcpy($$->tipo, "INT");
+        castDeTudo($$->tipo, $$, $3);
     }
     | expressao_relacional {
         $$ = criaNo("expressaoLogica");
+        strcpy($$->tipo, $1->tipo);
+        strcpy($$->simbolo, $1->simbolo);
     }
 ;
 
 expressao_relacional:
     opSomaSub {
         $$ = criaNo("expressaoRelacional");
+        strcpy($$->tipo, $1->tipo);
+        strcpy($$->simbolo, $1->simbolo);
     }
     | expressao_relacional OP_B_RELACIONAIS opSomaSub {
         $$ = criaNo("expressaoRelacional");
         $$->pai = $1;
         $1->filho = $3;
+        strcpy($$->tipo, $1->tipo);
+        strcpy($$->simbolo, $1->simbolo);
+        castDeTudo($$->tipo, $$, $3);
     }
 ;
 
 opSomaSub:
     opMultDiv {
-         $$ = criaNo("Operando SomaSub");
+        $$ = criaNo("Operando SomaSub");
+        strcpy($$->tipo, $1->tipo);
+        strcpy($$->simbolo, $1->simbolo);
     }
     | opSomaSub OP_B_SOMA_SUB opMultDiv {
         $$ = criaNo("Operando SomaSub");
         $$->pai = $1;
         $1->filho = $3;
+        strcpy($$->tipo, $1->tipo);
+        strcpy($$->simbolo, $1->simbolo);
+        castDeTudo($$->tipo, $$, $3);
     }
     
 ;
@@ -372,33 +416,46 @@ opSomaSub:
 opMultDiv:
     argumento {
         $$ = criaNo("Operando MultDiv");
+        strcpy($$->tipo, $1->tipo);
+        strcpy($$->simbolo, $1->simbolo);
     }
     | opMultDiv OP_B_MULT_DIV argumento {
         $$ = criaNo("Operando MultDiv");
         $$->pai = $1;
         $1->filho = $3;
+        strcpy($$->tipo, $1->tipo);
+        strcpy($$->simbolo, $1->simbolo);
+        castDeTudo($$->tipo, $$, $3);
     }
 ;
 
 argumento:
     ID {
         $$ = criaNo("ID");
-        int c = procuraVariavel(id, $1.id);
+        TabelaSimbolo* c = procuraVariavel(id, $1.id);
         if(c == 0){
             printf("Linha: %d - Coluna: %d - Identificador: %s - Erro Semantico - Variavel nao declarada!!!\n", $1.linha, $1.coluna, $1.id);
+        }else{
+            strcpy($$->tipo, c->tipo);
+            strcpy($$->simbolo, $1.id);
         }
     }
     | numero {
         $$ = criaNo("argumento");
         $$->pai = $1;
+        strcpy($$->tipo, $1->tipo);
+        strcpy($$->simbolo, $1->simbolo);
     }
     | ABRE_PARENTESES exp FECHA_PARENTESES {
         $$ = criaNo("argumento");
         $$->pai = $2;
+        strcpy($$->tipo, $2->tipo);
+        strcpy($$->simbolo, $2->simbolo);
     }
     | chamadaDeFuncao {
         $$ = criaNo("argumento");
         $$->pai = $1;
+        strcpy($$->tipo, $1->tipo);
     }
 ;
 
@@ -406,16 +463,20 @@ chamadaDeFuncao:
     ID ABRE_PARENTESES exp FECHA_PARENTESES {
         $$ = criaNo("chamada de funcao");
         $$->pai = $3;
-        int c = procuraVariavel(id, $1.id);
+        TabelaSimbolo* c = procuraVariavel(id, $1.id);
         if(c == 0){
             printf("Linha: %d - Coluna: %d - Identificador: %s - Erro Semantico - Funcao nao declarada!!!\n", $1.linha, $1.coluna, $1.id);
+        }else{
+            strcpy($$->tipo, c->tipo);
         }
     }
     | ID ABRE_PARENTESES FECHA_PARENTESES {
         $$ = criaNo("chamada de funcao");
-        int c = procuraVariavel(id, $1.id);
+        TabelaSimbolo* c = procuraVariavel(id, $1.id);
         if(c == 0){
             printf("Linha: %d - Coluna: %d - Identificador: %s - Erro Semantico - Funcao nao declarada!!!\n", $1.linha, $1.coluna, $1.id);
+        }else{
+            strcpy($$->tipo, c->tipo);
         }
     }
 ;
@@ -423,9 +484,11 @@ chamadaDeFuncao:
 entrada:
     ENTRADA ABRE_PARENTESES ID FECHA_PARENTESES PONTOVIRGULA {
         $$ = criaNo("entrada");
-        int c = procuraVariavel(id, $3.id);
+        TabelaSimbolo* c = procuraVariavel(id, $3.id);
         if(c == 0){
             printf("Linha: %d - Coluna: %d - Identificador: %s - Erro Semantico - Variavel nao declarada!!!\n", $3.linha, $3.coluna, $3.id);
+        }else{
+            strcpy($$->tipo, c->tipo);
         }
     }
 ;
@@ -436,7 +499,7 @@ saida:
     }
     | SAIDA ABRE_PARENTESES ID FECHA_PARENTESES PONTOVIRGULA {
         $$ = criaNo("saida");
-        int c = procuraVariavel(id, $3.id);
+        TabelaSimbolo* c = procuraVariavel(id, $3.id);
         if(c == 0){
             printf("Linha: %d - Coluna: %d - Identificador: %s - Erro Semantico - Variavel nao declarada!!!\n", $3.linha, $3.coluna, $3.id);
         }
@@ -454,6 +517,8 @@ retorno:
     RETORNO exp PONTOVIRGULA {
         $$ = criaNo("retorno");
         $$->pai = $2;
+        char tipoRetornoC[20] = "";
+        strcpy(tipoRetornoC, $2->tipo);
     }
     | RETORNO PONTOVIRGULA {
         $$ = criaNo("retorno");
@@ -463,18 +528,26 @@ retorno:
 nil:
     NIL PONTOVIRGULA {
         $$ = criaNo("NULO");
+        strcpy($$->tipo, "NULO");
+        strcpy($$->simbolo, $1.id);
     }
     | OP_B_RELACIONAIS NIL {
         $$ = criaNo("NULO");
+        strcpy($$->tipo, "NULO");
+        strcpy($$->simbolo, $2.id);
     }
 ;
 
 numero:
     INT {
         $$ = criaNo("Numero");
+        strcpy($$->tipo, "INT");
+        strcpy($$->simbolo, $1.id);
     }
     | FLOAT {
         $$ = criaNo("Numero");
+        strcpy($$->tipo, "FLOAT");
+        strcpy($$->simbolo, $1.id);
     }
 ;
 

@@ -86,8 +86,9 @@
     extern int escopoL[1000];
     extern int escopoAtual;
     extern int escopo;
+    extern char type_symbol[20];
 
-#line 91 "sintatico.tab.c"
+#line 92 "sintatico.tab.c"
 
 # ifndef YY_CAST
 #  ifdef __cplusplus
@@ -547,13 +548,13 @@ static const yytype_int8 yytranslate[] =
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_int16 yyrline[] =
 {
-       0,    98,    98,   106,   111,   117,   121,   125,   129,   136,
-     139,   142,   148,   158,   170,   178,   188,   194,   198,   204,
-     209,   216,   219,   222,   225,   228,   231,   234,   237,   243,
-     247,   251,   259,   267,   273,   279,   286,   295,   300,   309,
-     313,   320,   323,   327,   334,   339,   344,   350,   353,   361,
-     364,   373,   376,   384,   391,   395,   399,   406,   414,   424,
-     434,   437,   444,   448,   454,   458,   464,   467,   473,   476
+       0,    99,    99,   107,   112,   118,   123,   128,   133,   141,
+     144,   147,   153,   163,   175,   183,   193,   199,   203,   209,
+     214,   221,   224,   227,   230,   233,   236,   239,   242,   248,
+     255,   260,   272,   287,   293,   299,   306,   315,   320,   329,
+     335,   344,   348,   353,   361,   369,   376,   384,   389,   400,
+     405,   417,   422,   433,   443,   449,   455,   463,   473,   485,
+     497,   500,   507,   511,   517,   523,   529,   534,   542,   547
 };
 #endif
 
@@ -2075,95 +2076,99 @@ yyreduce:
   switch (yyn)
     {
   case 2: /* programa: listaDeDeclaracoes  */
-#line 98 "sintatico.y"
+#line 99 "sintatico.y"
                        {
         (yyval.ast) = criaNo("programa");
         (yyval.ast)->pai = (yyvsp[0].ast);
         raiz = (yyval.ast);
     }
-#line 2085 "sintatico.tab.c"
+#line 2086 "sintatico.tab.c"
     break;
 
   case 3: /* listaDeDeclaracoes: listaDeDeclaracoes declaracao  */
-#line 106 "sintatico.y"
+#line 107 "sintatico.y"
                                   {
         (yyval.ast) = criaNo("lista De Declaracoes");
         (yyval.ast)->pai = (yyvsp[-1].ast);
         (yyvsp[-1].ast)->filho = (yyvsp[0].ast);
     }
-#line 2095 "sintatico.tab.c"
+#line 2096 "sintatico.tab.c"
     break;
 
   case 4: /* listaDeDeclaracoes: declaracao  */
-#line 111 "sintatico.y"
+#line 112 "sintatico.y"
                  {
         (yyval.ast) = (yyvsp[0].ast);
     }
-#line 2103 "sintatico.tab.c"
+#line 2104 "sintatico.tab.c"
     break;
 
   case 5: /* TIPO: TIPO_INT  */
-#line 117 "sintatico.y"
+#line 118 "sintatico.y"
              {
         (yyval.ast) = criaNo("INT");
+        strcpy((yyval.ast)->tipo, "INT");
         tipo += 0;
     }
-#line 2112 "sintatico.tab.c"
+#line 2114 "sintatico.tab.c"
     break;
 
   case 6: /* TIPO: TIPO_FLOAT  */
-#line 121 "sintatico.y"
+#line 123 "sintatico.y"
                  {
         (yyval.ast) = criaNo("FLOAT");
+        strcpy((yyval.ast)->tipo, "FLOAT");
         tipo += 1;
     }
-#line 2121 "sintatico.tab.c"
+#line 2124 "sintatico.tab.c"
     break;
 
   case 7: /* TIPO: TIPO_LIST_INT  */
-#line 125 "sintatico.y"
+#line 128 "sintatico.y"
                     {
         (yyval.ast) = criaNo("INT LIST");
+        strcpy((yyval.ast)->tipo, "INT LIST");
         tipo += 2;
     }
-#line 2130 "sintatico.tab.c"
+#line 2134 "sintatico.tab.c"
     break;
 
   case 8: /* TIPO: TIPO_LIST_FLOAT  */
-#line 129 "sintatico.y"
+#line 133 "sintatico.y"
                       {
         (yyval.ast) = criaNo("FLOAT LIST");
+        strcpy((yyval.ast)->tipo, "FLOAT LIST");
         tipo += 3;
     }
-#line 2139 "sintatico.tab.c"
+#line 2144 "sintatico.tab.c"
     break;
 
   case 9: /* declaracao: declaracaoVariavel  */
-#line 136 "sintatico.y"
+#line 141 "sintatico.y"
                        {
         (yyval.ast) = (yyvsp[0].ast);
     }
-#line 2147 "sintatico.tab.c"
+#line 2152 "sintatico.tab.c"
     break;
 
   case 10: /* declaracao: declaracaoFuncao  */
-#line 139 "sintatico.y"
+#line 144 "sintatico.y"
                        {
         (yyval.ast) = (yyvsp[0].ast);
     }
-#line 2155 "sintatico.tab.c"
+#line 2160 "sintatico.tab.c"
     break;
 
   case 11: /* declaracao: error  */
-#line 142 "sintatico.y"
+#line 147 "sintatico.y"
             {
         erros++;
     }
-#line 2163 "sintatico.tab.c"
+#line 2168 "sintatico.tab.c"
     break;
 
   case 12: /* declaracaoVariavel: TIPO ID PONTOVIRGULA  */
-#line 148 "sintatico.y"
+#line 153 "sintatico.y"
                          {
         (yyval.ast) = criaNo("Declaracao de Variavel");
         (yyval.ast)->pai = (yyvsp[-2].ast);
@@ -2171,11 +2176,11 @@ yyreduce:
         strcpy((yyvsp[-2].ast)->simbolo, (yyvsp[-1].token).id);
         tipo = 0;
     }
-#line 2175 "sintatico.tab.c"
+#line 2180 "sintatico.tab.c"
     break;
 
   case 13: /* declaracaoFuncao: TIPO ID ABRE_PARENTESES listaDeParametros FECHA_PARENTESES corpo  */
-#line 158 "sintatico.y"
+#line 163 "sintatico.y"
                                                                      {
         (yyval.ast) = criaNo("Declaracao de funcao");
         (yyval.ast)->pai = (yyvsp[-5].ast);
@@ -2185,11 +2190,11 @@ yyreduce:
         strcpy((yyvsp[-5].ast)->simbolo, (yyvsp[-4].token).id);
         tipo = 0;
     }
-#line 2189 "sintatico.tab.c"
+#line 2194 "sintatico.tab.c"
     break;
 
   case 14: /* listaDeParametros: TIPO ID VIRGULA listaDeParametros  */
-#line 170 "sintatico.y"
+#line 175 "sintatico.y"
                                       {
         (yyval.ast) = criaNo("Lista de Parametros");
         (yyval.ast)->pai = (yyvsp[-3].ast);
@@ -2198,11 +2203,11 @@ yyreduce:
         tipo = 0;
         strcpy((yyvsp[-3].ast)->simbolo, (yyvsp[-2].token).id);
     }
-#line 2202 "sintatico.tab.c"
+#line 2207 "sintatico.tab.c"
     break;
 
   case 15: /* listaDeParametros: TIPO ID  */
-#line 178 "sintatico.y"
+#line 183 "sintatico.y"
               {
         (yyval.ast) = criaNo("Lista de Parametros");
         (yyval.ast)->pai = (yyvsp[-1].ast);
@@ -2213,181 +2218,196 @@ yyreduce:
         escopoAtual--;
         escopo--;
     }
-#line 2217 "sintatico.tab.c"
+#line 2222 "sintatico.tab.c"
     break;
 
   case 16: /* listaDeParametros: %empty  */
-#line 188 "sintatico.y"
+#line 193 "sintatico.y"
        {
         (yyval.ast) = criaNo("Lista de Parametros vazia");
     }
-#line 2225 "sintatico.tab.c"
+#line 2230 "sintatico.tab.c"
     break;
 
   case 17: /* corpo: ABRE_CHAVES dentroCorpo FECHA_CHAVES  */
-#line 194 "sintatico.y"
+#line 199 "sintatico.y"
                                          {
         (yyval.ast) = criaNo("dentro das chaves");
         (yyval.ast)->pai = (yyvsp[-1].ast);
     }
-#line 2234 "sintatico.tab.c"
+#line 2239 "sintatico.tab.c"
     break;
 
   case 18: /* corpo: error  */
-#line 198 "sintatico.y"
+#line 203 "sintatico.y"
             {
         erros++;
     }
-#line 2242 "sintatico.tab.c"
+#line 2247 "sintatico.tab.c"
     break;
 
   case 19: /* dentroCorpo: declaracoes dentroCorpo  */
-#line 204 "sintatico.y"
+#line 209 "sintatico.y"
                             {
         (yyval.ast) = criaNo("declaracoes");
         (yyval.ast)->pai = (yyvsp[-1].ast);
         (yyval.ast)->filho = (yyvsp[0].ast);
     }
-#line 2252 "sintatico.tab.c"
+#line 2257 "sintatico.tab.c"
     break;
 
   case 20: /* dentroCorpo: declaracoes  */
-#line 209 "sintatico.y"
+#line 214 "sintatico.y"
                   {
         (yyval.ast) = criaNo("declaracoes");
         (yyval.ast)->pai = (yyvsp[0].ast);
     }
-#line 2261 "sintatico.tab.c"
+#line 2266 "sintatico.tab.c"
     break;
 
   case 21: /* declaracoes: corpo  */
-#line 216 "sintatico.y"
+#line 221 "sintatico.y"
           {
         (yyval.ast) = (yyvsp[0].ast);
     }
-#line 2269 "sintatico.tab.c"
+#line 2274 "sintatico.tab.c"
     break;
 
   case 22: /* declaracoes: declaracaoVariavel  */
-#line 219 "sintatico.y"
+#line 224 "sintatico.y"
                          {
         (yyval.ast) = (yyvsp[0].ast);
     }
-#line 2277 "sintatico.tab.c"
+#line 2282 "sintatico.tab.c"
     break;
 
   case 23: /* declaracoes: expressao  */
-#line 222 "sintatico.y"
+#line 227 "sintatico.y"
                 {
         (yyval.ast) = (yyvsp[0].ast);
     }
-#line 2285 "sintatico.tab.c"
+#line 2290 "sintatico.tab.c"
     break;
 
   case 24: /* declaracoes: entrada  */
-#line 225 "sintatico.y"
+#line 230 "sintatico.y"
               {
         (yyval.ast) = (yyvsp[0].ast);
     }
-#line 2293 "sintatico.tab.c"
+#line 2298 "sintatico.tab.c"
     break;
 
   case 25: /* declaracoes: retorno  */
-#line 228 "sintatico.y"
+#line 233 "sintatico.y"
               {
         (yyval.ast) = (yyvsp[0].ast);
     }
-#line 2301 "sintatico.tab.c"
+#line 2306 "sintatico.tab.c"
     break;
 
   case 26: /* declaracoes: saida  */
-#line 231 "sintatico.y"
+#line 236 "sintatico.y"
             {
         (yyval.ast) = (yyvsp[0].ast);
     }
-#line 2309 "sintatico.tab.c"
+#line 2314 "sintatico.tab.c"
     break;
 
   case 27: /* declaracoes: for  */
-#line 234 "sintatico.y"
+#line 239 "sintatico.y"
           {
         (yyval.ast) = (yyvsp[0].ast);
     }
-#line 2317 "sintatico.tab.c"
+#line 2322 "sintatico.tab.c"
     break;
 
   case 28: /* declaracoes: condicional  */
-#line 237 "sintatico.y"
+#line 242 "sintatico.y"
                   {
         (yyval.ast) = (yyvsp[0].ast);
     }
-#line 2325 "sintatico.tab.c"
+#line 2330 "sintatico.tab.c"
     break;
 
   case 29: /* expressao: exp PONTOVIRGULA  */
-#line 243 "sintatico.y"
+#line 248 "sintatico.y"
                      {
         (yyval.ast) = criaNo("expressao");
         (yyval.ast)->pai = (yyvsp[-1].ast);
+        strcpy((yyval.ast)->tipo, (yyvsp[-1].ast)->tipo);
+        castDeTudo((yyval.ast)->tipo, (yyval.ast), (yyvsp[-1].ast));
+        strcpy((yyval.ast)->simbolo, (yyvsp[-1].ast)->simbolo);
     }
-#line 2334 "sintatico.tab.c"
+#line 2342 "sintatico.tab.c"
     break;
 
   case 30: /* expressao: expressaoList  */
-#line 247 "sintatico.y"
+#line 255 "sintatico.y"
                     {
         (yyval.ast) = criaNo("expressao");
         (yyval.ast)->pai = (yyvsp[0].ast);
+        strcpy((yyval.ast)->tipo, (yyvsp[0].ast)->tipo);
     }
-#line 2343 "sintatico.tab.c"
+#line 2352 "sintatico.tab.c"
     break;
 
   case 31: /* expressao: ID ATRIBUICAO expressao  */
-#line 251 "sintatico.y"
+#line 260 "sintatico.y"
                               {
         (yyval.ast) = criaNo("ATRIBUICAO");
         (yyval.ast)->pai = (yyvsp[0].ast);
-        int c = procuraVariavel(id, (yyvsp[-2].token).id);
+        TabelaSimbolo* c = procuraVariavel(id, (yyvsp[-2].token).id);
         if(c == 0){
             printf("Linha: %d - Coluna: %d - Identificador: %s - Erro Semantico - Variavel nao declarada!!!\n", (yyvsp[-2].token).linha, (yyvsp[-2].token).coluna, (yyvsp[-2].token).id);
+        } else{
+            strcpy((yyval.ast)->tipo, c->tipo);
+            castDeTudo((yyval.ast)->tipo, (yyval.ast), (yyvsp[0].ast));
+            strcpy((yyval.ast)->simbolo, (yyvsp[-2].token).id);
         }
     }
-#line 2356 "sintatico.tab.c"
+#line 2369 "sintatico.tab.c"
     break;
 
   case 32: /* expressao: ID ATRIBUICAO nil  */
-#line 259 "sintatico.y"
+#line 272 "sintatico.y"
                         {
         (yyval.ast) = criaNo("NULO");
         (yyval.ast)->pai = (yyvsp[0].ast);
+        TabelaSimbolo* c = procuraVariavel(id, (yyvsp[-2].token).id);
+        if(c == 0){
+            printf("Linha: %d - Coluna: %d - Identificador: %s - Erro Semantico - Variavel nao declarada!!!\n", (yyvsp[-2].token).linha, (yyvsp[-2].token).coluna, (yyvsp[-2].token).id);
+        } else{
+            strcpy((yyval.ast)->tipo, c->tipo);
+            castDeTudo((yyval.ast)->tipo, (yyval.ast), (yyvsp[0].ast));
+        }
     }
-#line 2365 "sintatico.tab.c"
+#line 2385 "sintatico.tab.c"
     break;
 
   case 33: /* for: FOR ABRE_PARENTESES expressao expressao ID ATRIBUICAO ID FECHA_PARENTESES corpo  */
-#line 267 "sintatico.y"
+#line 287 "sintatico.y"
                                                                                     {
         (yyval.ast) = criaNo("for");
         (yyval.ast)->pai = (yyvsp[-6].ast);
         (yyvsp[-6].ast)->filho = (yyvsp[-5].ast);
         (yyvsp[-5].ast)->filho = (yyvsp[0].ast);
     }
-#line 2376 "sintatico.tab.c"
+#line 2396 "sintatico.tab.c"
     break;
 
   case 34: /* for: FOR ABRE_PARENTESES expressao expressao ID ATRIBUICAO ID OP_B_SOMA_SUB ID FECHA_PARENTESES corpo  */
-#line 273 "sintatico.y"
+#line 293 "sintatico.y"
                                                                                                        {
         (yyval.ast) = criaNo("for");
         (yyval.ast)->pai = (yyvsp[-8].ast);
         (yyvsp[-8].ast)->filho = (yyvsp[-7].ast);
         (yyvsp[-7].ast)->filho = (yyvsp[0].ast);
     }
-#line 2387 "sintatico.tab.c"
+#line 2407 "sintatico.tab.c"
     break;
 
   case 35: /* for: FOR ABRE_PARENTESES expressao expressao ID ATRIBUICAO ID OP_B_SOMA_SUB numero FECHA_PARENTESES corpo  */
-#line 279 "sintatico.y"
+#line 299 "sintatico.y"
                                                                                                            {
         (yyval.ast) = criaNo("for");
         (yyval.ast)->pai = (yyvsp[-8].ast);
@@ -2395,331 +2415,384 @@ yyreduce:
         (yyvsp[-7].ast)->filho = (yyvsp[-2].ast);
         (yyvsp[-2].ast)->filho = (yyvsp[0].ast);
     }
-#line 2399 "sintatico.tab.c"
+#line 2419 "sintatico.tab.c"
     break;
 
   case 36: /* for: FOR ABRE_PARENTESES expressao expressao ID ATRIBUICAO OP_LOGICA_NEG ID FECHA_PARENTESES corpo  */
-#line 286 "sintatico.y"
+#line 306 "sintatico.y"
                                                                                                     {
         (yyval.ast) = criaNo("for");
         (yyval.ast)->pai = (yyvsp[-7].ast);
         (yyvsp[-7].ast)->filho = (yyvsp[-6].ast);
         (yyvsp[-6].ast)->filho = (yyvsp[0].ast);
     }
-#line 2410 "sintatico.tab.c"
+#line 2430 "sintatico.tab.c"
     break;
 
   case 37: /* condicional: IF ABRE_PARENTESES expressao FECHA_PARENTESES declaracoes  */
-#line 295 "sintatico.y"
+#line 315 "sintatico.y"
                                                               {
         (yyval.ast) = criaNo("IF");
         (yyval.ast)->pai = (yyvsp[-2].ast);
         (yyvsp[-2].ast)->filho = (yyvsp[0].ast);
     }
-#line 2420 "sintatico.tab.c"
+#line 2440 "sintatico.tab.c"
     break;
 
   case 38: /* condicional: IF ABRE_PARENTESES exp FECHA_PARENTESES declaracoes ELSE declaracoes  */
-#line 300 "sintatico.y"
+#line 320 "sintatico.y"
                                                                            {
         (yyval.ast) = criaNo("IF-ELSE");
         (yyval.ast)->pai = (yyvsp[-4].ast);
         (yyvsp[-4].ast)->filho = (yyvsp[-2].ast);
         (yyvsp[-2].ast)->filho = (yyvsp[0].ast);
     }
-#line 2431 "sintatico.tab.c"
+#line 2451 "sintatico.tab.c"
     break;
 
   case 39: /* exp: expressao_logica  */
-#line 309 "sintatico.y"
+#line 329 "sintatico.y"
                      {
         (yyval.ast) = criaNo("exp");
         (yyval.ast)->pai = (yyvsp[0].ast);
+        strcpy((yyval.ast)->tipo, (yyvsp[0].ast)->tipo);
+        strcpy((yyval.ast)->simbolo, (yyvsp[0].ast)->simbolo);
     }
-#line 2440 "sintatico.tab.c"
+#line 2462 "sintatico.tab.c"
     break;
 
   case 40: /* exp: OP_LOGICA_NEG exp  */
-#line 313 "sintatico.y"
+#line 335 "sintatico.y"
                         {
         (yyval.ast) = criaNo("exp");
         (yyval.ast)->pai = (yyvsp[0].ast);
+        strcpy((yyval.ast)->tipo, (yyvsp[0].ast)->tipo);
+        strcpy((yyval.ast)->simbolo, (yyvsp[0].ast)->simbolo);
     }
-#line 2449 "sintatico.tab.c"
+#line 2473 "sintatico.tab.c"
     break;
 
   case 41: /* expressaoList: OP_LISTA ID PONTOVIRGULA  */
-#line 320 "sintatico.y"
+#line 344 "sintatico.y"
                              {
         (yyval.ast) = criaNo("expressaoList");
+        strcpy((yyval.ast)->tipo, "OPERACAOLISTA");
     }
-#line 2457 "sintatico.tab.c"
+#line 2482 "sintatico.tab.c"
     break;
 
   case 42: /* expressaoList: exp CONSTRUTOR_LISTA ID PONTOVIRGULA  */
-#line 323 "sintatico.y"
+#line 348 "sintatico.y"
                                            {
         (yyval.ast) = criaNo("expressaoList");
         (yyval.ast)->pai = (yyvsp[-3].ast);
+        strcpy((yyval.ast)->tipo, "CONSTRUTORLISTA");
     }
-#line 2466 "sintatico.tab.c"
+#line 2492 "sintatico.tab.c"
     break;
 
   case 43: /* expressaoList: exp FUNCOES_LISTA ID PONTOVIRGULA  */
-#line 327 "sintatico.y"
+#line 353 "sintatico.y"
                                         {
         (yyval.ast) = criaNo("expressaoList");
         (yyval.ast)->pai = (yyvsp[-3].ast);
+        strcpy((yyval.ast)->tipo, "FUNCAOLISTA");
     }
-#line 2475 "sintatico.tab.c"
+#line 2502 "sintatico.tab.c"
     break;
 
   case 44: /* expressao_logica: expressao_logica OP_LOGICA_OR expressao_relacional  */
-#line 334 "sintatico.y"
+#line 361 "sintatico.y"
                                                        {
         (yyval.ast) = criaNo("expressaoLogica");
         (yyval.ast)->pai = (yyvsp[-2].ast);
         (yyvsp[-2].ast)->filho = (yyvsp[0].ast);
+        //strcpy($$->tipo, "INT");
+        castDeTudo((yyval.ast)->tipo, (yyval.ast), (yyvsp[0].ast));
+        
     }
-#line 2485 "sintatico.tab.c"
+#line 2515 "sintatico.tab.c"
     break;
 
   case 45: /* expressao_logica: expressao_logica OP_LOGICA_AND expressao_relacional  */
-#line 339 "sintatico.y"
+#line 369 "sintatico.y"
                                                           {
         (yyval.ast) = criaNo("expressaoLogica");
         (yyval.ast)->pai = (yyvsp[-2].ast);
         (yyvsp[-2].ast)->filho = (yyvsp[0].ast);
+        //strcpy($$->tipo, "INT");
+        castDeTudo((yyval.ast)->tipo, (yyval.ast), (yyvsp[0].ast));
     }
-#line 2495 "sintatico.tab.c"
+#line 2527 "sintatico.tab.c"
     break;
 
   case 46: /* expressao_logica: expressao_relacional  */
-#line 344 "sintatico.y"
+#line 376 "sintatico.y"
                            {
         (yyval.ast) = criaNo("expressaoLogica");
+        strcpy((yyval.ast)->tipo, (yyvsp[0].ast)->tipo);
+        strcpy((yyval.ast)->simbolo, (yyvsp[0].ast)->simbolo);
     }
-#line 2503 "sintatico.tab.c"
+#line 2537 "sintatico.tab.c"
     break;
 
   case 47: /* expressao_relacional: opSomaSub  */
-#line 350 "sintatico.y"
+#line 384 "sintatico.y"
               {
         (yyval.ast) = criaNo("expressaoRelacional");
-    }
-#line 2511 "sintatico.tab.c"
-    break;
-
-  case 48: /* expressao_relacional: expressao_relacional OP_B_RELACIONAIS opSomaSub  */
-#line 353 "sintatico.y"
-                                                      {
-        (yyval.ast) = criaNo("expressaoRelacional");
-        (yyval.ast)->pai = (yyvsp[-2].ast);
-        (yyvsp[-2].ast)->filho = (yyvsp[0].ast);
-    }
-#line 2521 "sintatico.tab.c"
-    break;
-
-  case 49: /* opSomaSub: opMultDiv  */
-#line 361 "sintatico.y"
-              {
-         (yyval.ast) = criaNo("Operando SomaSub");
-    }
-#line 2529 "sintatico.tab.c"
-    break;
-
-  case 50: /* opSomaSub: opSomaSub OP_B_SOMA_SUB opMultDiv  */
-#line 364 "sintatico.y"
-                                        {
-        (yyval.ast) = criaNo("Operando SomaSub");
-        (yyval.ast)->pai = (yyvsp[-2].ast);
-        (yyvsp[-2].ast)->filho = (yyvsp[0].ast);
-    }
-#line 2539 "sintatico.tab.c"
-    break;
-
-  case 51: /* opMultDiv: argumento  */
-#line 373 "sintatico.y"
-              {
-        (yyval.ast) = criaNo("Operando MultDiv");
+        strcpy((yyval.ast)->tipo, (yyvsp[0].ast)->tipo);
+        strcpy((yyval.ast)->simbolo, (yyvsp[0].ast)->simbolo);
     }
 #line 2547 "sintatico.tab.c"
     break;
 
+  case 48: /* expressao_relacional: expressao_relacional OP_B_RELACIONAIS opSomaSub  */
+#line 389 "sintatico.y"
+                                                      {
+        (yyval.ast) = criaNo("expressaoRelacional");
+        (yyval.ast)->pai = (yyvsp[-2].ast);
+        (yyvsp[-2].ast)->filho = (yyvsp[0].ast);
+        strcpy((yyval.ast)->tipo, (yyvsp[-2].ast)->tipo);
+        strcpy((yyval.ast)->simbolo, (yyvsp[-2].ast)->simbolo);
+        castDeTudo((yyval.ast)->tipo, (yyval.ast), (yyvsp[0].ast));
+    }
+#line 2560 "sintatico.tab.c"
+    break;
+
+  case 49: /* opSomaSub: opMultDiv  */
+#line 400 "sintatico.y"
+              {
+        (yyval.ast) = criaNo("Operando SomaSub");
+        strcpy((yyval.ast)->tipo, (yyvsp[0].ast)->tipo);
+        strcpy((yyval.ast)->simbolo, (yyvsp[0].ast)->simbolo);
+    }
+#line 2570 "sintatico.tab.c"
+    break;
+
+  case 50: /* opSomaSub: opSomaSub OP_B_SOMA_SUB opMultDiv  */
+#line 405 "sintatico.y"
+                                        {
+        (yyval.ast) = criaNo("Operando SomaSub");
+        (yyval.ast)->pai = (yyvsp[-2].ast);
+        (yyvsp[-2].ast)->filho = (yyvsp[0].ast);
+        strcpy((yyval.ast)->tipo, (yyvsp[-2].ast)->tipo);
+        strcpy((yyval.ast)->simbolo, (yyvsp[-2].ast)->simbolo);
+        castDeTudo((yyval.ast)->tipo, (yyval.ast), (yyvsp[0].ast));
+    }
+#line 2583 "sintatico.tab.c"
+    break;
+
+  case 51: /* opMultDiv: argumento  */
+#line 417 "sintatico.y"
+              {
+        (yyval.ast) = criaNo("Operando MultDiv");
+        strcpy((yyval.ast)->tipo, (yyvsp[0].ast)->tipo);
+        strcpy((yyval.ast)->simbolo, (yyvsp[0].ast)->simbolo);
+    }
+#line 2593 "sintatico.tab.c"
+    break;
+
   case 52: /* opMultDiv: opMultDiv OP_B_MULT_DIV argumento  */
-#line 376 "sintatico.y"
+#line 422 "sintatico.y"
                                         {
         (yyval.ast) = criaNo("Operando MultDiv");
         (yyval.ast)->pai = (yyvsp[-2].ast);
         (yyvsp[-2].ast)->filho = (yyvsp[0].ast);
+        strcpy((yyval.ast)->tipo, (yyvsp[-2].ast)->tipo);
+        strcpy((yyval.ast)->simbolo, (yyvsp[-2].ast)->simbolo);
+        castDeTudo((yyval.ast)->tipo, (yyval.ast), (yyvsp[0].ast));
     }
-#line 2557 "sintatico.tab.c"
+#line 2606 "sintatico.tab.c"
     break;
 
   case 53: /* argumento: ID  */
-#line 384 "sintatico.y"
+#line 433 "sintatico.y"
        {
         (yyval.ast) = criaNo("ID");
-        int c = procuraVariavel(id, (yyvsp[0].token).id);
+        TabelaSimbolo* c = procuraVariavel(id, (yyvsp[0].token).id);
         if(c == 0){
             printf("Linha: %d - Coluna: %d - Identificador: %s - Erro Semantico - Variavel nao declarada!!!\n", (yyvsp[0].token).linha, (yyvsp[0].token).coluna, (yyvsp[0].token).id);
-        }
-    }
-#line 2569 "sintatico.tab.c"
-    break;
-
-  case 54: /* argumento: numero  */
-#line 391 "sintatico.y"
-             {
-        (yyval.ast) = criaNo("argumento");
-        (yyval.ast)->pai = (yyvsp[0].ast);
-    }
-#line 2578 "sintatico.tab.c"
-    break;
-
-  case 55: /* argumento: ABRE_PARENTESES exp FECHA_PARENTESES  */
-#line 395 "sintatico.y"
-                                           {
-        (yyval.ast) = criaNo("argumento");
-        (yyval.ast)->pai = (yyvsp[-1].ast);
-    }
-#line 2587 "sintatico.tab.c"
-    break;
-
-  case 56: /* argumento: chamadaDeFuncao  */
-#line 399 "sintatico.y"
-                      {
-        (yyval.ast) = criaNo("argumento");
-        (yyval.ast)->pai = (yyvsp[0].ast);
-    }
-#line 2596 "sintatico.tab.c"
-    break;
-
-  case 57: /* chamadaDeFuncao: ID ABRE_PARENTESES exp FECHA_PARENTESES  */
-#line 406 "sintatico.y"
-                                            {
-        (yyval.ast) = criaNo("chamada de funcao");
-        (yyval.ast)->pai = (yyvsp[-1].ast);
-        int c = procuraVariavel(id, (yyvsp[-3].token).id);
-        if(c == 0){
-            printf("Linha: %d - Coluna: %d - Identificador: %s - Erro Semantico - Funcao nao declarada!!!\n", (yyvsp[-3].token).linha, (yyvsp[-3].token).coluna, (yyvsp[-3].token).id);
-        }
-    }
-#line 2609 "sintatico.tab.c"
-    break;
-
-  case 58: /* chamadaDeFuncao: ID ABRE_PARENTESES FECHA_PARENTESES  */
-#line 414 "sintatico.y"
-                                          {
-        (yyval.ast) = criaNo("chamada de funcao");
-        int c = procuraVariavel(id, (yyvsp[-2].token).id);
-        if(c == 0){
-            printf("Linha: %d - Coluna: %d - Identificador: %s - Erro Semantico - Funcao nao declarada!!!\n", (yyvsp[-2].token).linha, (yyvsp[-2].token).coluna, (yyvsp[-2].token).id);
+        }else{
+            strcpy((yyval.ast)->tipo, c->tipo);
+            strcpy((yyval.ast)->simbolo, (yyvsp[0].token).id);
         }
     }
 #line 2621 "sintatico.tab.c"
     break;
 
-  case 59: /* entrada: ENTRADA ABRE_PARENTESES ID FECHA_PARENTESES PONTOVIRGULA  */
-#line 424 "sintatico.y"
-                                                             {
-        (yyval.ast) = criaNo("entrada");
-        int c = procuraVariavel(id, (yyvsp[-2].token).id);
-        if(c == 0){
-            printf("Linha: %d - Coluna: %d - Identificador: %s - Erro Semantico - Variavel nao declarada!!!\n", (yyvsp[-2].token).linha, (yyvsp[-2].token).coluna, (yyvsp[-2].token).id);
-        }
+  case 54: /* argumento: numero  */
+#line 443 "sintatico.y"
+             {
+        (yyval.ast) = criaNo("argumento");
+        (yyval.ast)->pai = (yyvsp[0].ast);
+        strcpy((yyval.ast)->tipo, (yyvsp[0].ast)->tipo);
+        strcpy((yyval.ast)->simbolo, (yyvsp[0].ast)->simbolo);
     }
-#line 2633 "sintatico.tab.c"
+#line 2632 "sintatico.tab.c"
     break;
 
-  case 60: /* saida: SAIDA ABRE_PARENTESES STRING FECHA_PARENTESES PONTOVIRGULA  */
-#line 434 "sintatico.y"
-                                                               {
-        (yyval.ast) = criaNo("saida");
+  case 55: /* argumento: ABRE_PARENTESES exp FECHA_PARENTESES  */
+#line 449 "sintatico.y"
+                                           {
+        (yyval.ast) = criaNo("argumento");
+        (yyval.ast)->pai = (yyvsp[-1].ast);
+        strcpy((yyval.ast)->tipo, (yyvsp[-1].ast)->tipo);
+        strcpy((yyval.ast)->simbolo, (yyvsp[-1].ast)->simbolo);
     }
-#line 2641 "sintatico.tab.c"
+#line 2643 "sintatico.tab.c"
     break;
 
-  case 61: /* saida: SAIDA ABRE_PARENTESES ID FECHA_PARENTESES PONTOVIRGULA  */
-#line 437 "sintatico.y"
-                                                             {
-        (yyval.ast) = criaNo("saida");
-        int c = procuraVariavel(id, (yyvsp[-2].token).id);
-        if(c == 0){
-            printf("Linha: %d - Coluna: %d - Identificador: %s - Erro Semantico - Variavel nao declarada!!!\n", (yyvsp[-2].token).linha, (yyvsp[-2].token).coluna, (yyvsp[-2].token).id);
-        }
+  case 56: /* argumento: chamadaDeFuncao  */
+#line 455 "sintatico.y"
+                      {
+        (yyval.ast) = criaNo("argumento");
+        (yyval.ast)->pai = (yyvsp[0].ast);
+        strcpy((yyval.ast)->tipo, (yyvsp[0].ast)->tipo);
     }
 #line 2653 "sintatico.tab.c"
     break;
 
+  case 57: /* chamadaDeFuncao: ID ABRE_PARENTESES exp FECHA_PARENTESES  */
+#line 463 "sintatico.y"
+                                            {
+        (yyval.ast) = criaNo("chamada de funcao");
+        (yyval.ast)->pai = (yyvsp[-1].ast);
+        TabelaSimbolo* c = procuraVariavel(id, (yyvsp[-3].token).id);
+        if(c == 0){
+            printf("Linha: %d - Coluna: %d - Identificador: %s - Erro Semantico - Funcao nao declarada!!!\n", (yyvsp[-3].token).linha, (yyvsp[-3].token).coluna, (yyvsp[-3].token).id);
+        }else{
+            strcpy((yyval.ast)->tipo, c->tipo);
+        }
+    }
+#line 2668 "sintatico.tab.c"
+    break;
+
+  case 58: /* chamadaDeFuncao: ID ABRE_PARENTESES FECHA_PARENTESES  */
+#line 473 "sintatico.y"
+                                          {
+        (yyval.ast) = criaNo("chamada de funcao");
+        TabelaSimbolo* c = procuraVariavel(id, (yyvsp[-2].token).id);
+        if(c == 0){
+            printf("Linha: %d - Coluna: %d - Identificador: %s - Erro Semantico - Funcao nao declarada!!!\n", (yyvsp[-2].token).linha, (yyvsp[-2].token).coluna, (yyvsp[-2].token).id);
+        }else{
+            strcpy((yyval.ast)->tipo, c->tipo);
+        }
+    }
+#line 2682 "sintatico.tab.c"
+    break;
+
+  case 59: /* entrada: ENTRADA ABRE_PARENTESES ID FECHA_PARENTESES PONTOVIRGULA  */
+#line 485 "sintatico.y"
+                                                             {
+        (yyval.ast) = criaNo("entrada");
+        TabelaSimbolo* c = procuraVariavel(id, (yyvsp[-2].token).id);
+        if(c == 0){
+            printf("Linha: %d - Coluna: %d - Identificador: %s - Erro Semantico - Variavel nao declarada!!!\n", (yyvsp[-2].token).linha, (yyvsp[-2].token).coluna, (yyvsp[-2].token).id);
+        }else{
+            strcpy((yyval.ast)->tipo, c->tipo);
+        }
+    }
+#line 2696 "sintatico.tab.c"
+    break;
+
+  case 60: /* saida: SAIDA ABRE_PARENTESES STRING FECHA_PARENTESES PONTOVIRGULA  */
+#line 497 "sintatico.y"
+                                                               {
+        (yyval.ast) = criaNo("saida");
+    }
+#line 2704 "sintatico.tab.c"
+    break;
+
+  case 61: /* saida: SAIDA ABRE_PARENTESES ID FECHA_PARENTESES PONTOVIRGULA  */
+#line 500 "sintatico.y"
+                                                             {
+        (yyval.ast) = criaNo("saida");
+        TabelaSimbolo* c = procuraVariavel(id, (yyvsp[-2].token).id);
+        if(c == 0){
+            printf("Linha: %d - Coluna: %d - Identificador: %s - Erro Semantico - Variavel nao declarada!!!\n", (yyvsp[-2].token).linha, (yyvsp[-2].token).coluna, (yyvsp[-2].token).id);
+        }
+    }
+#line 2716 "sintatico.tab.c"
+    break;
+
   case 62: /* saida: SAIDA ABRE_PARENTESES expressao FECHA_PARENTESES PONTOVIRGULA  */
-#line 444 "sintatico.y"
+#line 507 "sintatico.y"
                                                                     {
         (yyval.ast) = criaNo("saida");
         (yyval.ast)->pai = (yyvsp[-2].ast);
     }
-#line 2662 "sintatico.tab.c"
+#line 2725 "sintatico.tab.c"
     break;
 
   case 63: /* saida: SAIDA ABRE_PARENTESES OP_LISTA ID FECHA_PARENTESES PONTOVIRGULA  */
-#line 448 "sintatico.y"
+#line 511 "sintatico.y"
                                                                       {
         (yyval.ast) = criaNo("saida");
     }
-#line 2670 "sintatico.tab.c"
+#line 2733 "sintatico.tab.c"
     break;
 
   case 64: /* retorno: RETORNO exp PONTOVIRGULA  */
-#line 454 "sintatico.y"
+#line 517 "sintatico.y"
                              {
         (yyval.ast) = criaNo("retorno");
         (yyval.ast)->pai = (yyvsp[-1].ast);
+        char tipoRetornoC[20] = "";
+        strcpy(tipoRetornoC, (yyvsp[-1].ast)->tipo);
     }
-#line 2679 "sintatico.tab.c"
+#line 2744 "sintatico.tab.c"
     break;
 
   case 65: /* retorno: RETORNO PONTOVIRGULA  */
-#line 458 "sintatico.y"
+#line 523 "sintatico.y"
                            {
         (yyval.ast) = criaNo("retorno");
     }
-#line 2687 "sintatico.tab.c"
+#line 2752 "sintatico.tab.c"
     break;
 
   case 66: /* nil: NIL PONTOVIRGULA  */
-#line 464 "sintatico.y"
+#line 529 "sintatico.y"
                      {
         (yyval.ast) = criaNo("NULO");
+        strcpy((yyval.ast)->tipo, "NULO");
+        strcpy((yyval.ast)->simbolo, (yyvsp[-1].token).id);
     }
-#line 2695 "sintatico.tab.c"
+#line 2762 "sintatico.tab.c"
     break;
 
   case 67: /* nil: OP_B_RELACIONAIS NIL  */
-#line 467 "sintatico.y"
+#line 534 "sintatico.y"
                            {
         (yyval.ast) = criaNo("NULO");
+        strcpy((yyval.ast)->tipo, "NULO");
+        strcpy((yyval.ast)->simbolo, (yyvsp[0].token).id);
     }
-#line 2703 "sintatico.tab.c"
+#line 2772 "sintatico.tab.c"
     break;
 
   case 68: /* numero: INT  */
-#line 473 "sintatico.y"
+#line 542 "sintatico.y"
         {
         (yyval.ast) = criaNo("Numero");
+        strcpy((yyval.ast)->tipo, "INT");
+        strcpy((yyval.ast)->simbolo, (yyvsp[0].token).id);
     }
-#line 2711 "sintatico.tab.c"
+#line 2782 "sintatico.tab.c"
     break;
 
   case 69: /* numero: FLOAT  */
-#line 476 "sintatico.y"
+#line 547 "sintatico.y"
             {
         (yyval.ast) = criaNo("Numero");
+        strcpy((yyval.ast)->tipo, "FLOAT");
+        strcpy((yyval.ast)->simbolo, (yyvsp[0].token).id);
     }
-#line 2719 "sintatico.tab.c"
+#line 2792 "sintatico.tab.c"
     break;
 
 
-#line 2723 "sintatico.tab.c"
+#line 2796 "sintatico.tab.c"
 
       default: break;
     }
@@ -2944,7 +3017,7 @@ yyreturn:
   return yyresult;
 }
 
-#line 482 "sintatico.y"
+#line 555 "sintatico.y"
 
 
 void yyerror(const char* s){

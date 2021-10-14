@@ -32,8 +32,9 @@ int main(){
     x = faaaa();
     c = x;
     x = 0;
+    a = y :: a;
     read(f);
-    writeln("");
+    writeln();
     write(y);
     writeln("Vamo q vamo!");
     return 0;

@@ -19,6 +19,8 @@ void limpaTabela(TabelaSimbolo* id);
 
 int procuraMain(TabelaSimbolo* id);
 
-int procuraVariavel(TabelaSimbolo* id, char* simbolo);
+TabelaSimbolo* procuraVariavel(TabelaSimbolo* id, char* simbolo);
+
+int verificaRetorno(TabelaSimbolo* id, int linha, char* tipoRetorno);
 
 #endif

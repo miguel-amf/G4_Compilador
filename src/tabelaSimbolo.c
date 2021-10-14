@@ -3,6 +3,8 @@
 #include <stdlib.h>
 #include "../lib/tabelaSimbolo.h"
 
+char type_symbol[20];
+
 TabelaSimbolo* insereSimbolo(TabelaSimbolo* id, int escopo, char* simbolo, char* tipoEntrada, char* tipo, int linha, int coluna, int parametros){
     if(parametros>0)
         escopo++;
@@ -86,12 +88,39 @@ int procuraMain(TabelaSimbolo* id){
     return 0;
 }
 
-int procuraVariavel(TabelaSimbolo* id, char* simbolo){
+TabelaSimbolo* procuraVariavel(TabelaSimbolo* id, char* simbolo){
     while(id != NULL){
         if((strcmp(id->simbolo, simbolo) == 0)){
-            return 1;
+            strcpy(type_symbol, id->tipo);
+            return id;
         }
         id = id->proximo;
+    }
+    return 0;
+}
+
+int verificaRetorno(TabelaSimbolo* id, int linha, char* tipoRetorno){
+    char tipoSimbolo[20] = "";
+    TabelaSimbolo* p = id;
+    //printf("Linha do retorno: %d\n", linha);
+    //printf("linha primeiro id: %d - TipoEntrada: %s - Simbolo: %s\n", id->linha, id->tipoEntrada, id->simbolo);
+    while(id != NULL){
+        if(strcmp(id->tipoEntrada, "Funcao") == 0){
+            printf("Funcao: %s, linha: %d, coluna: %d, tipo: %s\n", id->simbolo, id->linha, id->coluna, id->tipo);
+            strcpy(tipoSimbolo, id->tipo);
+        }
+        printf("linha id: %d - TipoEntrada: %s - Simbolo: %s\n", id->linha, id->tipoEntrada, id->simbolo);
+        id = id->proximo;
+    }
+
+    
+    // while(p != NULL){
+    //     printf("\t %-20s  \t %-20s \t %-10s \t %-10d \t %-10d \t %-10d \n", p->simbolo, p->tipoEntrada, p->tipo, p->escopo, p->linha, p->coluna);
+    //     p = p->proximo;
+    // }
+
+    if(strcmp(tipoRetorno, tipoSimbolo) == 0){
+        return 1;
     }
     return 0;
 }

@@ -22,8 +22,8 @@ INT                 "-"?[0-9]+
 FLOAT               "-"?[0-9]+"."[0-9]+
 TIPO_INT            int
 TIPO_FLOAT          float
-TIPO_LIST_INT       "int list"
-TIPO_LIST_FLOAT     "float list"
+TIPO_LIST_INT       "int"[ \t]+"list"
+TIPO_LIST_FLOAT     "float"[ \t]+"list"
 OP_B_SOMA_SUB       "+"|"-"
 OP_B_MULT_DIV       "*"|"/"
 OP_LOGICA_AND       "&&"

@@ -1,19 +1,16 @@
-int f(int i){
+int f(int i, int x, int a, int b){
 	int n;
-    float b;
-    return b;
 }
 
-int fa(int i){
+int 2f(int y, int x){
 	int n;
-    return n;
 }
 
 int main(){ 
     int x;
-    float y;
+    float y.y;
     float a;
-    x = y;
+    x = 5;
     int m;
     {
         int m;
@@ -23,18 +20,19 @@ int main(){
         }
     }
     a = a * x;
-    if(a == x){
+    if(a == r){
         y = 30.29;
         int ifas;
+        asdasd = asdasd;
     } 
     else {
         x = 5;
     }
-    int list cb;
-    cb = NIL;
     int abc;
-    x = 0.3;
-    read(abc);
+    x = faaaa();
+    c = x;
+    x = 0;
+    read(f);
     writeln("");
     write(y);
     writeln("Vamo q vamo!");
