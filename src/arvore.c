@@ -69,7 +69,7 @@ void castDeTudo(char* tipo, AST* esquerda, AST* direita) {
     strcpy(direita->cast, "list_para_nil");
   } else if(strcmp(esquerda->tipo, "INT") == 0 && strcmp(direita->tipo, "FLOAT") == 0) {
     strcpy(esquerda->tipo, "FLOAT");
-    strcpy(esquerda->cast, "int_para_float");
+    strcpy(esquerda->cast, "float_para_int");
   } else if (strcmp(esquerda->tipo, "FLOAT") == 0 && strcmp(direita->tipo, "INT") == 0) {
     strcpy(direita->tipo, "FLOAT");
     strcpy(direita->cast, "int_para_float");
