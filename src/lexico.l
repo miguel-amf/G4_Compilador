@@ -39,7 +39,7 @@ SAIDA               write|writeln
 CONSTRUTOR_LISTA    ":"
 OP_LISTA            "?"|"%"
 FUNCOES_LISTA       ">>"|"<<"
-STRING              \"[^\"]*\"|'[^']*'
+STRING              \"(\\.|[^"\\])*\"
 NIL                 NIL
 ABRE_PARENTESES     "("
 FECHA_PARENTESES    ")"

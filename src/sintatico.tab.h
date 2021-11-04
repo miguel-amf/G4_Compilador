@@ -69,23 +69,24 @@ extern int yydebug;
     OP_B_RELACIONAIS = 270,        /* OP_B_RELACIONAIS  */
     IF = 271,                      /* IF  */
     ELSE = 272,                    /* ELSE  */
-    FOR = 273,                     /* FOR  */
-    RETORNO = 274,                 /* RETORNO  */
-    ENTRADA = 275,                 /* ENTRADA  */
-    SAIDA = 276,                   /* SAIDA  */
-    CONSTRUTOR_LISTA = 277,        /* CONSTRUTOR_LISTA  */
-    OP_LISTA = 278,                /* OP_LISTA  */
-    FUNCOES_LISTA = 279,           /* FUNCOES_LISTA  */
-    STRING = 280,                  /* STRING  */
-    NIL = 281,                     /* NIL  */
-    ABRE_PARENTESES = 282,         /* ABRE_PARENTESES  */
-    FECHA_PARENTESES = 283,        /* FECHA_PARENTESES  */
-    ABRE_CHAVES = 284,             /* ABRE_CHAVES  */
-    FECHA_CHAVES = 285,            /* FECHA_CHAVES  */
-    ATRIBUICAO = 286,              /* ATRIBUICAO  */
-    VIRGULA = 287,                 /* VIRGULA  */
-    PONTOVIRGULA = 288,            /* PONTOVIRGULA  */
-    COLCHETES = 289                /* COLCHETES  */
+    THEN = 273,                    /* THEN  */
+    FOR = 274,                     /* FOR  */
+    RETORNO = 275,                 /* RETORNO  */
+    ENTRADA = 276,                 /* ENTRADA  */
+    SAIDA = 277,                   /* SAIDA  */
+    CONSTRUTOR_LISTA = 278,        /* CONSTRUTOR_LISTA  */
+    OP_LISTA = 279,                /* OP_LISTA  */
+    FUNCOES_LISTA = 280,           /* FUNCOES_LISTA  */
+    STRING = 281,                  /* STRING  */
+    NIL = 282,                     /* NIL  */
+    ABRE_PARENTESES = 283,         /* ABRE_PARENTESES  */
+    FECHA_PARENTESES = 284,        /* FECHA_PARENTESES  */
+    ABRE_CHAVES = 285,             /* ABRE_CHAVES  */
+    FECHA_CHAVES = 286,            /* FECHA_CHAVES  */
+    ATRIBUICAO = 287,              /* ATRIBUICAO  */
+    VIRGULA = 288,                 /* VIRGULA  */
+    PONTOVIRGULA = 289,            /* PONTOVIRGULA  */
+    COLCHETES = 290                /* COLCHETES  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
@@ -104,7 +105,7 @@ union YYSTYPE
         int escopo;
     } token;
 
-#line 108 "sintatico.tab.h"
+#line 109 "sintatico.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;

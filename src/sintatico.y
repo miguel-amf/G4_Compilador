@@ -46,8 +46,9 @@
 %token <token>  OP_LOGICA_NEG
 %token <token>  OP_LOGICA_OR
 %token <token>  OP_B_RELACIONAIS
-%token <token>  IF
-%token <token>  ELSE
+%token <token> IF
+%token <token> ELSE
+%right THEN ELSE
 %token <token>  FOR
 %token <token>  RETORNO
 %token <token>  ENTRADA
@@ -284,26 +285,26 @@ expressao:
 
 
 for:
-    FOR ABRE_PARENTESES expressao expressao ID ATRIBUICAO ID FECHA_PARENTESES corpo {
+    FOR ABRE_PARENTESES expressao expressao ID ATRIBUICAO ID FECHA_PARENTESES declaracoes {
         $$ = criaNo("for");
         $$->pai = $3;
         $3->filho = $4;
         $4->filho = $9;
     }
-    | FOR ABRE_PARENTESES expressao expressao ID ATRIBUICAO ID OP_B_SOMA_SUB ID FECHA_PARENTESES corpo {
+    | FOR ABRE_PARENTESES expressao expressao ID ATRIBUICAO ID OP_B_SOMA_SUB ID FECHA_PARENTESES declaracoes {
         $$ = criaNo("for");
         $$->pai = $3;
         $3->filho = $4;
         $4->filho = $11;
     }
-    | FOR ABRE_PARENTESES expressao expressao ID ATRIBUICAO ID OP_B_SOMA_SUB numero FECHA_PARENTESES corpo {
+    | FOR ABRE_PARENTESES expressao expressao ID ATRIBUICAO ID OP_B_SOMA_SUB numero FECHA_PARENTESES declaracoes {
         $$ = criaNo("for");
         $$->pai = $3;
         $3->filho = $4;
         $4->filho = $9;
         $9->filho = $11;
     }
-    | FOR ABRE_PARENTESES expressao expressao ID ATRIBUICAO OP_LOGICA_NEG ID FECHA_PARENTESES corpo {
+    | FOR ABRE_PARENTESES expressao expressao ID ATRIBUICAO OP_LOGICA_NEG ID FECHA_PARENTESES declaracoes {
         $$ = criaNo("for");
         $$->pai = $3;
         $3->filho = $4;
@@ -312,7 +313,7 @@ for:
 ;
 
 condicional:
-    IF ABRE_PARENTESES expressao FECHA_PARENTESES declaracoes {
+    IF ABRE_PARENTESES exp FECHA_PARENTESES declaracoes %prec THEN {
         $$ = criaNo("IF");
         $$->pai = $3;
         $3->filho = $5;
@@ -410,6 +411,14 @@ opSomaSub:
         strcpy($$->simbolo, $1->simbolo);
         castDeTudo($$->tipo, $$, $3);
     }
+    | opSomaSub OP_B_SOMA_SUB OP_LISTA opMultDiv {
+        $$ = criaNo("Operando SomaSub");
+        $$->pai = $1;
+        $1->filho = $4;
+        strcpy($$->tipo, $1->tipo);
+        strcpy($$->simbolo, $1->simbolo);
+        castDeTudo($$->tipo, $$, $4);
+    }
     
 ;
 
@@ -496,6 +505,7 @@ entrada:
 saida:
     SAIDA ABRE_PARENTESES STRING FECHA_PARENTESES PONTOVIRGULA {
         $$ = criaNo("saida");
+        strcpy($$->simbolo, $3.id);
     }
     | SAIDA ABRE_PARENTESES ID FECHA_PARENTESES PONTOVIRGULA {
         $$ = criaNo("saida");
