@@ -1,42 +1,46 @@
-int f(int i){
-	int n;
-    float b;
-    return b;
-}
-
-int fa(int i){
-	int n;
-    return n;
-}
-
-int main(){ 
-    int x;
+int fu(int x, int xa){
+    int i;
     float y;
-    float a;
-    x = y;
-    int m;
+    y = 1.14;
+    return (x + y) * 3;
+}
+
+int main(){
+    int i;
     {
-        int m;
+        int i;
+        writeln("lendo i dentro do escopo: ");
+        read(i);
         {
-            int m;
-            int asd;
+            int i;
+            writeln("lendo i dentro do escopo: ");
+            read(i);
+            {
+                int i;
+                writeln("lendo i dentro do escopo: ");
+                read(i);
+            }
         }
     }
-    a = a * x;
-    if(a == x){
-        y = 30.29;
-        int ifas;
-    } 
-    else {
-        x = 5;
+    float r;
+    writeln("lendo r: ");
+    read(r);
+    float fu;
+    fu = fu(i);
+    
+    if(r && 3.14){
+        writeln(" ");
+        if(r == 3){
+            write("eh igual o pi!");
+        }else{
+            writeln("eh menor que o pi!");
+        }
     }
-    int list cb;
-    cb = NIL;
-    int abc;
-    x = 0.3;
-    read(abc);
-    writeln("");
-    write(y);
-    writeln("Vamo q vamo!");
+    if(r == 3)
+        writeln("eh igual o pi!");
+    else{
+        writeln("eh menor que o pi!");
+    }
+    writeln(r);
     return 0;
 }

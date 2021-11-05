@@ -1,53 +1,42 @@
-int list IL;
-float list FL;
-
-int list read_list(int n) {
-	int i;
-	i =  -435.7;
-	int list new;
-	new = NIL;
-	for (i = 0; i < n ; i = i + 1) {
-		int elem;
-		writeln("Digite o elemento da lista: ");
-		read(elem);
-		new = elem : new;
-	}
-	return new;
-}
-
-float succ(int i) {
-	return i+1;
-}
-
-
-int leq_10(float x) {
-	return x <= 10;
-}
-
-
-int main() {
-
-	writeln("Digite os número de elementos da lista: ");
-
+int f(int i){
 	int n;
-	float list FL10;
-	read(n);
-	
-	IL  = read_list(n);
-	FL = succ >> IL;
+    float b;
+    return b;
+}
 
-	FL10 = leq_10 <<  FL;
-	if (FL10 != 1) {
-		float list AUXL;
-		int n; n = 0;
-		for (AUXL=FL10; AUXL != 1; AUXL = !AUXL) {
-			n = n + 1;
-			write(?AUXL); write(" ");
-		}
-		writeln(" ");
-		write("A nova lista tem "); write(n); writeln(" elementos.");
-	}
-	else writeln("A nova lista não possui elementos.");
+int fa(int i){
+	int n;
+    return n;
+}
 
-	return 0;
+int main(){ 
+    int x;
+    float y;
+    float a;
+    x = y;
+    int m;
+    {
+        int m;
+        {
+            int m;
+            int asd;
+        }
+    }
+    a = a * x;
+    if(a == x){
+        y = 30.29;
+        int ifas;
+    } 
+    else {
+        x = 5;
+    }
+    int list cb;
+    cb = NIL;
+    int abc;
+    x = 0.3;
+    read(abc);
+    writeln("");
+    write(y);
+    writeln("Vamo q vamo!");
+    return 0;
 }

@@ -24,8 +24,7 @@
     extern char type_symbol[20];
     int qtdString = 0;
     int qtdIf = 0;
-    int qtdReg = 0;
-    char* intrucaoOp(char* op);
+    int funcao = 0;
 %}
 
 %union{
@@ -385,16 +384,6 @@ expressao_logica:
         $1->filho = $3;
         //strcpy($$->tipo, "INT");
         castDeTudo($$->tipo, $$, $3);
-        $$->regTac = qtdReg++;
-        $$->auxTac = 1;
-        char* res = "";
-        printf("CHEGOU AQUI\n");
-        // res = strcat(res, intrucaoOp($2.id));
-        if($3->auxTac == 0){
-            sprintf($$->codeTac, "%s $%d, $%d, %s", res, $$->regTac, $1->regTac, $3->simbolo);
-        }else{
-            sprintf($$->codeTac, "%s $%d, $%d, $%d", res, $$->regTac, $1->regTac, $3->regTac);
-        }
     }
     | expressao_relacional {
         $$ = criaNo("expressaoLogica");
@@ -623,36 +612,6 @@ void yyerror(const char* s){
     fprintf(stderr, "Linha: %d - Coluna: %d - Token: %s - Erro: %s\n", yylval.token.linha, yylval.token.coluna, yylval.token.id, s);
 }
 
-
-char* intrucaoOp(char* op) {
-  if(strcmp(op, "+") == 0) {
-    return "add ";
-  } else if(strcmp(op, "-") == 0) {
-    return "sub ";
-  } else if(strcmp(op, "*") == 0) {
-    return "mul ";
-  } else if(strcmp(op, "/") == 0) {
-    return "div ";
-  } else if(strcmp(op, "&&") == 0) {
-    return "and ";
-  } else if(strcmp(op, "||") == 0) {
-    return "or ";
-  } else if(strcmp(op, ">") == 0) {
-    return "slt ";
-  } else if(strcmp(op, "<") == 0) {
-    return "slt ";
-  } else if(strcmp(op, "==") == 0) {
-    return "seq ";
-  } else if(strcmp(op, ">=") == 0) {
-    return "sleq ";
-  } else if(strcmp(op, "<=") == 0) {
-    return "sleq ";
-  }
-  return "";
-}
-
-
-
 const char* saida = 
     "write_fn:\n"
     "\tmov $500, 0\n"
@@ -669,42 +628,43 @@ const char* saida =
     "\tprintln\n"
     "\treturn\n";
 
-void writeTable(AST* node, FILE *fp){
-    if (!node)
+void tabelaTac(AST* ast, FILE *fp){
+    if (ast == NULL){
         return;
-    if(strcmp(node->tableTac, ""))
-        fprintf (fp, "%s\n", node->tableTac);
-    writeTable(node->pai, fp);
-    writeTable(node->filho, fp);
-}
-int firstfunc = 0;
-void writeCode(AST* node, FILE *fp){
-    if (!node)
-        return;
-    
-    if(strstr(node->nome_regra, "Declaracao de funcao")){
-        if(firstfunc == 1){
-            fprintf (fp, "\treturn 0\n");
-        }
-        firstfunc = 1;
-        fprintf (fp, "\n%s:\n", node->pai->simbolo);
     }
-    writeCode(node->pai, fp);
-    writeCode(node->filho, fp);
-    if(strcmp(node->codeTac, "")){
-        fprintf (fp, "%s\n", node->codeTac);
+    if(strcmp(ast->tableTac, "")){
+        fprintf (fp, "%s\n", ast->tableTac);
+    }
+    tabelaTac(ast->pai, fp);
+    tabelaTac(ast->filho, fp);
+}
+
+void codigoTac(AST* ast, FILE *fp){
+    if (ast == NULL){
+        return;
+    }
+    if(strcmp(ast->nome_regra, "Declaracao de funcao") == 0){
+        if(funcao == 1) fprintf (fp, "\treturn 0\n");
+        funcao = 1;
+        fprintf (fp, "\n%s:\n", ast->pai->simbolo);
+    }
+    codigoTac(ast->pai, fp);
+    codigoTac(ast->filho, fp);
+    if(strcmp(ast->codeTac, "")){
+        fprintf (fp, "%s\n", ast->codeTac);
     }
 }
 
-void writeFile(AST* raiz){
-    FILE *fp = fopen("out.tac", "w+");
+void geraArquivoTac(AST* raiz, char* nomeArquivo){
+    char arquivo[200] = "";
+    sprintf(arquivo, "%s.tac", nomeArquivo);
+    FILE *fp = fopen(arquivo, "w+");
     if(fp){
         fprintf (fp, ".table\n");
-        writeTable(raiz, fp);
+        tabelaTac(raiz, fp);
         fprintf (fp, "\n.code\n");
         fprintf(fp, "\n%s\n", saida);
-        writeCode(raiz, fp);
-        // writeMainReturn(fp);
+        codigoTac(raiz, fp);
     }
     else{
         printf("Error, could not write TAC file.\n");
@@ -714,7 +674,10 @@ void writeFile(AST* raiz){
 
 
 int main(int argc, char ** argv) {
-    
+    int posicao = 6;
+    int final = (int)strlen(argv[1]) - posicao;
+    char parte[10000];
+    memcpy(parte, &argv[1][posicao], final-2);
     yyin = fopen(argv[1], "r");
     
     yyparse();
@@ -728,7 +691,7 @@ int main(int argc, char ** argv) {
     }
     mostraTabela(id);
     if(erros == 0){
-        writeFile(raiz);
+        geraArquivoTac(raiz, parte);
     }
     limpaTabela(id);
     liberaAST();
