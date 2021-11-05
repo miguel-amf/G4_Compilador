@@ -16,11 +16,16 @@
     TabelaSimbolo* id;
     int erros = 0;
     char tipos[4][10] = {"INT", "FLOAT", "INT LIST", "FLOAT LIST"};
+    char tiposTac[4][10] = {"int", "float", "int list", "float list"};
     int tipo = 0;
     extern int escopoL[1000];
     extern int escopoAtual;
     extern int escopo;
     extern char type_symbol[20];
+    int qtdString = 0;
+    int qtdIf = 0;
+    int qtdReg = 0;
+    char* intrucaoOp(char* op);
 %}
 
 %union{
@@ -93,6 +98,7 @@
 %type <ast> retorno;
 %type <ast> nil;
 %type <ast> numero;
+%type <ast> expressao_unaria;
 
 
 %%
@@ -156,6 +162,7 @@ declaracaoVariavel:
         $$->pai = $1;
         id = insereSimbolo(id, $2.escopo, $2.id, "Variavel", tipos[tipo], $2.linha, $2.coluna, 0);
         strcpy($1->simbolo, $2.id);
+        sprintf($$->tableTac, "\t%s %s%d", tiposTac[tipo], $2.id, $2.escopo);
         tipo = 0;
     }
 ;
@@ -178,6 +185,7 @@ listaDeParametros:
         $$->pai = $1;
         $1->filho = $4;
         id = insereSimbolo(id, $2.escopo, $2.id, "Variavel", tipos[tipo], $2.linha, $2.coluna, 1);
+        sprintf($$->tableTac,"\t%s %s%d", tiposTac[tipo], $2.id, $2.escopo+1);
         tipo = 0;
         strcpy($1->simbolo, $2.id);
     }
@@ -187,6 +195,7 @@ listaDeParametros:
         escopoL[++escopoAtual] = escopo++;
         id = insereSimbolo(id, escopoL[escopoAtual], $2.id, "Variavel", tipos[tipo], $2.linha, $2.coluna, 1);
         strcpy($1->simbolo, $2.id);
+        sprintf($$->tableTac,"\t%s %s%d", tiposTac[tipo], $2.id, escopoL[escopoAtual]+1);
         tipo = 0;
         escopoAtual--;
         escopo--;
@@ -317,6 +326,10 @@ condicional:
         $$ = criaNo("IF");
         $$->pai = $3;
         $3->filho = $5;
+
+        // sprintf($$->codeTac, "saidaIf%d:\n", qtdIf);
+        // sprintf($$->codeTac, "\tbrz ");
+        // qtdIf++;
     }
     | IF ABRE_PARENTESES exp FECHA_PARENTESES declaracoes ELSE declaracoes {
         $$ = criaNo("IF-ELSE");
@@ -364,8 +377,7 @@ expressao_logica:
         $$->pai = $1;
         $1->filho = $3;
         //strcpy($$->tipo, "INT");
-        castDeTudo($$->tipo, $$, $3);
-        
+        castDeTudo($$->tipo, $$, $3);        
     }
     | expressao_logica OP_LOGICA_AND expressao_relacional {
         $$ = criaNo("expressaoLogica");
@@ -373,11 +385,22 @@ expressao_logica:
         $1->filho = $3;
         //strcpy($$->tipo, "INT");
         castDeTudo($$->tipo, $$, $3);
+        $$->regTac = qtdReg++;
+        $$->auxTac = 1;
+        char* res = "";
+        printf("CHEGOU AQUI\n");
+        // res = strcat(res, intrucaoOp($2.id));
+        if($3->auxTac == 0){
+            sprintf($$->codeTac, "%s $%d, $%d, %s", res, $$->regTac, $1->regTac, $3->simbolo);
+        }else{
+            sprintf($$->codeTac, "%s $%d, $%d, $%d", res, $$->regTac, $1->regTac, $3->regTac);
+        }
     }
     | expressao_relacional {
         $$ = criaNo("expressaoLogica");
         strcpy($$->tipo, $1->tipo);
         strcpy($$->simbolo, $1->simbolo);
+        $$ = $1;
     }
 ;
 
@@ -386,6 +409,7 @@ expressao_relacional:
         $$ = criaNo("expressaoRelacional");
         strcpy($$->tipo, $1->tipo);
         strcpy($$->simbolo, $1->simbolo);
+        $$ = $1;
     }
     | expressao_relacional OP_B_RELACIONAIS opSomaSub {
         $$ = criaNo("expressaoRelacional");
@@ -402,6 +426,7 @@ opSomaSub:
         $$ = criaNo("Operando SomaSub");
         strcpy($$->tipo, $1->tipo);
         strcpy($$->simbolo, $1->simbolo);
+        $$ = $1;
     }
     | opSomaSub OP_B_SOMA_SUB opMultDiv {
         $$ = criaNo("Operando SomaSub");
@@ -410,6 +435,7 @@ opSomaSub:
         strcpy($$->tipo, $1->tipo);
         strcpy($$->simbolo, $1->simbolo);
         castDeTudo($$->tipo, $$, $3);
+        sprintf($$->codeTac, "\tadd %s, %s", $1->simbolo, $3->simbolo);
     }
     | opSomaSub OP_B_SOMA_SUB OP_LISTA opMultDiv {
         $$ = criaNo("Operando SomaSub");
@@ -423,12 +449,7 @@ opSomaSub:
 ;
 
 opMultDiv:
-    argumento {
-        $$ = criaNo("Operando MultDiv");
-        strcpy($$->tipo, $1->tipo);
-        strcpy($$->simbolo, $1->simbolo);
-    }
-    | opMultDiv OP_B_MULT_DIV argumento {
+   opMultDiv OP_B_MULT_DIV argumento {
         $$ = criaNo("Operando MultDiv");
         $$->pai = $1;
         $1->filho = $3;
@@ -436,7 +457,22 @@ opMultDiv:
         strcpy($$->simbolo, $1->simbolo);
         castDeTudo($$->tipo, $$, $3);
     }
+    | expressao_unaria {
+        $$ = $1;
+    }
 ;
+
+expressao_unaria:
+    argumento {
+        $$ = criaNo("expressao_unaria");
+        strcpy($$->tipo, $1->tipo);
+        strcpy($$->simbolo, $1->simbolo);
+    }
+    | OP_B_SOMA_SUB argumento {
+        $$ = criaNo("expressao_unaria");
+        strcpy($$->tipo, $2->tipo);
+        strcpy($$->simbolo, $2->simbolo);
+    }
 
 argumento:
     ID {
@@ -498,6 +534,12 @@ entrada:
             printf("Linha: %d - Coluna: %d - Identificador: %s - Erro Semantico - Variavel nao declarada!!!\n", $3.linha, $3.coluna, $3.id);
         }else{
             strcpy($$->tipo, c->tipo);
+            if(strcmp($$->tipo, "FLOAT") == 0){
+                sprintf($$->codeTac,"\tscanf %s%d",$3.id, $3.escopo);
+            }
+            if(strcmp($$->tipo, "INT") == 0){
+                sprintf($$->codeTac,"\tscani %s%d",$3.id, $3.escopo);
+            }
         }
     }
 ;
@@ -506,6 +548,19 @@ saida:
     SAIDA ABRE_PARENTESES STRING FECHA_PARENTESES PONTOVIRGULA {
         $$ = criaNo("saida");
         strcpy($$->simbolo, $3.id);
+        sprintf($$->tableTac, "\tchar string%d[] = %s", qtdString, $3.id);
+        if(strcmp($1.id, "writeln") == 0){
+            int tamanho = (int)strlen($3.id) - 2;
+            sprintf($$->codeTac, "\tstring%d", qtdString);
+            sprintf($$->codeTac, "\tmov $400, &string%d\n\tparam %d\n\tparam $400\n\tcall writeln_fn, 2", qtdString, tamanho);
+        }
+        if(strcmp($1.id, "write") == 0){
+            int tamanho = (int)strlen($3.id) - 2;
+            sprintf($$->codeTac, "\tstring%d", qtdString);
+            sprintf($$->codeTac, "\tmov $400, &string%d\n\tparam %d\n\tparam $400\n\tcall write_fn, 2", qtdString, tamanho);
+        }
+        qtdString++;
+
     }
     | SAIDA ABRE_PARENTESES ID FECHA_PARENTESES PONTOVIRGULA {
         $$ = criaNo("saida");
@@ -568,6 +623,96 @@ void yyerror(const char* s){
     fprintf(stderr, "Linha: %d - Coluna: %d - Token: %s - Erro: %s\n", yylval.token.linha, yylval.token.coluna, yylval.token.id, s);
 }
 
+
+char* intrucaoOp(char* op) {
+  if(strcmp(op, "+") == 0) {
+    return "add ";
+  } else if(strcmp(op, "-") == 0) {
+    return "sub ";
+  } else if(strcmp(op, "*") == 0) {
+    return "mul ";
+  } else if(strcmp(op, "/") == 0) {
+    return "div ";
+  } else if(strcmp(op, "&&") == 0) {
+    return "and ";
+  } else if(strcmp(op, "||") == 0) {
+    return "or ";
+  } else if(strcmp(op, ">") == 0) {
+    return "slt ";
+  } else if(strcmp(op, "<") == 0) {
+    return "slt ";
+  } else if(strcmp(op, "==") == 0) {
+    return "seq ";
+  } else if(strcmp(op, ">=") == 0) {
+    return "sleq ";
+  } else if(strcmp(op, "<=") == 0) {
+    return "sleq ";
+  }
+  return "";
+}
+
+
+
+const char* saida = 
+    "write_fn:\n"
+    "\tmov $500, 0\n"
+    "proximo:\n"
+    "\tmov $499, #1\n"
+    "\tmov $499, $499[$500]\n"
+    "\tadd $500, $500, 1\n"
+    "\tprint $499\n"
+    "\tsub $499, $500, #0\n"
+    "\tbrnz proximo, $499\n"
+    "\treturn\n"
+    "writeln_fn:\n"
+    "\tcall write_fn, 2\n"
+    "\tprintln\n"
+    "\treturn\n";
+
+void writeTable(AST* node, FILE *fp){
+    if (!node)
+        return;
+    if(strcmp(node->tableTac, ""))
+        fprintf (fp, "%s\n", node->tableTac);
+    writeTable(node->pai, fp);
+    writeTable(node->filho, fp);
+}
+int firstfunc = 0;
+void writeCode(AST* node, FILE *fp){
+    if (!node)
+        return;
+    
+    if(strstr(node->nome_regra, "Declaracao de funcao")){
+        if(firstfunc == 1){
+            fprintf (fp, "\treturn 0\n");
+        }
+        firstfunc = 1;
+        fprintf (fp, "\n%s:\n", node->pai->simbolo);
+    }
+    writeCode(node->pai, fp);
+    writeCode(node->filho, fp);
+    if(strcmp(node->codeTac, "")){
+        fprintf (fp, "%s\n", node->codeTac);
+    }
+}
+
+void writeFile(AST* raiz){
+    FILE *fp = fopen("out.tac", "w+");
+    if(fp){
+        fprintf (fp, ".table\n");
+        writeTable(raiz, fp);
+        fprintf (fp, "\n.code\n");
+        fprintf(fp, "\n%s\n", saida);
+        writeCode(raiz, fp);
+        // writeMainReturn(fp);
+    }
+    else{
+        printf("Error, could not write TAC file.\n");
+    }
+    fclose(fp);
+}
+
+
 int main(int argc, char ** argv) {
     
     yyin = fopen(argv[1], "r");
@@ -582,6 +727,9 @@ int main(int argc, char ** argv) {
         mostraAST(raiz, 0);
     }
     mostraTabela(id);
+    if(erros == 0){
+        writeFile(raiz);
+    }
     limpaTabela(id);
     liberaAST();
     fclose(yyin);

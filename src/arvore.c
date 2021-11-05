@@ -15,6 +15,10 @@ AST* criaNo(char* nome_regra){
     strcpy(no->simbolo, "");
     strcpy(no->tipo,"");
     strcpy(no->cast,"");
+    strcpy(no->tableTac,"");
+    strcpy(no->codeTac,"");
+    no->regTac = 0;
+    no->auxTac = 0;
     nos[cont] = no;
     cont++;
 

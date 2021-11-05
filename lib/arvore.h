@@ -8,6 +8,10 @@ typedef struct AST{
     char tipo[20];
     char cast[20];
     char simbolo[100];
+    char tableTac[300];
+    char codeTac[300];
+    int regTac;
+    int auxTac;
 } AST;
 
 AST* criaNo(char* nome_regra);

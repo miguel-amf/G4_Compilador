@@ -6,5 +6,5 @@ run:
 	valgrind -v --tool=memcheck --leak-check=full --show-leak-kinds=all --track-origins=yes --log-file="logfile.out" ./tradutor tests/testeCerto2.c
 	./tradutor tests/testeCertoLab.c
 	./tradutor tests/testeCertoLab2.c
-	./tradutor tests/testeErrado.c
-	./tradutor tests/testeErrado2.c
+	valgrind -v --tool=memcheck --leak-check=full --show-leak-kinds=all --track-origins=yes --log-file="logfile.out" ./tradutor tests/testeErrado.c
+	valgrind -v --tool=memcheck --leak-check=full --show-leak-kinds=all --track-origins=yes --log-file="logfile.out" ./tradutor tests/testeErrado2.c

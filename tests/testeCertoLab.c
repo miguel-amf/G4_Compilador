@@ -1,4 +1,4 @@
-int fu(int x){
+int fu(int x, int xa){
     int i;
     float y;
     y = 1.14;
@@ -9,22 +9,25 @@ int main(){
     int i;
     {
         int i;
+        read(i);
         {
             int i;
+            read(i);
             {
                 int i;
+                read(i);
             }
         }
     }
-    read(i);
     float r;
+    read(r);
     float fu;
     fu = fu(i);
     
-    if(r == 3.14){
-        writeln("eh igual o pi!");
+    if(r && 3.14){
+        writeln(" ");
         if(r == 3){
-            writeln("eh igual o pi!");
+            write("eh igual o pi!");
         }else{
             writeln("eh menor que o pi!");
         }
