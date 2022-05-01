@@ -1,3 +1,12 @@
+/****************************************************/
+/* File: globals.h                                  */
+/* Yacc/Bison Version                               */
+/* Global types and vars for TINY compiler          */
+/* must come before other include files             */
+/* Compiler Construction: Principles and Practice   */
+/* Kenneth C. Louden                                */
+/****************************************************/
+
 #ifndef _GLOBALS_H_
 #define _GLOBALS_H_
 
@@ -6,16 +15,23 @@
 #include <ctype.h>
 #include <string.h>
 
-/* Yacc/Bison gera internamente seus proprios valores para os tokens, outros arquivos podem
-acessar esses valores incluindo o arquivo tab.h gerado usando a opcao -d, gerando cabecalho.
-O sinalizador YYPARSER impede a inclusao tab.h na propria saida do Yacc/Bison */
+/* Yacc/Bison generates internally its own values
+ * for the tokens. Other files can access these values
+ * by including the tab.h file generated using the
+ * Yacc/Bison option -d ("generate header")
+ *
+ * The YYPARSER flag prevents inclusion of the tab.h
+ * into the Yacc/Bison output itself
+ */
 
 #ifndef YYPARSER
 
-/* O nome desse arquivo pode mudar */
+/* the name of the following file may change */
 #include "y.tab.h"
 
-/* ENDFILE e definido de forma implicita pelo Yacc/Bison e nao e incluido no arquivo tab.h */
+/* ENDFILE is implicitly defined by Yacc/Bison,
+ * and not included in the tab.h file
+ */
 #define ENDFILE 0
 
 #endif
@@ -28,30 +44,31 @@ O sinalizador YYPARSER impede a inclusao tab.h na propria saida do Yacc/Bison */
 #define TRUE 1
 #endif
 
-/* Numero de palavras reservadas */
+/* MAXRESERVED = the number of reserved words */
 #define MAXRESERVED 8
 
-/* Yacc/Bison gera seus proprios valores inteiros para fichas */
+/* Yacc/Bison generates its own integer values
+ * for tokens
+ */
 
 typedef int TokenType; 
 
-extern FILE* source; /* arquivo de texto do codigo fonte */
-extern FILE* listing; /* listando arquivo de texto de saida */
-extern FILE* code; /* arquivo de texto de codigo para o simulador de TM */
+extern FILE* source; /* source code text file */
+extern FILE* listing; /* listing output text file */
+extern FILE* code; /* code text file for TM simulator */
 
-extern int lineno; /* numero da linha de origem para listagem */
+extern int lineno; /* source line number for listing */
 
-
-                     /*   Syntax tree for parsing */
-
+/**************************************************/
+/***********   Syntax tree for parsing ************/
+/**************************************************/
 
 typedef enum {StmtK, ExpK, DecK} NodeKind;
 typedef enum {VarK, FunK, ParamK} DecKind;
 
 typedef enum {CompK, IfK, WhileK, RetK} StmtKind;
 typedef enum {OpK, ConstK, IdK, ArrIdK, CallK} ExpKind;
-
-/* ExpType e usado para checar o tipo */
+/* ExpType is used for type checking */
 typedef enum {Void, Integer, Array} ExpType;
 
 #define MAXCHILDREN 3
@@ -76,31 +93,43 @@ typedef struct treeNode
         char* name;
     } attr;
     int size;
-    ExpType type; /* para checar o tipo */
+    ExpType type; /* for type checking of exps */
     struct ScopeListRec *scope;
 
    } TreeNode;
 
+/**************************************************/
+/***********   Flags for tracing       ************/
+/**************************************************/
 
-                              /*   Flags para rastreio      */
-
-
-/* faz com que o programa fonte seja ecoado no arquivo de listagem com numeros de linha durante a analise */
+/* EchoSource = TRUE causes the source program to
+ * be echoed to the listing file with line numbers
+ * during parsing
+ */
 extern int EchoSource;
 
-/* faz com que as informacoes do token sejam impressas no arquivo de listagem
-a medida que cada token e reconhecido pelo scanner */
+/* TraceScan = TRUE causes token information to be
+ * printed to the listing file as each token is
+ * recognized by the scanner
+ */
 extern int TraceScan;
 
-/* Faz com que a arvore de sintaxe seja impressa no arquivo de listagem de forma linearizada usando recuos para filhos */
+/* TraceParse = TRUE causes the syntax tree to be
+ * printed to the listing file in linearized form
+ * (using indents for children)
+ */
 extern int TraceParse;
 
-/* Faz com que as insercoes e pesquisas da tabela de simbolos sejam relatadas ao arquivo de listagem */
+/* TraceAnalyze = TRUE causes symbol table inserts
+ * and lookups to be reported to the listing file
+ */
 extern int TraceAnalyze;
 
-/* Faz com que os comentarios sejam gravados no arquivo de codigo TM a medida que o codigo e gerado */
+/* TraceCode = TRUE causes comments to be written
+ * to the TM code file as code is generated
+ */
 extern int TraceCode;
 
-/* Impede novas passagens se ocorrer um erro */
+/* Error = TRUE prevents further passes if an error occurs */
 extern int Error; 
 #endif

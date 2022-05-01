@@ -1,0 +1,7 @@
+./src/cminus
+./src/cminus_flex
+./src/y.tab.c
+./src/y.tab.h
+./src/lex.yy.c
+./src/*.o
+
