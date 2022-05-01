@@ -1,18 +1,12 @@
-/****************************************************/
-/* File: parse.c                                    */
-/* The parser implementation for the TINY compiler  */
-/* Compiler Construction: Principles and Practice   */
-/* Kenneth C. Louden                                */
-/****************************************************/
-
 #include "globals.h"
 #include "util.h"
 #include "scan.h"
 #include "parse.h"
 
-static TokenType token; /* holds current token */
+/* mantem o token atual */
+static TokenType token; 
 
-/* function prototypes for recursive calls */
+/* prototipos de funcao para chamadas recursivas */
 static TreeNode * stmt_sequence(void);
 static TreeNode * statement(void);
 static TreeNode * if_stmt(void);
@@ -50,7 +44,7 @@ TreeNode * stmt_sequence(void)
     q = statement();
     if (q!=NULL) {
       if (t==NULL) t = p = q;
-      else /* now p cannot be NULL either */
+      else /* para p tambem nao poder ser NULL */
       { p->sibling = q;
         p = q;
       }
@@ -71,7 +65,7 @@ TreeNode * statement(void)
               printToken(token,tokenString);
               token = getToken();
               break;
-  } /* end case */
+  } 
   return t;
 }
 
@@ -199,12 +193,10 @@ TreeNode * factor(void)
   return t;
 }
 
-/****************************************/
-/* the primary function of the parser   */
-/****************************************/
-/* Function parse returns the newly 
- * constructed syntax tree
- */
+
+/* Principal funcao do parser   */
+
+/* Funcao parse retorna a arvore de sintaxe recem construida */
 TreeNode * parse(void)
 { TreeNode * t;
   token = getToken();

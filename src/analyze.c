@@ -41,7 +41,7 @@ static void nullProc(TreeNode * t)
 }
 
 static void symbolError(TreeNode *t, char *message){
-  fprintf(listing, "Symbol error at line %d: %s\n",t->lineno, message);
+  fprintf(listing, "Simbolo errado na linha %d: %s\n",t->lineno, message);
 }
 
 static void forPop( TreeNode * t){
@@ -54,9 +54,7 @@ static void forPop( TreeNode * t){
   }
 }
 
-/* insertNode insere identificadores stored in t into 
- * the symbol table 
- */
+/* insertNode insere identificadores guardados em t na tabela de simbolos */
 static void insertNode( TreeNode * t)
 {
   switch (t->nodekind)
@@ -115,7 +113,7 @@ static void insertNode( TreeNode * t)
           if(st_lookup(t->attr.name)){
             just_add_line(t->attr.name, t->lineno);
           }else{
-            symbolError(t, "Undeclared");
+            symbolError(t, "Não declarado");
             break;
           }
         
@@ -129,7 +127,7 @@ static void insertNode( TreeNode * t)
         case FunK:
 
           if(st_lookup_excluding_parent(funcName, t->attr.name)) {
-            symbolError(t, "function already declared in same scope");
+            symbolError(t, "Função já declarada neste escopo");
             break;
           }
 
@@ -143,7 +141,7 @@ static void insertNode( TreeNode * t)
         case VarK:
 
           if(st_lookup_excluding_parent(funcName, t->attr.name)){
-            symbolError(t, "Var already declared in same scope");
+            symbolError(t, "A variavel já está declarada no mesmo escopo");
             break;
           }
           st_insert( funcName, t->attr.name, t->type, t->lineno, addLocation(), t);
@@ -194,9 +192,7 @@ static void inoutput(){
   st_insert(funcName, output->attr.name, output->type, 0, addLocation(), output);
 
 }
-/* Function buildSymtab constructs the symbol 
- * table by preorder traversal of the syntax tree
- */
+/* buildSymtab constroi a tabela de simbolos na ordem de travessia de pre ordem arvore de sintaxe */
 void buildSymtab(TreeNode * syntaxTree)
 {
   global = scope_create(funcName);
@@ -219,9 +215,7 @@ static void typeError(TreeNode * t, char * message)
 
 
 
-/* Procedure checkNode performs
- * type checking at a single tree node
- */
+/* checkNode executa uma verificacao de tipo em um unico no da arvore */
 
 static void forPush (TreeNode *t){
   switch (t->nodekind)
@@ -269,12 +263,12 @@ switch (t->nodekind)
       { 
         case IfK:
           if(t->child[0]->type == Void)
-            typeError(t->child[0], "void só funciona em funções");
+            typeError(t->child[0], "tipo void só funciona em funções");
           break;
 
         case WhileK:
           if(t->child[0]->type == Void)
-            typeError(t->child[0], "void só é permitido em funções");
+            typeError(t->child[0], "tipo void só é permitido em funções");
           break;
 
         case CompK:
@@ -316,22 +310,22 @@ switch (t->nodekind)
           
           if(op == ASSIGN){
             if( left != right ){
-              typeError(t->child[0], "two operands should be same type when assign");
+              typeError(t->child[0], "ao atribuir dois operandos, ambos devem ser do mesmo tipo");
             }
             else
               t->type = t->child[0]->type;
           }else{
             if( left != right ){
-              typeError(t->child[0], "two operands should be same type");
+              typeError(t->child[0], "dois operandos devem ser do mesmo tipo");
             }
             else if(left == Array && right == Array)
-              typeError(t, "two operands shoud not be array");
+              typeError(t, "dois operandos não devem ser array");
 
             else if(op == MINUS && left == Integer && right == Array)
-              typeError(t, "minus no int - array");
+              typeError(t, "não é permitido subtrair um int de um array");
             
             else if( (op == TIMES || op == OVER) && (left == Array || right == Array) )
-              typeError(t, "no times or over in array");
+              typeError(t, "não é permitido times ou over em um array");
             
             else
               t->type = Integer;
@@ -361,7 +355,7 @@ switch (t->nodekind)
           }
 
           if(t->child[0]->type != Integer)
-            typeError(t->child[0], "exp should be Integer");
+            typeError(t->child[0], "exp deve ser inteiro");
           else{
             t->type = Integer;
           }
@@ -380,15 +374,15 @@ switch (t->nodekind)
 
           while(params != NULL){
             if(args == NULL){
-              typeError(args, "num(args) and num(params) should be same");
+              typeError(args, "num(args) e num(params) devem ser o mesmo");
               break;
             }
             else if(args->type == Void){
-              typeError(args, "void is only available for function");
+              typeError(args, "o tipo void só deve ser utilizado em funções");
               break;
             }
             else if(args->type != params->type){
-              typeError(args, "args and params should have same type");
+              typeError(args, "argumentos e parametros devem ter o mesmo tipo");
               break;
             }
             else{
@@ -415,9 +409,7 @@ switch (t->nodekind)
   }
 }
 
-/* Procedure typeCheck performs type checking 
- * by a postorder syntax tree traversal
- */
+/* typeCheckrealiza verificacao de tipo por uma travessia de arvore de sintaxe pos ordem */
 void typeCheck(TreeNode * syntaxTree)
 { 
   scope_push(global);

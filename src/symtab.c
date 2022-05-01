@@ -1,12 +1,4 @@
-/****************************************************/
-/* File: symtab.c                                   */
-/* Symbol table implementation for the TINY compiler*/
-/* (allows only one symbol table)                   */
-/* Symbol table is implemented as a chained         */
-/* hash table                                       */
-/* Compiler Construction: Principles and Practice   */
-/* Kenneth C. Louden                                */
-/****************************************************/
+/* a tabela de símbolos será implementada como uma tabela hash encadeada */
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -18,11 +10,12 @@
 #define SHIFT 4
 char *typeString[] = {"void", "int", "int[]"};
 
-static int hash ( char * key )
-{ int temp = 0;
+//implementa a tabela hash
+static int hash ( char * chave ) { 
+  int temp = 0;
   int i = 0;
-  while (key[i] != '\0')
-  { temp = ((temp << SHIFT) + key[i]) % SIZE;
+  while (chave[i] != '\0')  { 
+    temp = ((temp << SHIFT) + chave[i]) % SIZE;
     ++i;
   }
   return temp;
@@ -34,11 +27,12 @@ static ScopeList scopeStack[1000];
 static int nScopeStack = 0;
 static int location[1000];
 
-ScopeList scope_top(){
+//funcao para voltar ao topo do escopo de variaveis
+ScopeList scope_top() {
   return scopeStack[nScopeStack - 1];
 }
 
-ScopeList scope_create(char *name){
+ScopeList scope_create(char *name) {
   ScopeList new;
 
   new = (ScopeList) malloc(sizeof(struct ScopeListRec));
@@ -49,21 +43,21 @@ ScopeList scope_create(char *name){
   return new;
 }
 
-void scope_pop(){
+void scope_pop() {
   nScopeStack = nScopeStack-1;
 }
 
-void scope_push(ScopeList scope){
+void scope_push(ScopeList scope) {
   scopeStack[nScopeStack] = scope;
   location[nScopeStack++] = 0;
 }
 
-int addLocation(){
+int addLocation() {
   return location[nScopeStack - 1]++;
 }
 
 
-BucketList st_lookup (char * name){
+BucketList st_lookup (char * name) {
   int h = hash(name);
   ScopeList sc = scope_top();
 
@@ -80,11 +74,11 @@ BucketList st_lookup (char * name){
   return NULL;
 }
 
-BucketList st_lookup_excluding_parent ( char * scope, char * name){
+BucketList st_lookup_excluding_parent ( char * scope, char * name) {
   int h = hash(name);
   ScopeList sc = scope_top();
   
-  if(strcmp(sc->name, scope)){
+  if(strcmp(sc->name, scope)) {
     BucketList l = sc->bucket[h];
     while(l!=NULL){
       if(strcmp(l->name, name) == 0) return l;
@@ -153,18 +147,18 @@ void just_add_line(char * name, int lineno){
   t->next->next = NULL;
 }
 
+//imprime a tabela de símbolos
 void printSymTab(FILE * listing){
   int i;
   int j;
-  fprintf(listing,"Variable Name\tType\tLocation\tScope\t\tLine Numbers\n");
-  fprintf(listing,"-------------\t-----\t---------\t------\t\t-------------\n");
+  fprintf(listing,"Nome Variável\tTipo\tLocalizacao\tEscopo\t\tNumeros das linhas\n");
+  fprintf(listing,"_____________\t____\t___________\t______\t\t__________________\n");
   
   for(j = 0 ; j < ntotalScope; j++){
     ScopeList sc = totalScope[j];
 
-    for (i=0;i<SIZE;++i)
-    { if (sc->bucket[i] != NULL)
-      {
+    for (i=0;i<SIZE;i++) {
+      if (sc->bucket[i] != NULL) {
         BucketList l = sc->bucket[i];
         while (l != NULL)
         { LineList t = l->lines;
@@ -183,4 +177,3 @@ void printSymTab(FILE * listing){
     }
   }
 }
-/* printSymTab */

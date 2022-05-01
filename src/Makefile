@@ -1,11 +1,8 @@
-#
-# Makefile for TINY
-# Gnu C Version
-# K. Louden 2/3/98
-#
+# Makefile do compilador de C- do grupo 4
 
+#escolha de compilador
 CC = gcc
-
+#escolha de flags
 CFLAGS =
 
 OBJS = y.tab.o lex.yy.o main.o util.o symtab.o analyze.o
