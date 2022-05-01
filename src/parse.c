@@ -34,8 +34,8 @@ static void match(TokenType expected)
   }
 }
 
-TreeNode * stmt_sequence(void)
-{ TreeNode * t = statement();
+TreeNode * stmt_sequence(void){ 
+  TreeNode * t = statement();
   TreeNode * p = t;
   while ((token!=ENDFILE) && (token!=END) &&
          (token!=ELSE) && (token!=UNTIL))
@@ -197,8 +197,8 @@ TreeNode * factor(void)
 /* Principal funcao do parser   */
 
 /* Funcao parse retorna a arvore de sintaxe recem construida */
-TreeNode * parse(void)
-{ TreeNode * t;
+TreeNode * parse(void) { 
+  TreeNode * t;
   token = getToken();
   t = stmt_sequence();
   if (token!=ENDFILE)

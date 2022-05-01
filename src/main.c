@@ -49,7 +49,7 @@ main( int argc, char * argv[] ) {
 //chama o analisador lexico
  syntaxTree = parse(); 
  if (TraceParse) {
-  fprintf(listing,"\nSyntax tree:\n");
+  fprintf(listing,"\nArvore Sintática:\n");
   printTree(syntaxTree);
  }
 
