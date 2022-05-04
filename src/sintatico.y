@@ -56,12 +56,10 @@
 %right THEN ELSE
 %token <token>  WHILE
 %token <token>  RETORNO
-%token <token>  ENTRADA
-%token <token>  SAIDA
-%token <token>  CONSTRUTOR_LISTA
+/* %token <token>  CONSTRUTOR_LISTA
 %token <token>  OP_LISTA
-%token <token>  FUNCOES_LISTA
-%token <token>  STRING
+%token <token>  FUNCOES_LISTA */
+/* %token <token>  STRING */
 %token <token>  NIL
 %token <token>  ABRE_PARENTESES
 %token <token>  FECHA_PARENTESES
@@ -70,7 +68,7 @@
 %token <token>  ATRIBUICAO
 %token <token>  VIRGULA
 %token <token>  PONTOVIRGULA
-%token <token>  COLCHETES
+/* %token <token>  COLCHETES */
 
 %type <ast> programa;
 %type <ast> listaDeDeclaracoes;
@@ -86,19 +84,17 @@
 %type <ast> while;
 %type <ast> condicional;
 %type <ast> exp;
-%type <ast> expressaoList;
+/* %type <ast> expressaoList; */
 %type <ast> expressao_logica;
 %type <ast> expressao_relacional;
 %type <ast> opSomaSub;
 %type <ast> opMultDiv;
 %type <ast> argumento;
 %type <ast> chamadaDeFuncao;
-%type <ast> entrada;
-%type <ast> saida;
 %type <ast> retorno;
 %type <ast> nil;
 %type <ast> numero;
-%type <ast> expressao_unaria;
+%type <ast> expUnaria;
 
 
 %%
@@ -127,21 +123,6 @@ TIPO:
         strcpy($$->tipo, "INT");
         tipo += 0;
     }
-    /* | TIPO_FLOAT {
-        $$ = criaNo("FLOAT");
-        strcpy($$->tipo, "FLOAT");
-        tipo += 1;
-    }
-    | TIPO_LIST_INT {
-        $$ = criaNo("INT LIST");
-        strcpy($$->tipo, "INT LIST");
-        tipo += 2;
-    }
-    | TIPO_LIST_FLOAT {
-        $$ = criaNo("FLOAT LIST");
-        strcpy($$->tipo, "FLOAT LIST");
-        tipo += 3;
-    } */
 ;
 
 declaracao:
@@ -237,15 +218,9 @@ declaracoes:
     | expressao {
         $$ = $1;
     }
-    | entrada {
-        $$ = $1;
-    }
     | retorno {
         $$ = $1;
     }
-    | saida {
-        $$ = $1;
-    }    
     | while {
         $$ = $1;
     }
@@ -262,11 +237,11 @@ expressao:
         castDeTudo($$->tipo, $$, $1);
         strcpy($$->simbolo, $1->simbolo);
     }
-    | expressaoList {
+    /*| expressaoList {
         $$ = criaNo("expressao");
         $$->pai = $1;
         strcpy($$->tipo, $1->tipo);
-    }
+    }*/
     | ID ATRIBUICAO expressao {
         $$ = criaNo("ATRIBUICAO");
         $$->pai = $3;
@@ -299,25 +274,6 @@ while:
         $$->pai = $3;
         $3->filho = $5;
     }
-    /* | WHILE ABRE_PARENTESES expressao expressao ID ATRIBUICAO ID OP_B_SOMA_SUB ID FECHA_PARENTESES declaracoes {
-        $$ = criaNo("while");
-        $$->pai = $3;
-        $3->filho = $4;
-        $4->filho = $11;
-    }
-    | WHILE ABRE_PARENTESES expressao expressao ID ATRIBUICAO ID OP_B_SOMA_SUB numero FECHA_PARENTESES declaracoes {
-        $$ = criaNo("while");
-        $$->pai = $3;
-        $3->filho = $4;
-        $4->filho = $9;
-        $9->filho = $11;
-    }
-    | WHILE ABRE_PARENTESES expressao expressao ID ATRIBUICAO OP_LOGICA_NEG ID FECHA_PARENTESES declaracoes {
-        $$ = criaNo("while");
-        $$->pai = $3;
-        $3->filho = $4;
-        $4->filho = $10;
-    } */
 ;
 
 condicional:
@@ -352,7 +308,7 @@ exp:
         strcpy($$->simbolo, $2->simbolo);
     }
 ;
-
+/*
 expressaoList:
     OP_LISTA ID PONTOVIRGULA {
         $$ = criaNo("expressaoList");
@@ -369,7 +325,7 @@ expressaoList:
         strcpy($$->tipo, "FUNCAOLISTA");
     }
 ;
-
+*/
 expressao_logica:
     expressao_logica OP_LOGICA_OR expressao_relacional {
         $$ = criaNo("expressaoLogica");
@@ -427,14 +383,14 @@ opSomaSub:
         castDeTudo($$->tipo, $$, $3);
         sprintf($$->codeTac, "\tadd %s, %s", $1->simbolo, $3->simbolo);
     }
-    | opSomaSub OP_B_SOMA_SUB OP_LISTA opMultDiv {
+    /* | opSomaSub OP_B_SOMA_SUB OP_LISTA opMultDiv {
         $$ = criaNo("Operando SomaSub");
         $$->pai = $1;
         $1->filho = $4;
         strcpy($$->tipo, $1->tipo);
         strcpy($$->simbolo, $1->simbolo);
         castDeTudo($$->tipo, $$, $4);
-    }
+    } */
     
 ;
 
@@ -447,19 +403,19 @@ opMultDiv:
         strcpy($$->simbolo, $1->simbolo);
         castDeTudo($$->tipo, $$, $3);
     }
-    | expressao_unaria {
+    | expUnaria {
         $$ = $1;
     }
 ;
 
-expressao_unaria:
+expUnaria:
     argumento {
-        $$ = criaNo("expressao_unaria");
+        $$ = criaNo("expUnaria");
         strcpy($$->tipo, $1->tipo);
         strcpy($$->simbolo, $1->simbolo);
     }
     | OP_B_SOMA_SUB argumento {
-        $$ = criaNo("expressao_unaria");
+        $$ = criaNo("expUnaria");
         strcpy($$->tipo, $2->tipo);
         strcpy($$->simbolo, $2->simbolo);
     }
@@ -516,57 +472,6 @@ chamadaDeFuncao:
     }
 ;
 
-entrada:
-    ENTRADA ABRE_PARENTESES ID FECHA_PARENTESES PONTOVIRGULA {
-        $$ = criaNo("entrada");
-        TabelaSimbolo* c = procuraVariavel(id, $3.id);
-        if(c == 0){
-            printf("Linha: %d - Coluna: %d - Identificador: %s - Erro Semantico - Variavel nao declarada!!!\n", $3.linha, $3.coluna, $3.id);
-        }else{
-            strcpy($$->tipo, c->tipo);
-            // if(strcmp($$->tipo, "FLOAT") == 0){ // TODO REMOVER
-            //     sprintf($$->codeTac,"\tscanf %s%d",$3.id, $3.escopo);
-            // }
-            if(strcmp($$->tipo, "INT") == 0){
-                sprintf($$->codeTac,"\tscani %s%d",$3.id, $3.escopo);
-            }
-        }
-    }
-;
-
-saida:
-    SAIDA ABRE_PARENTESES STRING FECHA_PARENTESES PONTOVIRGULA {
-        $$ = criaNo("saida");
-        strcpy($$->simbolo, $3.id);
-        sprintf($$->tableTac, "\tchar string%d[] = %s", qtdString, $3.id);
-        if(strcmp($1.id, "writeln") == 0){
-            int tamanho = (int)strlen($3.id) - 2;
-            sprintf($$->codeTac, "\tstring%d", qtdString);
-            sprintf($$->codeTac, "\tmov $400, &string%d\n\tparam %d\n\tparam $400\n\tcall writeln_fn, 2", qtdString, tamanho);
-        }
-        if(strcmp($1.id, "write") == 0){
-            int tamanho = (int)strlen($3.id) - 2;
-            sprintf($$->codeTac, "\tstring%d", qtdString);
-            sprintf($$->codeTac, "\tmov $400, &string%d\n\tparam %d\n\tparam $400\n\tcall write_fn, 2", qtdString, tamanho);
-        }
-        qtdString++;
-
-    }
-    | SAIDA ABRE_PARENTESES ID FECHA_PARENTESES PONTOVIRGULA {
-        $$ = criaNo("saida");
-        TabelaSimbolo* c = procuraVariavel(id, $3.id);
-        if(c == 0){
-            printf("Linha: %d - Coluna: %d - Identificador: %s - Erro Semantico - Variavel nao declarada!!!\n", $3.linha, $3.coluna, $3.id);
-        }
-    }
-    | SAIDA ABRE_PARENTESES expressao FECHA_PARENTESES PONTOVIRGULA {
-        $$ = criaNo("saida");
-        $$->pai = $3;
-    }
-    | SAIDA ABRE_PARENTESES OP_LISTA ID FECHA_PARENTESES PONTOVIRGULA {
-        $$ = criaNo("saida");
-    }
-;
 
 retorno:
     RETORNO exp PONTOVIRGULA {

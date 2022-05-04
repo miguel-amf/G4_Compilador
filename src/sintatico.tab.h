@@ -59,21 +59,14 @@ extern int yydebug;
     THEN = 269,
     WHILE = 270,
     RETORNO = 271,
-    ENTRADA = 272,
-    SAIDA = 273,
-    CONSTRUTOR_LISTA = 274,
-    OP_LISTA = 275,
-    FUNCOES_LISTA = 276,
-    STRING = 277,
-    NIL = 278,
-    ABRE_PARENTESES = 279,
-    FECHA_PARENTESES = 280,
-    ABRE_CHAVES = 281,
-    FECHA_CHAVES = 282,
-    ATRIBUICAO = 283,
-    VIRGULA = 284,
-    PONTOVIRGULA = 285,
-    COLCHETES = 286
+    NIL = 272,
+    ABRE_PARENTESES = 273,
+    FECHA_PARENTESES = 274,
+    ABRE_CHAVES = 275,
+    FECHA_CHAVES = 276,
+    ATRIBUICAO = 277,
+    VIRGULA = 278,
+    PONTOVIRGULA = 279
   };
 #endif
 
@@ -92,7 +85,7 @@ union YYSTYPE
         int escopo;
     } token;
 
-#line 96 "sintatico.tab.h" /* yacc.c:1909  */
+#line 89 "sintatico.tab.h" /* yacc.c:1909  */
 };
 
 typedef union YYSTYPE YYSTYPE;

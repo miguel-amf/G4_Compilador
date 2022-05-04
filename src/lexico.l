@@ -17,10 +17,10 @@
 %}
 
 COMENTARIO          "//".*|"/\*".*|"*/".*
-ID                  [a-zA-Z_][_a-z0-9A-Z]*
+ID                  [a-zA-Z_][a-zA-Z0-9_]*
 INT                 (\+|\-)?[1-9]+[0-9]*
 TIPO_INT            int
-OP_B_SOMA_SUB       "+"|"-"
+OP_B_SOMA_SUB       \+|\-
 OP_B_MULT_DIV       "*"|"/"
 OP_LOGICA_AND       "&&"
 OP_LOGICA_NEG       "!"
@@ -30,12 +30,6 @@ IF                  if
 ELSE                else
 WHILE               while
 RETORNO             return
-ENTRADA             read
-SAIDA               write|writeln
-CONSTRUTOR_LISTA    ":"
-OP_LISTA            "?"|"%"
-FUNCOES_LISTA       ">>"|"<<"
-STRING              \"(\\.|[^"\\])*\"
 NIL                 NIL
 ABRE_PARENTESES     "("
 FECHA_PARENTESES    ")"
@@ -44,7 +38,6 @@ FECHA_CHAVES        "}"
 ATRIBUICAO          "="
 VIRGULA             ","
 PONTOVIRGULA        ";"
-COLCHETES           "["|"]"
 QUEBRALINHA         \n|\r
 TABESPACO           [\t]+|[ ]+
 
@@ -191,61 +184,6 @@ TABESPACO           [\t]+|[ ]+
     return RETORNO;
 }
 
-{ENTRADA} {
-    // printf("Linha: %d, Coluna: %d\t", linha, coluna);
-    // printf("Entrada(READ): %s\n", yytext);
-    yylval.token.linha = linha;
-    yylval.token.coluna = coluna;
-    yylval.token.escopo = escopoL[escopoAtual];
-    strcpy(yylval.token.id, yytext);
-    coluna += yyleng;
-    return ENTRADA;
-}
-
-{SAIDA} {
-    // printf("Linha: %d, Coluna: %d\t", linha, coluna);
-    // printf("Saida(WRITE ou WRITELN): %s\n", yytext);
-    yylval.token.linha = linha;
-    yylval.token.coluna = coluna;
-    yylval.token.escopo = escopoL[escopoAtual];
-    strcpy(yylval.token.id, yytext);
-    coluna += yyleng;
-    return SAIDA;
-}
-
-{CONSTRUTOR_LISTA} {
-    // printf("Linha: %d, Coluna: %d\t", linha, coluna);
-    // printf("Construtor da Lista: %s\n", yytext);
-    yylval.token.linha = linha;
-    yylval.token.coluna = coluna;
-    yylval.token.escopo = escopoL[escopoAtual];
-    strcpy(yylval.token.id, yytext);
-    coluna += yyleng;
-    return CONSTRUTOR_LISTA;
-}
-
-{OP_LISTA} {
-    // printf("Linha: %d, Coluna: %d\t", linha, coluna);
-    // printf("Operacao da Lista: %s\n", yytext);
-    yylval.token.linha = linha;
-    yylval.token.coluna = coluna;
-    yylval.token.escopo = escopoL[escopoAtual];
-    strcpy(yylval.token.id, yytext);
-    coluna += yyleng;
-    return OP_LISTA;
-}
-
-{FUNCOES_LISTA} {
-    // printf("Linha: %d, Coluna: %d\t", linha, coluna);
-    // printf("Funcao da Lista: %s\n", yytext);
-    yylval.token.linha = linha;
-    yylval.token.coluna = coluna;
-    yylval.token.escopo = escopoL[escopoAtual];
-    strcpy(yylval.token.id, yytext);
-    coluna += yyleng;
-    return FUNCOES_LISTA;
-}
-
 {NIL} {
     // printf("Linha: %d, Coluna: %d\t", linha, coluna);
     // printf("Constante NIL: %s\n", yytext);
@@ -347,19 +285,6 @@ TABESPACO           [\t]+|[ ]+
     coluna += yyleng;
     escopoAtual--;
     return FECHA_CHAVES;
-}
-
-
-
-{COLCHETES} {
-    // printf("Linha: %d, Coluna: %d\t", linha, coluna);
-    // printf("Chaves: %s\n", yytext);
-    yylval.token.linha = linha;
-    yylval.token.coluna = coluna;
-    yylval.token.escopo = escopoL[escopoAtual];
-    strcpy(yylval.token.id, yytext);
-    coluna += yyleng;
-    return COLCHETES;
 }
 
 {QUEBRALINHA} {
