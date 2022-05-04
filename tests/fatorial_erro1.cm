@@ -1,8 +1,8 @@
 void main() {
-    int number;
+    int numero;
     int result;
-    number = 2;
-    result = 1;
+    numero = i;
+    result = @;
     while (number>result) {
         result = result * number;
         number = number - 1;

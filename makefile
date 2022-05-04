@@ -1,13 +1,18 @@
 # cd src/ && flex lexico.l && gcc lex.yy.c -g -Wall -o ../tradutor
 all:
-	cd src/ && bison -d sintatico.y  && flex lexico.l && gcc -g -c arvore.c -o arvore.o && gcc -g -c cgen.c -o cgen.o && gcc -g -c tabelaSimbolo.c -o tabelaSimbolo.o && gcc sintatico.tab.c lex.yy.c arvore.o cgen.o tabelaSimbolo.o -g -Wall -o ../tradutor
-	./tradutor tests/fatorial.cm	
+	cd src/ && bison -d sintatico.y  \
+	&& flex lexico.l \
+	&& gcc -g -c arvore.c -o arvore.o \
+	&& gcc -g -c cgen.c -o cgen.o \
+	&& gcc -g -c symtab.c -o symtab.o \
+	&& gcc -g -c tabelaSimbolo.c -o tabelaSimbolo.o \
+	&& gcc sintatico.tab.c lex.yy.c symtab.o arvore.o cgen.o tabelaSimbolo.o -g -Wall -o ../cminus
+	./cminus tests/fatorial.cm	
 run:
-	./tradutor tests/fatorial.cm
-	./tradutor tests/testeCerto.c	
-	./tradutor tests/testeCertoLab.c
-	./tradutor tests/testeCertoLab2.c
-	./tradutor tests/testeErrado.c
-	./tradutor tests/testeErrado2.c
+	./cminus tests/fatorial.cm
+	# tests/fatorial_erro1.cm
+	# tests/fatorial_erro2.cm
+	# tests/fatorial_erro3.cm
+	
 compile:
 	cd src/ && bison -d sintatico.y  && flex lexico.l && gcc -g -c arvore.c -o arvore.o && gcc -g -c tabelaSimbolo.c -o tabelaSimbolo.o && gcc sintatico.tab.c lex.yy.c arvore.o tabelaSimbolo.o -g -Wall -o ../tradutor

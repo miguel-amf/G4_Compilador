@@ -78,7 +78,6 @@
     TabelaSimbolo* id;
     int erros = 0;
     char tipos[4][10] = {"INT", "VOID"}; // TODO REVER ISSO POIS PODE SER REMOVIDO
-    char tiposTac[4][10] = {"int", "void"}; // TODO REVER ISSO POIS PODE SER REMOVIDO
     int tipo = 0;
     extern int escopoL[1000];
     extern int escopoAtual;
@@ -87,6 +86,7 @@
     int qtdString = 0;
     int qtdIf = 0;
     int funcao = 0;
+    char nomeEscopo[30] = "global";
 
 #line 92 "sintatico.tab.c" /* yacc.c:339  */
 
@@ -161,9 +161,11 @@ union YYSTYPE
         int coluna;
         char id[100];
         int escopo;
+        int valor;
+        char escopo_f[30];
     } token;
 
-#line 167 "sintatico.tab.c" /* yacc.c:355  */
+#line 169 "sintatico.tab.c" /* yacc.c:355  */
 };
 
 typedef union YYSTYPE YYSTYPE;
@@ -180,7 +182,7 @@ int yyparse (void);
 
 /* Copy the second part of user declarations.  */
 
-#line 184 "sintatico.tab.c" /* yacc.c:358  */
+#line 186 "sintatico.tab.c" /* yacc.c:358  */
 
 #ifdef short
 # undef short
@@ -479,12 +481,12 @@ static const yytype_uint8 yytranslate[] =
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint16 yyrline[] =
 {
-       0,    93,    93,   101,   106,   112,   117,   125,   128,   131,
-     137,   147,   160,   168,   178,   184,   188,   194,   199,   206,
-     209,   212,   215,   218,   221,   227,   233,   249,   258,   278,
-     284,   292,   298,   304,   313,   319,   344,   350,   361,   368,
-     374,   379,   386,   400,   407,   413,   421,   431,   444,   451,
-     459
+       0,    96,    96,   104,   109,   115,   120,   128,   131,   134,
+     141,   152,   166,   174,   184,   190,   194,   200,   205,   212,
+     215,   218,   221,   224,   227,   233,   239,   255,   264,   280,
+     287,   296,   302,   308,   318,   329,   354,   360,   371,   378,
+     384,   390,   398,   412,   419,   425,   433,   443,   456,   463,
+     471
 };
 #endif
 
@@ -1482,91 +1484,92 @@ yyreduce:
   switch (yyn)
     {
         case 2:
-#line 93 "sintatico.y" /* yacc.c:1646  */
+#line 96 "sintatico.y" /* yacc.c:1646  */
     {
         (yyval.ast) = criaNo("programa");
         (yyval.ast)->proximo = (yyvsp[0].ast);
         raiz = (yyval.ast);
     }
-#line 1492 "sintatico.tab.c" /* yacc.c:1646  */
+#line 1494 "sintatico.tab.c" /* yacc.c:1646  */
     break;
 
   case 3:
-#line 101 "sintatico.y" /* yacc.c:1646  */
+#line 104 "sintatico.y" /* yacc.c:1646  */
     {
         (yyval.ast) = criaNo("lista De Declaracoes");
         (yyval.ast)->proximo = (yyvsp[-1].ast);
         (yyvsp[-1].ast)->filho1 = (yyvsp[0].ast);
     }
-#line 1502 "sintatico.tab.c" /* yacc.c:1646  */
+#line 1504 "sintatico.tab.c" /* yacc.c:1646  */
     break;
 
   case 4:
-#line 106 "sintatico.y" /* yacc.c:1646  */
+#line 109 "sintatico.y" /* yacc.c:1646  */
     {
         (yyval.ast) = (yyvsp[0].ast);
     }
-#line 1510 "sintatico.tab.c" /* yacc.c:1646  */
+#line 1512 "sintatico.tab.c" /* yacc.c:1646  */
     break;
 
   case 5:
-#line 112 "sintatico.y" /* yacc.c:1646  */
+#line 115 "sintatico.y" /* yacc.c:1646  */
     {
         (yyval.ast) = criaNo("INT");
         strcpy((yyval.ast)->tipo, "INT");
         tipo = 0;
     }
-#line 1520 "sintatico.tab.c" /* yacc.c:1646  */
+#line 1522 "sintatico.tab.c" /* yacc.c:1646  */
     break;
 
   case 6:
-#line 117 "sintatico.y" /* yacc.c:1646  */
+#line 120 "sintatico.y" /* yacc.c:1646  */
     {
         (yyval.ast) = criaNo("VOID");
         strcpy((yyval.ast)->tipo, "VOID");
         tipo = 1;
     }
-#line 1530 "sintatico.tab.c" /* yacc.c:1646  */
+#line 1532 "sintatico.tab.c" /* yacc.c:1646  */
     break;
 
   case 7:
-#line 125 "sintatico.y" /* yacc.c:1646  */
-    {
-        (yyval.ast) = (yyvsp[0].ast);
-    }
-#line 1538 "sintatico.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 8:
 #line 128 "sintatico.y" /* yacc.c:1646  */
     {
         (yyval.ast) = (yyvsp[0].ast);
     }
-#line 1546 "sintatico.tab.c" /* yacc.c:1646  */
+#line 1540 "sintatico.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 8:
+#line 131 "sintatico.y" /* yacc.c:1646  */
+    {
+        (yyval.ast) = (yyvsp[0].ast);
+    }
+#line 1548 "sintatico.tab.c" /* yacc.c:1646  */
     break;
 
   case 9:
-#line 131 "sintatico.y" /* yacc.c:1646  */
+#line 134 "sintatico.y" /* yacc.c:1646  */
     {
         erros++;
     }
-#line 1554 "sintatico.tab.c" /* yacc.c:1646  */
+#line 1556 "sintatico.tab.c" /* yacc.c:1646  */
     break;
 
   case 10:
-#line 137 "sintatico.y" /* yacc.c:1646  */
+#line 141 "sintatico.y" /* yacc.c:1646  */
     {
         (yyval.ast) = criaNo("Declaracao de Variavel");
         (yyval.ast)->proximo = (yyvsp[-2].ast);
         id = insereSimbolo(id, (yyvsp[-1].token).escopo, (yyvsp[-1].token).id, "Variavel", (yyvsp[-2].ast)->tipo, (yyvsp[-1].token).linha, (yyvsp[-1].token).coluna, 0);
         strcpy((yyvsp[-2].ast)->simbolo, (yyvsp[-1].token).id);
         tipo = 0;
+        (yyval.ast)->tipoDeNo = Identificador;
     }
-#line 1566 "sintatico.tab.c" /* yacc.c:1646  */
+#line 1569 "sintatico.tab.c" /* yacc.c:1646  */
     break;
 
   case 11:
-#line 147 "sintatico.y" /* yacc.c:1646  */
+#line 152 "sintatico.y" /* yacc.c:1646  */
     {
         (yyval.ast) = criaNo("Declaracao de funcao");
         (yyval.ast)->proximo = (yyvsp[-5].ast);
@@ -1576,12 +1579,13 @@ yyreduce:
         // printf("\n---tipo = %s linha = %d --- %d\n", $1->tipo, $2.linha, tipo );
         strcpy((yyvsp[-5].ast)->simbolo, (yyvsp[-4].token).id);
         tipo = 0;
+        strcpy(nomeEscopo, (yyvsp[-4].token).id);
     }
-#line 1581 "sintatico.tab.c" /* yacc.c:1646  */
+#line 1585 "sintatico.tab.c" /* yacc.c:1646  */
     break;
 
   case 12:
-#line 160 "sintatico.y" /* yacc.c:1646  */
+#line 166 "sintatico.y" /* yacc.c:1646  */
     {
         (yyval.ast) = criaNo("Lista de Parametros");
         (yyval.ast)->proximo = (yyvsp[-3].ast);
@@ -1590,11 +1594,11 @@ yyreduce:
         tipo = 0;
         strcpy((yyvsp[-3].ast)->simbolo, (yyvsp[-2].token).id);
     }
-#line 1594 "sintatico.tab.c" /* yacc.c:1646  */
+#line 1598 "sintatico.tab.c" /* yacc.c:1646  */
     break;
 
   case 13:
-#line 168 "sintatico.y" /* yacc.c:1646  */
+#line 174 "sintatico.y" /* yacc.c:1646  */
     {
         (yyval.ast) = criaNo("Lista de Parametros");
         (yyval.ast)->proximo = (yyvsp[-1].ast);
@@ -1605,114 +1609,114 @@ yyreduce:
         escopoAtual--;
         escopo--;
     }
-#line 1609 "sintatico.tab.c" /* yacc.c:1646  */
+#line 1613 "sintatico.tab.c" /* yacc.c:1646  */
     break;
 
   case 14:
-#line 178 "sintatico.y" /* yacc.c:1646  */
+#line 184 "sintatico.y" /* yacc.c:1646  */
     {
         (yyval.ast) = criaNo("Lista de Parametros vazia");
     }
-#line 1617 "sintatico.tab.c" /* yacc.c:1646  */
+#line 1621 "sintatico.tab.c" /* yacc.c:1646  */
     break;
 
   case 15:
-#line 184 "sintatico.y" /* yacc.c:1646  */
+#line 190 "sintatico.y" /* yacc.c:1646  */
     {
         (yyval.ast) = criaNo("dentro das chaves");
         (yyval.ast)->proximo = (yyvsp[-1].ast);
     }
-#line 1626 "sintatico.tab.c" /* yacc.c:1646  */
+#line 1630 "sintatico.tab.c" /* yacc.c:1646  */
     break;
 
   case 16:
-#line 188 "sintatico.y" /* yacc.c:1646  */
+#line 194 "sintatico.y" /* yacc.c:1646  */
     {
         erros++;
     }
-#line 1634 "sintatico.tab.c" /* yacc.c:1646  */
+#line 1638 "sintatico.tab.c" /* yacc.c:1646  */
     break;
 
   case 17:
-#line 194 "sintatico.y" /* yacc.c:1646  */
+#line 200 "sintatico.y" /* yacc.c:1646  */
     {
         (yyval.ast) = criaNo("declaracoes");
         (yyval.ast)->proximo = (yyvsp[-1].ast);
         (yyval.ast)->filho1 = (yyvsp[0].ast);
     }
-#line 1644 "sintatico.tab.c" /* yacc.c:1646  */
+#line 1648 "sintatico.tab.c" /* yacc.c:1646  */
     break;
 
   case 18:
-#line 199 "sintatico.y" /* yacc.c:1646  */
+#line 205 "sintatico.y" /* yacc.c:1646  */
     {
         (yyval.ast) = criaNo("declaracoes");
         (yyval.ast)->proximo = (yyvsp[0].ast);
     }
-#line 1653 "sintatico.tab.c" /* yacc.c:1646  */
+#line 1657 "sintatico.tab.c" /* yacc.c:1646  */
     break;
 
   case 19:
-#line 206 "sintatico.y" /* yacc.c:1646  */
-    {
-        (yyval.ast) = (yyvsp[0].ast);
-    }
-#line 1661 "sintatico.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 20:
-#line 209 "sintatico.y" /* yacc.c:1646  */
-    {
-        (yyval.ast) = (yyvsp[0].ast);
-    }
-#line 1669 "sintatico.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 21:
 #line 212 "sintatico.y" /* yacc.c:1646  */
     {
         (yyval.ast) = (yyvsp[0].ast);
     }
-#line 1677 "sintatico.tab.c" /* yacc.c:1646  */
+#line 1665 "sintatico.tab.c" /* yacc.c:1646  */
     break;
 
-  case 22:
+  case 20:
 #line 215 "sintatico.y" /* yacc.c:1646  */
     {
         (yyval.ast) = (yyvsp[0].ast);
     }
-#line 1685 "sintatico.tab.c" /* yacc.c:1646  */
+#line 1673 "sintatico.tab.c" /* yacc.c:1646  */
     break;
 
-  case 23:
+  case 21:
 #line 218 "sintatico.y" /* yacc.c:1646  */
     {
         (yyval.ast) = (yyvsp[0].ast);
     }
-#line 1693 "sintatico.tab.c" /* yacc.c:1646  */
+#line 1681 "sintatico.tab.c" /* yacc.c:1646  */
     break;
 
-  case 24:
+  case 22:
 #line 221 "sintatico.y" /* yacc.c:1646  */
     {
         (yyval.ast) = (yyvsp[0].ast);
     }
-#line 1701 "sintatico.tab.c" /* yacc.c:1646  */
+#line 1689 "sintatico.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 23:
+#line 224 "sintatico.y" /* yacc.c:1646  */
+    {
+        (yyval.ast) = (yyvsp[0].ast);
+    }
+#line 1697 "sintatico.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 24:
+#line 227 "sintatico.y" /* yacc.c:1646  */
+    {
+        (yyval.ast) = (yyvsp[0].ast);
+    }
+#line 1705 "sintatico.tab.c" /* yacc.c:1646  */
     break;
 
   case 25:
-#line 227 "sintatico.y" /* yacc.c:1646  */
+#line 233 "sintatico.y" /* yacc.c:1646  */
     {
         (yyval.ast) = criaNo("expressao");
         (yyval.ast)->proximo = (yyvsp[-1].ast);
         strcpy((yyval.ast)->tipo, (yyvsp[-1].ast)->tipo);
         strcpy((yyval.ast)->simbolo, (yyvsp[-1].ast)->simbolo);
     }
-#line 1712 "sintatico.tab.c" /* yacc.c:1646  */
+#line 1716 "sintatico.tab.c" /* yacc.c:1646  */
     break;
 
   case 26:
-#line 233 "sintatico.y" /* yacc.c:1646  */
+#line 239 "sintatico.y" /* yacc.c:1646  */
     {
         (yyval.ast) = criaNo("ATRIBUICAO");
         (yyval.ast)->proximo = (yyvsp[0].ast);
@@ -1725,103 +1729,107 @@ yyreduce:
             strcpy((yyval.ast)->simbolo, (yyvsp[-2].token).id);
         }
     }
-#line 1729 "sintatico.tab.c" /* yacc.c:1646  */
+#line 1733 "sintatico.tab.c" /* yacc.c:1646  */
     break;
 
   case 27:
-#line 249 "sintatico.y" /* yacc.c:1646  */
+#line 255 "sintatico.y" /* yacc.c:1646  */
     {
         (yyval.ast) = criaNo("while");
         (yyval.ast)->proximo = (yyvsp[-2].ast);
         (yyvsp[-2].ast)->filho1 = (yyvsp[0].ast);
         (yyval.ast)->tipoDeNo = Repeticao;
     }
-#line 1740 "sintatico.tab.c" /* yacc.c:1646  */
+#line 1744 "sintatico.tab.c" /* yacc.c:1646  */
     break;
 
   case 28:
-#line 258 "sintatico.y" /* yacc.c:1646  */
+#line 264 "sintatico.y" /* yacc.c:1646  */
     {
         (yyval.ast) = criaNo("IF");
         (yyval.ast)->proximo = (yyvsp[-2].ast);
         (yyvsp[-2].ast)->filho1 = (yyvsp[0].ast);
         (yyval.ast)->tipoDeNo = Condicao;
-
-        // sprintf($$->codeTac, "saidaIf%d:\n", qtdIf);
-        // sprintf($$->codeTac, "\tbrz ");
-        // qtdIf++;
     }
 #line 1755 "sintatico.tab.c" /* yacc.c:1646  */
     break;
 
   case 29:
-#line 278 "sintatico.y" /* yacc.c:1646  */
+#line 280 "sintatico.y" /* yacc.c:1646  */
     {
         (yyval.ast) = criaNo("exp");
         (yyval.ast)->proximo = (yyvsp[0].ast);
         strcpy((yyval.ast)->tipo, (yyvsp[0].ast)->tipo);
         strcpy((yyval.ast)->simbolo, (yyvsp[0].ast)->simbolo);
+        (yyval.ast)->tipoDeNo = Operacao;
     }
-#line 1766 "sintatico.tab.c" /* yacc.c:1646  */
+#line 1767 "sintatico.tab.c" /* yacc.c:1646  */
     break;
 
   case 30:
-#line 284 "sintatico.y" /* yacc.c:1646  */
+#line 287 "sintatico.y" /* yacc.c:1646  */
     {
         (yyval.ast) = criaNo("exp");
         (yyval.ast)->proximo = (yyvsp[0].ast);
         strcpy((yyval.ast)->tipo, (yyvsp[0].ast)->tipo);
         strcpy((yyval.ast)->simbolo, (yyvsp[0].ast)->simbolo);
+        (yyval.ast)->tipoDeNo = Operacao;
     }
-#line 1777 "sintatico.tab.c" /* yacc.c:1646  */
+#line 1779 "sintatico.tab.c" /* yacc.c:1646  */
     break;
 
   case 31:
-#line 292 "sintatico.y" /* yacc.c:1646  */
+#line 296 "sintatico.y" /* yacc.c:1646  */
     {
         (yyval.ast) = criaNo("expressaoLogica");
         (yyval.ast)->proximo = (yyvsp[-2].ast);
         (yyvsp[-2].ast)->filho1 = (yyvsp[0].ast);
         //strcpy($$->tipo, "INT");
     }
-#line 1788 "sintatico.tab.c" /* yacc.c:1646  */
+#line 1790 "sintatico.tab.c" /* yacc.c:1646  */
     break;
 
   case 32:
-#line 298 "sintatico.y" /* yacc.c:1646  */
+#line 302 "sintatico.y" /* yacc.c:1646  */
     {
         (yyval.ast) = criaNo("expressaoLogica");
         (yyval.ast)->proximo = (yyvsp[-2].ast);
         (yyvsp[-2].ast)->filho2 = (yyvsp[0].ast);
         //strcpy($$->tipo, "INT");
     }
-#line 1799 "sintatico.tab.c" /* yacc.c:1646  */
+#line 1801 "sintatico.tab.c" /* yacc.c:1646  */
     break;
 
   case 33:
-#line 304 "sintatico.y" /* yacc.c:1646  */
+#line 308 "sintatico.y" /* yacc.c:1646  */
     {
         (yyval.ast) = criaNo("expressaoLogica");
         strcpy((yyval.ast)->tipo, (yyvsp[0].ast)->tipo);
         strcpy((yyval.ast)->simbolo, (yyvsp[0].ast)->simbolo);
         (yyval.ast) = (yyvsp[0].ast);
+        (yyval.ast)->tipoDeNo = Condicao;
     }
-#line 1810 "sintatico.tab.c" /* yacc.c:1646  */
+#line 1813 "sintatico.tab.c" /* yacc.c:1646  */
     break;
 
   case 34:
-#line 313 "sintatico.y" /* yacc.c:1646  */
+#line 318 "sintatico.y" /* yacc.c:1646  */
     {
         (yyval.ast) = criaNo("expressaoRelacional");
         strcpy((yyval.ast)->tipo, (yyvsp[0].ast)->tipo);
         strcpy((yyval.ast)->simbolo, (yyvsp[0].ast)->simbolo);
         (yyval.ast) = (yyvsp[0].ast);
+        if (strcmp((yyvsp[0].ast)->simbolo, "+") != 0){
+            (yyval.ast)->tipoDeNo = MAIS;
+        }else  if (strcmp((yyvsp[0].ast)->simbolo, "-") != 0){
+            (yyval.ast)->tipoDeNo = MENOS;
+        }
     }
-#line 1821 "sintatico.tab.c" /* yacc.c:1646  */
+#line 1829 "sintatico.tab.c" /* yacc.c:1646  */
     break;
 
   case 35:
-#line 319 "sintatico.y" /* yacc.c:1646  */
+#line 329 "sintatico.y" /* yacc.c:1646  */
     {
         (yyval.ast) = criaNo("expressaoRelacional");
         (yyval.ast)->proximo = (yyvsp[-2].ast);
@@ -1844,22 +1852,22 @@ yyreduce:
         strcpy((yyval.ast)->tipo, (yyvsp[-2].ast)->tipo);
         strcpy((yyval.ast)->simbolo, (yyvsp[-2].ast)->simbolo);
     }
-#line 1848 "sintatico.tab.c" /* yacc.c:1646  */
+#line 1856 "sintatico.tab.c" /* yacc.c:1646  */
     break;
 
   case 36:
-#line 344 "sintatico.y" /* yacc.c:1646  */
+#line 354 "sintatico.y" /* yacc.c:1646  */
     {
         (yyval.ast) = criaNo("Operando SomaSub");
         strcpy((yyval.ast)->tipo, (yyvsp[0].ast)->tipo);
         strcpy((yyval.ast)->simbolo, (yyvsp[0].ast)->simbolo);
         (yyval.ast) = (yyvsp[0].ast);
     }
-#line 1859 "sintatico.tab.c" /* yacc.c:1646  */
+#line 1867 "sintatico.tab.c" /* yacc.c:1646  */
     break;
 
   case 37:
-#line 350 "sintatico.y" /* yacc.c:1646  */
+#line 360 "sintatico.y" /* yacc.c:1646  */
     {
         (yyval.ast) = criaNo("Operando SomaSub");
         (yyval.ast)->proximo = (yyvsp[-2].ast);
@@ -1868,11 +1876,11 @@ yyreduce:
         strcpy((yyval.ast)->simbolo, (yyvsp[-2].ast)->simbolo);
         //sprintf($$->codeTac, "\tadd %s, %s", $1->simbolo, $3->simbolo);
     }
-#line 1872 "sintatico.tab.c" /* yacc.c:1646  */
+#line 1880 "sintatico.tab.c" /* yacc.c:1646  */
     break;
 
   case 38:
-#line 361 "sintatico.y" /* yacc.c:1646  */
+#line 371 "sintatico.y" /* yacc.c:1646  */
     {
         (yyval.ast) = criaNo("Operando MultDiv");
         (yyval.ast)->proximo = (yyvsp[-2].ast);
@@ -1880,39 +1888,41 @@ yyreduce:
         strcpy((yyval.ast)->tipo, (yyvsp[-2].ast)->tipo);
         strcpy((yyval.ast)->simbolo, (yyvsp[-2].ast)->simbolo);
     }
-#line 1884 "sintatico.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 39:
-#line 368 "sintatico.y" /* yacc.c:1646  */
-    {
-        (yyval.ast) = (yyvsp[0].ast);
-    }
 #line 1892 "sintatico.tab.c" /* yacc.c:1646  */
     break;
 
+  case 39:
+#line 378 "sintatico.y" /* yacc.c:1646  */
+    {
+        (yyval.ast) = (yyvsp[0].ast);
+    }
+#line 1900 "sintatico.tab.c" /* yacc.c:1646  */
+    break;
+
   case 40:
-#line 374 "sintatico.y" /* yacc.c:1646  */
+#line 384 "sintatico.y" /* yacc.c:1646  */
     {
         (yyval.ast) = criaNo("expUnaria");
         strcpy((yyval.ast)->tipo, (yyvsp[0].ast)->tipo);
         strcpy((yyval.ast)->simbolo, (yyvsp[0].ast)->simbolo);
+        (yyval.ast)->tipoDeNo = Constante;
     }
-#line 1902 "sintatico.tab.c" /* yacc.c:1646  */
+#line 1911 "sintatico.tab.c" /* yacc.c:1646  */
     break;
 
   case 41:
-#line 379 "sintatico.y" /* yacc.c:1646  */
+#line 390 "sintatico.y" /* yacc.c:1646  */
     {
         (yyval.ast) = criaNo("expUnaria");
         strcpy((yyval.ast)->tipo, (yyvsp[0].ast)->tipo);
         strcpy((yyval.ast)->simbolo, (yyvsp[0].ast)->simbolo);
+        (yyval.ast)->tipoDeNo = Operacao;
     }
-#line 1912 "sintatico.tab.c" /* yacc.c:1646  */
+#line 1922 "sintatico.tab.c" /* yacc.c:1646  */
     break;
 
   case 42:
-#line 386 "sintatico.y" /* yacc.c:1646  */
+#line 398 "sintatico.y" /* yacc.c:1646  */
     {
         if (!strcmp((yyvsp[0].token).id,"main")) {
             printf("\nERRO SEMANTICO: OPERACAO COM VOID = %s\n", (yyvsp[0].token).id);
@@ -1924,14 +1934,14 @@ yyreduce:
         }else{
             strcpy((yyval.ast)->tipo, c->tipo);
             strcpy((yyval.ast)->simbolo, (yyvsp[0].token).id);
-            (yyval.ast)->tipoDeNo = Identificador;
+            (yyval.ast)->tipoDeNo = Leitura;
         }
     }
-#line 1931 "sintatico.tab.c" /* yacc.c:1646  */
+#line 1941 "sintatico.tab.c" /* yacc.c:1646  */
     break;
 
   case 43:
-#line 400 "sintatico.y" /* yacc.c:1646  */
+#line 412 "sintatico.y" /* yacc.c:1646  */
     {
         (yyval.ast) = criaNo("numero_inteiro");
         (yyval.ast)->proximo = (yyvsp[0].ast);
@@ -1939,32 +1949,32 @@ yyreduce:
         strcpy((yyval.ast)->simbolo, (yyvsp[0].ast)->simbolo);
         (yyval.ast)->tipoDeNo = Constante;
     }
-#line 1943 "sintatico.tab.c" /* yacc.c:1646  */
+#line 1953 "sintatico.tab.c" /* yacc.c:1646  */
     break;
 
   case 44:
-#line 407 "sintatico.y" /* yacc.c:1646  */
+#line 419 "sintatico.y" /* yacc.c:1646  */
     {
         (yyval.ast) = criaNo("argumento");
         (yyval.ast)->proximo = (yyvsp[-1].ast);
         strcpy((yyval.ast)->tipo, (yyvsp[-1].ast)->tipo);
         strcpy((yyval.ast)->simbolo, (yyvsp[-1].ast)->simbolo);
     }
-#line 1954 "sintatico.tab.c" /* yacc.c:1646  */
+#line 1964 "sintatico.tab.c" /* yacc.c:1646  */
     break;
 
   case 45:
-#line 413 "sintatico.y" /* yacc.c:1646  */
+#line 425 "sintatico.y" /* yacc.c:1646  */
     {
         (yyval.ast) = criaNo("argumento");
         (yyval.ast)->proximo = (yyvsp[0].ast);
         strcpy((yyval.ast)->tipo, (yyvsp[0].ast)->tipo);
     }
-#line 1964 "sintatico.tab.c" /* yacc.c:1646  */
+#line 1974 "sintatico.tab.c" /* yacc.c:1646  */
     break;
 
   case 46:
-#line 421 "sintatico.y" /* yacc.c:1646  */
+#line 433 "sintatico.y" /* yacc.c:1646  */
     {
         (yyval.ast) = criaNo("chamada de funcao");
         (yyval.ast)->proximo = (yyvsp[-1].ast);
@@ -1975,11 +1985,11 @@ yyreduce:
             strcpy((yyval.ast)->tipo, c->tipo);
         }
     }
-#line 1979 "sintatico.tab.c" /* yacc.c:1646  */
+#line 1989 "sintatico.tab.c" /* yacc.c:1646  */
     break;
 
   case 47:
-#line 431 "sintatico.y" /* yacc.c:1646  */
+#line 443 "sintatico.y" /* yacc.c:1646  */
     {
         (yyval.ast) = criaNo("chamada de funcao");
         TabelaSimbolo* c = procuraVariavel(id, (yyvsp[-2].token).id);
@@ -1989,11 +1999,11 @@ yyreduce:
             strcpy((yyval.ast)->tipo, c->tipo);
         }
     }
-#line 1993 "sintatico.tab.c" /* yacc.c:1646  */
+#line 2003 "sintatico.tab.c" /* yacc.c:1646  */
     break;
 
   case 48:
-#line 444 "sintatico.y" /* yacc.c:1646  */
+#line 456 "sintatico.y" /* yacc.c:1646  */
     {
         (yyval.ast) = criaNo("retorno");
         (yyval.ast)->proximo = (yyvsp[-1].ast);
@@ -2001,31 +2011,31 @@ yyreduce:
         strcpy(tipoRetornoC, (yyvsp[-1].ast)->tipo);
         (yyval.ast)->tipoDeNo = Atribuicao;
     }
-#line 2005 "sintatico.tab.c" /* yacc.c:1646  */
+#line 2015 "sintatico.tab.c" /* yacc.c:1646  */
     break;
 
   case 49:
-#line 451 "sintatico.y" /* yacc.c:1646  */
+#line 463 "sintatico.y" /* yacc.c:1646  */
     {
         (yyval.ast) = criaNo("retorno");
         (yyval.ast)->tipoDeNo = Atribuicao;
     }
-#line 2014 "sintatico.tab.c" /* yacc.c:1646  */
+#line 2024 "sintatico.tab.c" /* yacc.c:1646  */
     break;
 
   case 50:
-#line 459 "sintatico.y" /* yacc.c:1646  */
+#line 471 "sintatico.y" /* yacc.c:1646  */
     {
         (yyval.ast) = criaNo("Numero");
         strcpy((yyval.ast)->tipo, "INT");
         strcpy((yyval.ast)->simbolo, (yyvsp[0].token).id);
-        (yyval.ast)->tipoDeNo = Constante;
+        (yyval.ast)->tipoDeNo = Leitura;
     }
-#line 2025 "sintatico.tab.c" /* yacc.c:1646  */
+#line 2035 "sintatico.tab.c" /* yacc.c:1646  */
     break;
 
 
-#line 2029 "sintatico.tab.c" /* yacc.c:1646  */
+#line 2039 "sintatico.tab.c" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -2253,29 +2263,13 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 468 "sintatico.y" /* yacc.c:1906  */
+#line 480 "sintatico.y" /* yacc.c:1906  */
 
 
 // IMPLEMENTAR VOID QUE DEU RUIM
 void yyerror(const char* s){
     fprintf(stderr, "Linha: %d - Coluna: %d - Token: %s - Erro: %s\n", yylval.token.linha, yylval.token.coluna, yylval.token.id, s);
 }
-
-const char* saida = 
-    "write_fn:\n"
-    "\tmov $500, 0\n"
-    "proximo:\n"
-    "\tmov $499, #1\n"
-    "\tmov $499, $499[$500]\n"
-    "\tadd $500, $500, 1\n"
-    "\tprint $499\n"
-    "\tsub $499, $500, #0\n"
-    "\tbrnz proximo, $499\n"
-    "\treturn\n"
-    "writeln_fn:\n"
-    "\tcall write_fn, 2\n"
-    "\tprintln\n"
-    "\treturn\n";
 
 
 

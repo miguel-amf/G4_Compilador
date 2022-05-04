@@ -1,7 +1,7 @@
 void main() {
-    int number;
-    int result;
-    number = 2;
+    int numero;
+    lnt result;
+    numero = 5;
     result = 1;
     while (number>result) {
         result = result * number;

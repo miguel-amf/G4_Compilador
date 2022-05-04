@@ -948,8 +948,8 @@ case 13:
 YY_RULE_SETUP
 #line 176 "lexico.l"
 {
-    printf("Linha: %d, Coluna: %d\t", linha, coluna);
-    printf("Comando de controle de fluxo: %s\n", yytext);
+    // printf("Linha: %d, Coluna: %d\t", linha, coluna);
+    // printf("Comando de controle de fluxo: %s\n", yytext);
     yylval.token.linha = linha;
     yylval.token.coluna = coluna;
     yylval.token.escopo = escopoL[escopoAtual];

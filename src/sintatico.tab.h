@@ -83,9 +83,11 @@ union YYSTYPE
         int coluna;
         char id[100];
         int escopo;
+        int valor;
+        char escopo_f[30];
     } token;
 
-#line 89 "sintatico.tab.h" /* yacc.c:1909  */
+#line 91 "sintatico.tab.h" /* yacc.c:1909  */
 };
 
 typedef union YYSTYPE YYSTYPE;

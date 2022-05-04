@@ -17,7 +17,6 @@
     TabelaSimbolo* id;
     int erros = 0;
     char tipos[4][10] = {"INT", "VOID"}; // TODO REVER ISSO POIS PODE SER REMOVIDO
-    char tiposTac[4][10] = {"int", "void"}; // TODO REVER ISSO POIS PODE SER REMOVIDO
     int tipo = 0;
     extern int escopoL[1000];
     extern int escopoAtual;
@@ -26,6 +25,7 @@
     int qtdString = 0;
     int qtdIf = 0;
     int funcao = 0;
+    char nomeEscopo[30] = "global";
 %}
 
 // AST arvore de transcricao
@@ -36,6 +36,8 @@
         int coluna;
         char id[100];
         int escopo;
+        int valor;
+        char escopo_f[30];
     } token;
 }
 
@@ -88,6 +90,7 @@
 %type <ast> expUnaria;
 
 
+
 %%
 programa:
     listaDeDeclaracoes {
@@ -134,12 +137,14 @@ declaracao:
 ;
 
 declaracaoVariavel: 
+
     TIPO ID PONTOVIRGULA {
         $$ = criaNo("Declaracao de Variavel");
         $$->proximo = $1;
         id = insereSimbolo(id, $2.escopo, $2.id, "Variavel", $1->tipo, $2.linha, $2.coluna, 0);
         strcpy($1->simbolo, $2.id);
         tipo = 0;
+        $$->tipoDeNo = Identificador;
     }
 ;
 
@@ -153,6 +158,7 @@ declaracaoFuncao:
         // printf("\n---tipo = %s linha = %d --- %d\n", $1->tipo, $2.linha, tipo );
         strcpy($1->simbolo, $2.id);
         tipo = 0;
+        strcpy(nomeEscopo, $2.id);
     }
 ;
 
@@ -260,17 +266,13 @@ condicional:
         $$->proximo = $3;
         $3->filho1 = $5;
         $$->tipoDeNo = Condicao;
-
-        // sprintf($$->codeTac, "saidaIf%d:\n", qtdIf);
-        // sprintf($$->codeTac, "\tbrz ");
-        // qtdIf++;
     }
     /* | IF ABRE_PARENTESES exp FECHA_PARENTESES declaracoes ELSE declaracoes {
         $$ = criaNo("IF-ELSE");
         $$->proximo = $3;
         $3->filho1 = $5;
         $5->filho2 = $7;
-        $$->tipoDeNo = IF;
+        $$->tipoDeNo = Condicao;
     } */
 ;
 
@@ -280,12 +282,14 @@ exp:
         $$->proximo = $1;
         strcpy($$->tipo, $1->tipo);
         strcpy($$->simbolo, $1->simbolo);
+        $$->tipoDeNo = Operacao;
     }
     | OP_LOGICA_NEG exp {
         $$ = criaNo("exp");
         $$->proximo = $2;
         strcpy($$->tipo, $2->tipo);
         strcpy($$->simbolo, $2->simbolo);
+        $$->tipoDeNo = Operacao;
     }
 ;
 expressao_logica:
@@ -306,6 +310,7 @@ expressao_logica:
         strcpy($$->tipo, $1->tipo);
         strcpy($$->simbolo, $1->simbolo);
         $$ = $1;
+        $$->tipoDeNo = Condicao;
     }
 ;
 
@@ -315,6 +320,11 @@ expressao_relacional:
         strcpy($$->tipo, $1->tipo);
         strcpy($$->simbolo, $1->simbolo);
         $$ = $1;
+        if (strcmp($1->simbolo, "+") != 0){
+            $$->tipoDeNo = MAIS;
+        }else  if (strcmp($1->simbolo, "-") != 0){
+            $$->tipoDeNo = MENOS;
+        }
     }
     | expressao_relacional OP_B_RELACIONAIS opSomaSub {
         $$ = criaNo("expressaoRelacional");
@@ -375,11 +385,13 @@ expUnaria:
         $$ = criaNo("expUnaria");
         strcpy($$->tipo, $1->tipo);
         strcpy($$->simbolo, $1->simbolo);
+        $$->tipoDeNo = Constante;
     }
     | OP_B_SOMA_SUB argumento {
         $$ = criaNo("expUnaria");
         strcpy($$->tipo, $2->tipo);
         strcpy($$->simbolo, $2->simbolo);
+        $$->tipoDeNo = Operacao;
     }
 
 argumento:
@@ -394,7 +406,7 @@ argumento:
         }else{
             strcpy($$->tipo, c->tipo);
             strcpy($$->simbolo, $1.id);
-            $$->tipoDeNo = Identificador;
+            $$->tipoDeNo = Leitura;
         }
     }
     | numero {
@@ -460,7 +472,7 @@ numero:
         $$ = criaNo("Numero");
         strcpy($$->tipo, "INT");
         strcpy($$->simbolo, $1.id);
-        $$->tipoDeNo = Constante;
+        $$->tipoDeNo = Leitura;
     }
 ;
 
@@ -471,22 +483,6 @@ numero:
 void yyerror(const char* s){
     fprintf(stderr, "Linha: %d - Coluna: %d - Token: %s - Erro: %s\n", yylval.token.linha, yylval.token.coluna, yylval.token.id, s);
 }
-
-const char* saida = 
-    "write_fn:\n"
-    "\tmov $500, 0\n"
-    "proximo:\n"
-    "\tmov $499, #1\n"
-    "\tmov $499, $499[$500]\n"
-    "\tadd $500, $500, 1\n"
-    "\tprint $499\n"
-    "\tsub $499, $500, #0\n"
-    "\tbrnz proximo, $499\n"
-    "\treturn\n"
-    "writeln_fn:\n"
-    "\tcall write_fn, 2\n"
-    "\tprintln\n"
-    "\treturn\n";
 
 
 

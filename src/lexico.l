@@ -174,8 +174,8 @@ TABESPACO           [\t]+|[ ]+
 }
 
 {WHILE} {
-    printf("Linha: %d, Coluna: %d\t", linha, coluna);
-    printf("Comando de controle de fluxo: %s\n", yytext);
+    // printf("Linha: %d, Coluna: %d\t", linha, coluna);
+    // printf("Comando de controle de fluxo: %s\n", yytext);
     yylval.token.linha = linha;
     yylval.token.coluna = coluna;
     yylval.token.escopo = escopoL[escopoAtual];

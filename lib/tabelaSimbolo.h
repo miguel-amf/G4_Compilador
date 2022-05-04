@@ -3,6 +3,7 @@
 
 typedef struct TabelaSimbolo{
     int escopo;
+    char nomeEscopo[50];
     char simbolo[100];
     int linha;
     int coluna;
