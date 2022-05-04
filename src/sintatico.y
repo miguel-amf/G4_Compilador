@@ -92,7 +92,7 @@
 programa:
     listaDeDeclaracoes {
         $$ = criaNo("programa");
-        $$->pai = $1;
+        $$->proximo = $1;
         raiz = $$;
     }
 ;
@@ -100,8 +100,8 @@ programa:
 listaDeDeclaracoes: 
     listaDeDeclaracoes declaracao {
         $$ = criaNo("lista De Declaracoes");
-        $$->pai = $1;
-        $1->filho = $2;
+        $$->proximo = $1;
+        $1->filho1 = $2;
     }
     | declaracao {
         $$ = $1;
@@ -117,7 +117,6 @@ TIPO:
     | VOID {
         $$ = criaNo("VOID");
         strcpy($$->tipo, "VOID");
-        printf("dentro do void =+++++++++");
         tipo = 1;
     }
 ;
@@ -137,7 +136,7 @@ declaracao:
 declaracaoVariavel: 
     TIPO ID PONTOVIRGULA {
         $$ = criaNo("Declaracao de Variavel");
-        $$->pai = $1;
+        $$->proximo = $1;
         id = insereSimbolo(id, $2.escopo, $2.id, "Variavel", $1->tipo, $2.linha, $2.coluna, 0);
         strcpy($1->simbolo, $2.id);
         tipo = 0;
@@ -147,9 +146,9 @@ declaracaoVariavel:
 declaracaoFuncao:
     TIPO ID ABRE_PARENTESES listaDeParametros FECHA_PARENTESES corpo {
         $$ = criaNo("Declaracao de funcao");
-        $$->pai = $1;
-        $1->filho = $4;
-        $4->filho = $6;
+        $$->proximo = $1;
+        $1->filho1 = $4;
+        $4->filho2 = $6;
         id = insereSimbolo(id, $2.escopo, $2.id, "Funcao", $1->tipo, $2.linha, $2.coluna, 0);
         // printf("\n---tipo = %s linha = %d --- %d\n", $1->tipo, $2.linha, tipo );
         strcpy($1->simbolo, $2.id);
@@ -160,15 +159,15 @@ declaracaoFuncao:
 listaDeParametros:
     TIPO ID VIRGULA listaDeParametros {
         $$ = criaNo("Lista de Parametros");
-        $$->pai = $1;
-        $1->filho = $4;
+        $$->proximo = $1;
+        $1->filho1 = $4;
         id = insereSimbolo(id, $2.escopo, $2.id, "Variavel", tipos[tipo], $2.linha, $2.coluna, 1);
         tipo = 0;
         strcpy($1->simbolo, $2.id);
     }
     | TIPO ID {
         $$ = criaNo("Lista de Parametros");
-        $$->pai = $1;
+        $$->proximo = $1;
         escopoL[++escopoAtual] = escopo++;
         id = insereSimbolo(id, escopoL[escopoAtual], $2.id, "Variavel", tipos[tipo], $2.linha, $2.coluna, 1);
         strcpy($1->simbolo, $2.id);
@@ -184,7 +183,7 @@ listaDeParametros:
 corpo:
     ABRE_CHAVES dentroCorpo FECHA_CHAVES {
         $$ = criaNo("dentro das chaves");
-        $$->pai = $2;
+        $$->proximo = $2;
     }
     | error {
         erros++;
@@ -194,12 +193,12 @@ corpo:
 dentroCorpo:
     declaracoes dentroCorpo {
         $$ = criaNo("declaracoes");
-        $$->pai = $1;
-        $$->filho = $2;
+        $$->proximo = $1;
+        $$->filho1 = $2;
     }
     | declaracoes {
         $$ = criaNo("declaracoes");
-        $$->pai = $1;
+        $$->proximo = $1;
     }
 ;
 
@@ -227,13 +226,14 @@ declaracoes:
 expressao:
     exp PONTOVIRGULA {
         $$ = criaNo("expressao");
-        $$->pai = $1;
+        $$->proximo = $1;
         strcpy($$->tipo, $1->tipo);
         strcpy($$->simbolo, $1->simbolo);
     }
     | ID ATRIBUICAO expressao {
         $$ = criaNo("ATRIBUICAO");
-        $$->pai = $3;
+        $$->proximo = $3;
+        $$->tipoDeNo = Atribuicao;
         TabelaSimbolo* c = procuraVariavel(id, $1.id);
         if(c == 0){
             printf("Linha: %d - Coluna: %d - Identificador: %s - Erro Semantico - Variavel nao declarada!!!\n", $1.linha, $1.coluna, $1.id);
@@ -248,39 +248,42 @@ expressao:
 while:
     WHILE ABRE_PARENTESES exp FECHA_PARENTESES declaracoes {
         $$ = criaNo("while");
-        $$->pai = $3;
-        $3->filho = $5;
+        $$->proximo = $3;
+        $3->filho1 = $5;
+        $$->tipoDeNo = Repeticao;
     }
 ;
 
 condicional:
     IF ABRE_PARENTESES expressao FECHA_PARENTESES declaracoes %prec THEN {
         $$ = criaNo("IF");
-        $$->pai = $3;
-        $3->filho = $5;
+        $$->proximo = $3;
+        $3->filho1 = $5;
+        $$->tipoDeNo = Condicao;
 
         // sprintf($$->codeTac, "saidaIf%d:\n", qtdIf);
         // sprintf($$->codeTac, "\tbrz ");
         // qtdIf++;
     }
-    | IF ABRE_PARENTESES exp FECHA_PARENTESES declaracoes ELSE declaracoes {
+    /* | IF ABRE_PARENTESES exp FECHA_PARENTESES declaracoes ELSE declaracoes {
         $$ = criaNo("IF-ELSE");
-        $$->pai = $3;
-        $3->filho = $5;
-        $5->filho = $7;
-    }
+        $$->proximo = $3;
+        $3->filho1 = $5;
+        $5->filho2 = $7;
+        $$->tipoDeNo = IF;
+    } */
 ;
 
 exp:
     expressao_logica {
         $$ = criaNo("exp");
-        $$->pai = $1;
+        $$->proximo = $1;
         strcpy($$->tipo, $1->tipo);
         strcpy($$->simbolo, $1->simbolo);
     }
     | OP_LOGICA_NEG exp {
         $$ = criaNo("exp");
-        $$->pai = $2;
+        $$->proximo = $2;
         strcpy($$->tipo, $2->tipo);
         strcpy($$->simbolo, $2->simbolo);
     }
@@ -288,14 +291,14 @@ exp:
 expressao_logica:
     expressao_logica OP_LOGICA_OR expressao_relacional {
         $$ = criaNo("expressaoLogica");
-        $$->pai = $1;
-        $1->filho = $3;
+        $$->proximo = $1;
+        $1->filho1 = $3;
         //strcpy($$->tipo, "INT");
     }
     | expressao_logica OP_LOGICA_AND expressao_relacional {
         $$ = criaNo("expressaoLogica");
-        $$->pai = $1;
-        $1->filho = $3;
+        $$->proximo = $1;
+        $1->filho2 = $3;
         //strcpy($$->tipo, "INT");
     }
     | expressao_relacional {
@@ -314,10 +317,24 @@ expressao_relacional:
         $$ = $1;
     }
     | expressao_relacional OP_B_RELACIONAIS opSomaSub {
-        printf("Teste ----");
         $$ = criaNo("expressaoRelacional");
-        $$->pai = $1;
-        $1->filho = $3;
+        $$->proximo = $1;
+        $1->filho1 = $3;
+
+        if (strcmp($1->simbolo, ">") != 0){
+            $$->tipoDeNo = MAIOR;
+        }else  if (strcmp($1->simbolo, "<") != 0){
+            $$->tipoDeNo = MENOR;
+        }else  if (strcmp($1->simbolo, "+") != 0){
+            $$->tipoDeNo = MAIS;
+        }else  if (strcmp($1->simbolo, "-") != 0){
+            $$->tipoDeNo = MENOS;
+        }else  if (strcmp($1->simbolo, "/") != 0){
+            $$->tipoDeNo = DIVIDIDO;
+        }else  if (strcmp($1->simbolo, "*") != 0){
+            $$->tipoDeNo = MULTIPLICADO;
+        }
+
         strcpy($$->tipo, $1->tipo);
         strcpy($$->simbolo, $1->simbolo);
     }
@@ -332,8 +349,8 @@ opSomaSub:
     }
     | opSomaSub OP_B_SOMA_SUB opMultDiv {
         $$ = criaNo("Operando SomaSub");
-        $$->pai = $1;
-        $1->filho = $3;
+        $$->proximo = $1;
+        $1->filho1 = $3;
         strcpy($$->tipo, $1->tipo);
         strcpy($$->simbolo, $1->simbolo);
         //sprintf($$->codeTac, "\tadd %s, %s", $1->simbolo, $3->simbolo);
@@ -343,8 +360,8 @@ opSomaSub:
 opMultDiv:
    opMultDiv OP_B_MULT_DIV argumento {
         $$ = criaNo("Operando MultDiv");
-        $$->pai = $1;
-        $1->filho = $3;
+        $$->proximo = $1;
+        $1->filho1 = $3;
         strcpy($$->tipo, $1->tipo);
         strcpy($$->simbolo, $1->simbolo);
     }
@@ -377,23 +394,25 @@ argumento:
         }else{
             strcpy($$->tipo, c->tipo);
             strcpy($$->simbolo, $1.id);
+            $$->tipoDeNo = Identificador;
         }
     }
     | numero {
-        $$ = criaNo("argumento");
-        $$->pai = $1;
+        $$ = criaNo("numero_inteiro");
+        $$->proximo = $1;
         strcpy($$->tipo, $1->tipo);
         strcpy($$->simbolo, $1->simbolo);
+        $$->tipoDeNo = Constante;
     }
     | ABRE_PARENTESES exp FECHA_PARENTESES {
         $$ = criaNo("argumento");
-        $$->pai = $2;
+        $$->proximo = $2;
         strcpy($$->tipo, $2->tipo);
         strcpy($$->simbolo, $2->simbolo);
     }
     | chamadaDeFuncao {
         $$ = criaNo("argumento");
-        $$->pai = $1;
+        $$->proximo = $1;
         strcpy($$->tipo, $1->tipo);
     }
 ;
@@ -401,7 +420,7 @@ argumento:
 chamadaDeFuncao:
     ID ABRE_PARENTESES exp FECHA_PARENTESES {
         $$ = criaNo("chamada de funcao");
-        $$->pai = $3;
+        $$->proximo = $3;
         TabelaSimbolo* c = procuraVariavel(id, $1.id);
         if(c == 0){
             printf("Linha: %d - Coluna: %d - Identificador: %s - Erro Semantico - Funcao nao declarada!!!\n", $1.linha, $1.coluna, $1.id);
@@ -424,12 +443,14 @@ chamadaDeFuncao:
 retorno:
     RETORNO exp PONTOVIRGULA {
         $$ = criaNo("retorno");
-        $$->pai = $2;
+        $$->proximo = $2;
         char tipoRetornoC[20] = "";
         strcpy(tipoRetornoC, $2->tipo);
+        $$->tipoDeNo = Atribuicao;
     }
     | RETORNO PONTOVIRGULA {
         $$ = criaNo("retorno");
+        $$->tipoDeNo = Atribuicao;
     }
 ;
 
@@ -439,6 +460,7 @@ numero:
         $$ = criaNo("Numero");
         strcpy($$->tipo, "INT");
         strcpy($$->simbolo, $1.id);
+        $$->tipoDeNo = Constante;
     }
 ;
 

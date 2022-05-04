@@ -11,10 +11,5 @@ int fatorial(int number) {
 void main() {
     void number;
     number = 15;
-    int teste;
-    teste = 0;
-    int deu_bom;
     fatorial(number);
-
-    teste = number;
 }

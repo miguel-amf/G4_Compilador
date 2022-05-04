@@ -8,13 +8,17 @@ AST* nos[9999];
 
 AST* criaNo(char* nome_regra){
     AST* no = (AST*) malloc(sizeof(AST));
-
-    no->pai = NULL;
+    //*no->filho = (AST*) malloc(3 * sizeof(AST));
+    no->proximo = NULL;
+    no->filho1 = NULL;
+    no->filho2 = NULL;
+    no->filho3 = NULL;
     no->nome_regra = strdup(nome_regra);
-    no->filho = NULL;
+    no->funcao=0;
+    // for (int i=0; i< 3; i++) no->filho = (AST*) malloc(3 * sizeof(AST));
     strcpy(no->simbolo, "");
     strcpy(no->tipo,"");
-    strcpy(no->cast,"");
+    // strcpy(no->cast,"");
     nos[cont] = no;
     cont++;
 
@@ -36,11 +40,15 @@ void mostraAST(AST *ast, int altura) {
       else if(strcmp(ast->simbolo, "") != 0){
           printf(" --> %s", ast->simbolo);
           if(strcmp(ast->tipo, "") != 0) printf(" --> Tipo: %s", ast->tipo);
-          if(strcmp(ast->cast, "") != 0) printf(" --> Cast: %s", ast->cast);
       }
     altura -= 1;
-    mostraAST(ast->pai, altura+1);
-    mostraAST(ast->filho, altura);
+    mostraAST(ast->proximo, altura+1);
+    mostraAST(ast->filho1, altura);
+    mostraAST(ast->filho2, altura);
+    mostraAST(ast->filho3, altura);
+    // for (int i = 0; i< 3; i++) 
+    //     mostraAST(ast->filho[i], altura);
+
 }
 
 void liberaAST() {
@@ -53,38 +61,3 @@ void liberaAST() {
     free(no);
   }
 }
-/*
-void castDeTudo(char* tipo, AST* esquerda, AST* direita) {
-  if(strcmp(tipo, "INT") == 0 && strcmp(direita->tipo, "FLOAT") == 0) {
-    strcpy(direita->tipo, "INT");
-    strcpy(direita->cast, "float_para_int");
-  } else if(strcmp(tipo, "FLOAT") == 0 && strcmp(direita->tipo, "INT") == 0){
-    strcpy(direita->tipo, "FLOAT");
-    strcpy(direita->cast, "int_para_float");
-  } else if(strcmp(tipo, "INT LIST") == 0 && strcmp(direita->tipo, "NULO") == 0){
-    strcpy(direita->tipo, "NULO");
-    strcpy(direita->cast, "list_para_nil");
-  } else if(strcmp(tipo, "Float LIST") == 0 && strcmp(direita->tipo, "NULO") == 0){
-    strcpy(direita->tipo, "NULO");
-    strcpy(direita->cast, "list_para_nil");
-  } else if(strcmp(esquerda->tipo, "INT") == 0 && strcmp(direita->tipo, "FLOAT") == 0) {
-    strcpy(esquerda->tipo, "FLOAT");
-    strcpy(esquerda->cast, "float_para_int");
-  } else if (strcmp(esquerda->tipo, "FLOAT") == 0 && strcmp(direita->tipo, "INT") == 0) {
-    strcpy(direita->tipo, "FLOAT");
-    strcpy(direita->cast, "int_para_float");
-  } else if(strcmp(esquerda->tipo, "INT LIST") == 0 && strcmp(direita->tipo, "NULO") == 0) {
-    strcpy(esquerda->tipo, "NULO");
-    strcpy(esquerda->cast, "list_para_nil");
-  } else if(strcmp(esquerda->tipo, "NULO") == 0 && strcmp(direita->tipo, "INT LIST") == 0) {
-    strcpy(esquerda->tipo, "NULO");
-    strcpy(esquerda->cast, "list_para_nil");
-  } else if(strcmp(esquerda->tipo, "FLOAT LIST") == 0 && strcmp(direita->tipo, "NULO") == 0) {
-    strcpy(esquerda->tipo, "NULO");
-    strcpy(esquerda->cast, "list_para_nil");
-  } else if(strcmp(esquerda->tipo, "NULO") == 0 && strcmp(direita->tipo, "FLOAT LIST") == 0) {
-    strcpy(esquerda->tipo, "NULO");
-    strcpy(esquerda->cast, "list_para_nil");
-  }
-}
-*/

@@ -56,6 +56,7 @@ void mostraTabela(TabelaSimbolo* id){
     printf("\n\n\n");
     printf("\t\t\t Tabela de Simbolos \t\t\t\n\n");
     printf("\t Simbolo \t\t Tipo Entrada \t\t Tipo \t\t Escopo \t Linha \t\t Coluna \n");
+    printf("\t _______ \t\t ____________ \t\t ____ \t\t ______ \t _____ \t\t ______ \n");
     if(p == NULL){
         return;
     }

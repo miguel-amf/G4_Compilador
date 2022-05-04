@@ -1,21 +1,25 @@
 #ifndef ARVORE_SINTATICA_ABSTRATA_H
 #define ARVORE_SINTATICA_ABSTRATA_H
 
-typedef enum {If,While,Atribuicao,Leitura,Escrita,Operacao,Constante,Identificador} TipoDeNo;
+typedef enum {Condicao,Repeticao,Atribuicao,Leitura,Operacao,Constante,Identificador} TipoDeNo;
+typedef enum {MAIOR, MENOR, MAIS, MENOS, DIVIDIDO, MULTIPLICADO} TipoDeToken;
 
 typedef struct AST{
-    char* nome_regra;
-    struct AST* pai;
-    struct AST* filho;
+    char* nome_regra; //nome
+    struct AST* proximo;
+    struct AST* filho1;
+    struct AST* filho2;
+    struct AST* filho3;
     char tipo[20];
-    char cast[20];
     char simbolo[100];
-    TipoDeNo tipoDeNo; //determina o tipo possivel de nó
+    int valor;
+    int funcao; //verifica se é funcao
+    TipoDeToken tipoToken; // operador ou valor ou nome
+    TipoDeNo tipoDeNo; //determina o tipo possivel de nó Kind
 } AST;
 
 AST* criaNo(char* nome_regra);
 void mostraAST(AST *ast, int altura);
 void liberaAST();
-void castDeTudo(char* tipoToken, AST* esquerda, AST* direita);
 
 #endif

@@ -224,13 +224,13 @@ void gerarCodigo(AST* syntaxTree, char * codefile){
    // emitComment("TINY Compilation to TM Code");
    // emitComment(s);
    printf("\n_____________________________________________\n");
-   printf("cast %s\n", syntaxTree->pai->pai->pai->cast);
-   printf("nome_regra %s\n", syntaxTree->pai->pai->pai->nome_regra);
-   printf("simbolo %s\n", syntaxTree->pai->pai->pai->simbolo);
-   printf("tipo %s\n", syntaxTree->pai->pai->pai->tipo);
-   printf("filho nome regra %s\n", syntaxTree->pai->pai->pai->pai->nome_regra);
-   printf("pai->filho->simbolo %s\n", syntaxTree->pai->pai->pai->simbolo);
-   printf("pai->filho->simbolo %s\n", syntaxTree->pai->pai->pai->nome_regra);
+   // printf("cast %s\n", syntaxTree->proximo->proximo->proximo->cast);
+   printf("nome_regra %s\n", syntaxTree->proximo->proximo->proximo->nome_regra);
+   printf("simbolo %s\n", syntaxTree->proximo->proximo->proximo->simbolo);
+   printf("tipo %s\n", syntaxTree->proximo->proximo->proximo->tipo);
+   // printf("filho nome regra %s\n", syntaxTree->proximo->proximo->proximo->proximo->nome_regra);
+   // printf("pai->filho->simbolo %s\n", syntaxTree->proximo->proximo->proximo->simbolo);
+   // printf("pai->filho->simbolo %s\n", syntaxTree->proximo->proximo->proximo->nome_regra);
    /* generate standard prelude */
    // emitComment("Standard prelude:");
    // emitRM("LD",mp,0,ac,"load maxaddress from location 0");
