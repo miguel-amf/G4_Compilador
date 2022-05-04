@@ -9,4 +9,4 @@ A documentação precisa do que cada parte contemplará ainda está sendo discut
 
 ---
 
-This piece of software is design to implement a C Minus compiler, a simplified version of the C language counterpart. Its development will be split in four parts: Lexical Analysis (1), Sintax Analysis (2), Semantic Analysis(3), and Code Generation (4).
+This piece of software is designed to implement a C Minus compiler, a simplified version of the C language counterpart. Its development will be split in four parts: Lexical Analysis (1), Sintax Analysis (2), Semantic Analysis(3), and Code Generation (4).
