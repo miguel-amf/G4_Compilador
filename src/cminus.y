@@ -354,7 +354,7 @@ term:
   |factor {$$ = $1;}
 ;
 
-mulo: 
+mulop: 
   TIMES {
     $$ = newExpNode(OpK); 
     $$->attr.op = TIMES;
@@ -415,6 +415,7 @@ arg_list:
   |exp {
     $$ = $1;
   }
+;
 
 
 %%

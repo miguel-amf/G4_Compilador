@@ -5,6 +5,8 @@
 #include "scan.h"
 #include "parse.h"
 #include "analyze.h"
+#include "cgen.h"
+#include "code.h"
 
 /* allocate global variables */
 int lineno = 0;
@@ -60,6 +62,21 @@ main( int argc, char * argv[] ) {
     if (TraceAnalyze) fprintf(listing,"\nVerificando tipagem\n");
     typeCheck(syntaxTree); // Semtantico
     if (TraceAnalyze) fprintf(listing,"\nfim da verificacao de tipos\n");
+  }
+
+  if (! Error)
+  { char * codefile;
+    int fnlen = strcspn(arq,".");
+    codefile = (char *) calloc(fnlen+4, sizeof(char));
+    strncpy(codefile,arq,fnlen);
+    strcat(codefile,".tm");
+    code = fopen(codefile,"w");
+    if (code == NULL)
+    { printf("Unable to open %s\n",codefile);
+      exit(1);
+    }
+    codeGen(syntaxTree,codefile);
+    fclose(code);
   }
 
   //fecha o arquivo

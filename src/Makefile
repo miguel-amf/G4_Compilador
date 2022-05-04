@@ -5,7 +5,7 @@ CC = gcc
 #escolha de flags
 CFLAGS =
 
-OBJS = y.tab.o lex.yy.o main.o util.o symtab.o analyze.o
+OBJS = y.tab.o lex.yy.o main.o util.o symtab.o analyze.o cgen.o code.o
 
 cminus: $(OBJS)
 	$(CC) $(CFLAGS) $(OBJS) -o cminus
@@ -21,6 +21,12 @@ symtab.o: symtab.c symtab.h globals.h
 
 analyze.o: analyze.c globals.h symtab.h analyze.h util.h
 	$(CC) $(CFLAGS) -c analyze.c
+
+cgen.o: cgen.c globals.h symtab.h cgen.h util.h
+	$(CC) $(CFLAGS) -c cgen.c
+
+code.o: code.c globals.h symtab.h code.h util.h
+	$(CC) $(CFLAGS) -c code.c
 
 lex.yy.o: cminus.l scan.h util.h globals.h
 	flex -o lex.yy.c cminus.l
