@@ -1,0 +1,7 @@
+{
+  "files.associations": {
+    "cgen.h": "c",
+    "code.h": "c",
+    "arvore.h": "c"
+  }
+}

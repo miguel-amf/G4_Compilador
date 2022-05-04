@@ -75,7 +75,7 @@ extern int yydebug;
 
 union YYSTYPE
 {
-#line 31 "sintatico.y" /* yacc.c:1909  */
+#line 32 "sintatico.y" /* yacc.c:1909  */
 
     struct AST* ast;
     struct Token {

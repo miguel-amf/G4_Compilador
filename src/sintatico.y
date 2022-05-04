@@ -6,6 +6,7 @@
     #include <stdio.h>
     #include <stdlib.h>
     #include <string.h>
+    #include "../lib/cgen.h"
     #include "../lib/arvore.h"
     #include "../lib/tabelaSimbolo.h"
     extern int yylex();
@@ -76,7 +77,6 @@
 %type <ast> while;
 %type <ast> condicional;
 %type <ast> exp;
-/* %type <ast> expressaoList; */
 %type <ast> expressao_logica;
 %type <ast> expressao_relacional;
 %type <ast> opSomaSub;
@@ -140,7 +140,6 @@ declaracaoVariavel:
         $$->pai = $1;
         id = insereSimbolo(id, $2.escopo, $2.id, "Variavel", $1->tipo, $2.linha, $2.coluna, 0);
         strcpy($1->simbolo, $2.id);
-        sprintf($$->tableTac, "\t%s %s%d", tiposTac[tipo], $2.id, $2.escopo);
         tipo = 0;
     }
 ;
@@ -164,7 +163,6 @@ listaDeParametros:
         $$->pai = $1;
         $1->filho = $4;
         id = insereSimbolo(id, $2.escopo, $2.id, "Variavel", tipos[tipo], $2.linha, $2.coluna, 1);
-        sprintf($$->tableTac,"\t%s %s%d", tiposTac[tipo], $2.id, $2.escopo+1);
         tipo = 0;
         strcpy($1->simbolo, $2.id);
     }
@@ -174,7 +172,6 @@ listaDeParametros:
         escopoL[++escopoAtual] = escopo++;
         id = insereSimbolo(id, escopoL[escopoAtual], $2.id, "Variavel", tipos[tipo], $2.linha, $2.coluna, 1);
         strcpy($1->simbolo, $2.id);
-        sprintf($$->tableTac,"\t%s %s%d", tiposTac[tipo], $2.id, escopoL[escopoAtual]+1);
         tipo = 0;
         escopoAtual--;
         escopo--;
@@ -232,7 +229,6 @@ expressao:
         $$ = criaNo("expressao");
         $$->pai = $1;
         strcpy($$->tipo, $1->tipo);
-        castDeTudo($$->tipo, $$, $1);
         strcpy($$->simbolo, $1->simbolo);
     }
     | ID ATRIBUICAO expressao {
@@ -243,7 +239,6 @@ expressao:
             printf("Linha: %d - Coluna: %d - Identificador: %s - Erro Semantico - Variavel nao declarada!!!\n", $1.linha, $1.coluna, $1.id);
         } else{
             strcpy($$->tipo, c->tipo);
-            castDeTudo($$->tipo, $$, $3);
             strcpy($$->simbolo, $1.id);
         }
     }
@@ -296,14 +291,12 @@ expressao_logica:
         $$->pai = $1;
         $1->filho = $3;
         //strcpy($$->tipo, "INT");
-        castDeTudo($$->tipo, $$, $3);        
     }
     | expressao_logica OP_LOGICA_AND expressao_relacional {
         $$ = criaNo("expressaoLogica");
         $$->pai = $1;
         $1->filho = $3;
         //strcpy($$->tipo, "INT");
-        castDeTudo($$->tipo, $$, $3);
     }
     | expressao_relacional {
         $$ = criaNo("expressaoLogica");
@@ -327,7 +320,6 @@ expressao_relacional:
         $1->filho = $3;
         strcpy($$->tipo, $1->tipo);
         strcpy($$->simbolo, $1->simbolo);
-        castDeTudo($$->tipo, $$, $3);
     }
 ;
 
@@ -344,8 +336,7 @@ opSomaSub:
         $1->filho = $3;
         strcpy($$->tipo, $1->tipo);
         strcpy($$->simbolo, $1->simbolo);
-        castDeTudo($$->tipo, $$, $3);
-        sprintf($$->codeTac, "\tadd %s, %s", $1->simbolo, $3->simbolo);
+        //sprintf($$->codeTac, "\tadd %s, %s", $1->simbolo, $3->simbolo);
     }    
 ;
 
@@ -356,7 +347,6 @@ opMultDiv:
         $1->filho = $3;
         strcpy($$->tipo, $1->tipo);
         strcpy($$->simbolo, $1->simbolo);
-        castDeTudo($$->tipo, $$, $3);
     }
     | expUnaria {
         $$ = $1;
@@ -377,6 +367,9 @@ expUnaria:
 
 argumento:
     ID {
+        if (!strcmp($1.id,"main")) {
+            printf("\nERRO SEMANTICO: OPERACAO COM VOID = %s\n", $1.id);
+        }
         $$ = criaNo("ID");
         TabelaSimbolo* c = procuraVariavel(id, $1.id);
         if(c == 0){
@@ -473,49 +466,8 @@ const char* saida =
     "\tprintln\n"
     "\treturn\n";
 
-void tabelaTac(AST* ast, FILE *fp){
-    if (ast == NULL){
-        return;
-    }
-    if(strcmp(ast->tableTac, "")){
-        fprintf (fp, "%s\n", ast->tableTac);
-    }
-    tabelaTac(ast->pai, fp);
-    tabelaTac(ast->filho, fp);
-}
 
-void codigoTac(AST* ast, FILE *fp){
-    if (ast == NULL){
-        return;
-    }
-    if(strcmp(ast->nome_regra, "Declaracao de funcao") == 0){
-        if(funcao == 1) fprintf (fp, "\treturn 0\n");
-        funcao = 1;
-        fprintf (fp, "\n%s:\n", ast->pai->simbolo);
-    }
-    codigoTac(ast->pai, fp);
-    codigoTac(ast->filho, fp);
-    if(strcmp(ast->codeTac, "")){
-        fprintf (fp, "%s\n", ast->codeTac);
-    }
-}
 
-void geraArquivoTac(AST* raiz, char* nomeArquivo){
-    char arquivo[200] = "";
-    sprintf(arquivo, "%s.tac", nomeArquivo);
-    FILE *fp = fopen(arquivo, "w+");
-    if(fp){
-        fprintf (fp, ".table\n");
-        tabelaTac(raiz, fp);
-        fprintf (fp, "\n.code\n");
-        fprintf(fp, "\n%s\n", saida);
-        codigoTac(raiz, fp);
-    }
-    else{
-        printf("Error, could not write TAC file.\n");
-    }
-    fclose(fp);
-}
 
 
 int main(int argc, char ** argv) {
@@ -534,9 +486,10 @@ int main(int argc, char ** argv) {
     if(erros == 0){
         mostraAST(raiz, 0);
     }
+
     mostraTabela(id);
     if(erros == 0){
-        geraArquivoTac(raiz, parte);
+        gerarCodigo(raiz, parte);
     }
     limpaTabela(id);
     liberaAST();

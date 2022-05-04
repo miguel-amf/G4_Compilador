@@ -1,7 +1,7 @@
 .table
 	int number1
 	int result1
-	int number3
+	void number3
 	int teste3
 	int deu_bom3
 

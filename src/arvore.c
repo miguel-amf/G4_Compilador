@@ -15,10 +15,6 @@ AST* criaNo(char* nome_regra){
     strcpy(no->simbolo, "");
     strcpy(no->tipo,"");
     strcpy(no->cast,"");
-    strcpy(no->tableTac,"");
-    strcpy(no->codeTac,"");
-    no->regTac = 0;
-    no->auxTac = 0;
     nos[cont] = no;
     cont++;
 
@@ -57,7 +53,7 @@ void liberaAST() {
     free(no);
   }
 }
-
+/*
 void castDeTudo(char* tipo, AST* esquerda, AST* direita) {
   if(strcmp(tipo, "INT") == 0 && strcmp(direita->tipo, "FLOAT") == 0) {
     strcpy(direita->tipo, "INT");
@@ -91,3 +87,4 @@ void castDeTudo(char* tipo, AST* esquerda, AST* direita) {
     strcpy(esquerda->cast, "list_para_nil");
   }
 }
+*/

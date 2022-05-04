@@ -9,10 +9,12 @@ int fatorial(int number) {
 }
 
 void main() {
-    int number;
+    void number;
     number = 15;
     int teste;
     teste = 0;
     int deu_bom;
     fatorial(number);
+
+    teste = number;
 }

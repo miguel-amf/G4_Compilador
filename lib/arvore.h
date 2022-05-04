@@ -1,6 +1,8 @@
 #ifndef ARVORE_SINTATICA_ABSTRATA_H
 #define ARVORE_SINTATICA_ABSTRATA_H
 
+typedef enum {If,While,Atribuicao,Leitura,Escrita,Operacao,Constante,Identificador} TipoDeNo;
+
 typedef struct AST{
     char* nome_regra;
     struct AST* pai;
@@ -8,10 +10,7 @@ typedef struct AST{
     char tipo[20];
     char cast[20];
     char simbolo[100];
-    char tableTac[300];
-    char codeTac[300];
-    int regTac;
-    int auxTac;
+    TipoDeNo tipoDeNo; //determina o tipo possivel de nó
 } AST;
 
 AST* criaNo(char* nome_regra);
