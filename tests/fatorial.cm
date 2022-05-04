@@ -1,0 +1,15 @@
+int fatorial(int number) {
+    int result;
+    result = 1;
+    while (number>result) {
+        result = result * number;
+        number = number - 1;
+    }
+    return result;
+}
+
+int main() {
+    int number;
+    number = 5;
+    fatorial(number);
+}

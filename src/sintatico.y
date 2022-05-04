@@ -15,8 +15,8 @@
     AST* raiz;
     TabelaSimbolo* id;
     int erros = 0;
-    char tipos[4][10] = {"INT", "FLOAT", "INT LIST", "FLOAT LIST"};
-    char tiposTac[4][10] = {"int", "float", "int list", "float list"};
+    char tipos[4][10] = {"INT", "FLOAT", "INT LIST", "FLOAT LIST"}; // TODO REVER ISSO POIS PODE SER REMOVIDO
+    char tiposTac[4][10] = {"int", "float", "int list", "float list"}; // TODO REVER ISSO POIS PODE SER REMOVIDO
     int tipo = 0;
     extern int escopoL[1000];
     extern int escopoAtual;
@@ -27,6 +27,7 @@
     int funcao = 0;
 %}
 
+// AST arvore de transcricao
 %union{
     struct AST* ast;
     struct Token {
@@ -39,11 +40,11 @@
 
 %token <token>  ID
 %token <token>  INT
-%token <token>  FLOAT
+/* %token <token>  FLOAT */
 %token <token>  TIPO_INT
-%token <token>  TIPO_FLOAT
+/* %token <token>  TIPO_FLOAT
 %token <token>  TIPO_LIST_INT
-%token <token>  TIPO_LIST_FLOAT
+%token <token>  TIPO_LIST_FLOAT */
 %token <token>  OP_B_SOMA_SUB
 %token <token>  OP_B_MULT_DIV
 %token <token>  OP_LOGICA_AND
@@ -53,7 +54,7 @@
 %token <token> IF
 %token <token> ELSE
 %right THEN ELSE
-%token <token>  FOR
+%token <token>  WHILE
 %token <token>  RETORNO
 %token <token>  ENTRADA
 %token <token>  SAIDA
@@ -82,7 +83,7 @@
 %type <ast> dentroCorpo;
 %type <ast> declaracoes;
 %type <ast> expressao;
-%type <ast> for;
+%type <ast> while;
 %type <ast> condicional;
 %type <ast> exp;
 %type <ast> expressaoList;
@@ -126,7 +127,7 @@ TIPO:
         strcpy($$->tipo, "INT");
         tipo += 0;
     }
-    | TIPO_FLOAT {
+    /* | TIPO_FLOAT {
         $$ = criaNo("FLOAT");
         strcpy($$->tipo, "FLOAT");
         tipo += 1;
@@ -140,7 +141,7 @@ TIPO:
         $$ = criaNo("FLOAT LIST");
         strcpy($$->tipo, "FLOAT LIST");
         tipo += 3;
-    }
+    } */
 ;
 
 declaracao:
@@ -245,7 +246,7 @@ declaracoes:
     | saida {
         $$ = $1;
     }    
-    | for {
+    | while {
         $$ = $1;
     }
     | condicional {
@@ -292,36 +293,35 @@ expressao:
 ;
 
 
-for:
-    FOR ABRE_PARENTESES expressao expressao ID ATRIBUICAO ID FECHA_PARENTESES declaracoes {
-        $$ = criaNo("for");
+while:
+    WHILE ABRE_PARENTESES exp FECHA_PARENTESES declaracoes {
+        $$ = criaNo("while");
         $$->pai = $3;
-        $3->filho = $4;
-        $4->filho = $9;
+        $3->filho = $5;
     }
-    | FOR ABRE_PARENTESES expressao expressao ID ATRIBUICAO ID OP_B_SOMA_SUB ID FECHA_PARENTESES declaracoes {
-        $$ = criaNo("for");
+    /* | WHILE ABRE_PARENTESES expressao expressao ID ATRIBUICAO ID OP_B_SOMA_SUB ID FECHA_PARENTESES declaracoes {
+        $$ = criaNo("while");
         $$->pai = $3;
         $3->filho = $4;
         $4->filho = $11;
     }
-    | FOR ABRE_PARENTESES expressao expressao ID ATRIBUICAO ID OP_B_SOMA_SUB numero FECHA_PARENTESES declaracoes {
-        $$ = criaNo("for");
+    | WHILE ABRE_PARENTESES expressao expressao ID ATRIBUICAO ID OP_B_SOMA_SUB numero FECHA_PARENTESES declaracoes {
+        $$ = criaNo("while");
         $$->pai = $3;
         $3->filho = $4;
         $4->filho = $9;
         $9->filho = $11;
     }
-    | FOR ABRE_PARENTESES expressao expressao ID ATRIBUICAO OP_LOGICA_NEG ID FECHA_PARENTESES declaracoes {
-        $$ = criaNo("for");
+    | WHILE ABRE_PARENTESES expressao expressao ID ATRIBUICAO OP_LOGICA_NEG ID FECHA_PARENTESES declaracoes {
+        $$ = criaNo("while");
         $$->pai = $3;
         $3->filho = $4;
         $4->filho = $10;
-    }
+    } */
 ;
 
 condicional:
-    IF ABRE_PARENTESES exp FECHA_PARENTESES declaracoes %prec THEN {
+    IF ABRE_PARENTESES expressao FECHA_PARENTESES declaracoes %prec THEN {
         $$ = criaNo("IF");
         $$->pai = $3;
         $3->filho = $5;
@@ -401,6 +401,7 @@ expressao_relacional:
         $$ = $1;
     }
     | expressao_relacional OP_B_RELACIONAIS opSomaSub {
+        printf("Teste ----");
         $$ = criaNo("expressaoRelacional");
         $$->pai = $1;
         $1->filho = $3;
@@ -523,9 +524,9 @@ entrada:
             printf("Linha: %d - Coluna: %d - Identificador: %s - Erro Semantico - Variavel nao declarada!!!\n", $3.linha, $3.coluna, $3.id);
         }else{
             strcpy($$->tipo, c->tipo);
-            if(strcmp($$->tipo, "FLOAT") == 0){
-                sprintf($$->codeTac,"\tscanf %s%d",$3.id, $3.escopo);
-            }
+            // if(strcmp($$->tipo, "FLOAT") == 0){ // TODO REMOVER
+            //     sprintf($$->codeTac,"\tscanf %s%d",$3.id, $3.escopo);
+            // }
             if(strcmp($$->tipo, "INT") == 0){
                 sprintf($$->codeTac,"\tscani %s%d",$3.id, $3.escopo);
             }
@@ -598,11 +599,11 @@ numero:
         strcpy($$->tipo, "INT");
         strcpy($$->simbolo, $1.id);
     }
-    | FLOAT {
+    /* | FLOAT {
         $$ = criaNo("Numero");
         strcpy($$->tipo, "FLOAT");
         strcpy($$->simbolo, $1.id);
-    }
+    } */
 ;
 
 
