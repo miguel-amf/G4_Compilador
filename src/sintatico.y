@@ -15,8 +15,8 @@
     AST* raiz;
     TabelaSimbolo* id;
     int erros = 0;
-    char tipos[4][10] = {"INT", "FLOAT", "INT LIST", "FLOAT LIST"}; // TODO REVER ISSO POIS PODE SER REMOVIDO
-    char tiposTac[4][10] = {"int", "float", "int list", "float list"}; // TODO REVER ISSO POIS PODE SER REMOVIDO
+    char tipos[4][10] = {"INT", "VOID"}; // TODO REVER ISSO POIS PODE SER REMOVIDO
+    char tiposTac[4][10] = {"int", "void"}; // TODO REVER ISSO POIS PODE SER REMOVIDO
     int tipo = 0;
     extern int escopoL[1000];
     extern int escopoAtual;
@@ -40,11 +40,8 @@
 
 %token <token>  ID
 %token <token>  INT
-/* %token <token>  FLOAT */
+%token <token>  VOID
 %token <token>  TIPO_INT
-/* %token <token>  TIPO_FLOAT
-%token <token>  TIPO_LIST_INT
-%token <token>  TIPO_LIST_FLOAT */
 %token <token>  OP_B_SOMA_SUB
 %token <token>  OP_B_MULT_DIV
 %token <token>  OP_LOGICA_AND
@@ -56,11 +53,6 @@
 %right THEN ELSE
 %token <token>  WHILE
 %token <token>  RETORNO
-/* %token <token>  CONSTRUTOR_LISTA
-%token <token>  OP_LISTA
-%token <token>  FUNCOES_LISTA */
-/* %token <token>  STRING */
-%token <token>  NIL
 %token <token>  ABRE_PARENTESES
 %token <token>  FECHA_PARENTESES
 %token <token>  ABRE_CHAVES
@@ -68,7 +60,7 @@
 %token <token>  ATRIBUICAO
 %token <token>  VIRGULA
 %token <token>  PONTOVIRGULA
-/* %token <token>  COLCHETES */
+
 
 %type <ast> programa;
 %type <ast> listaDeDeclaracoes;
@@ -92,7 +84,6 @@
 %type <ast> argumento;
 %type <ast> chamadaDeFuncao;
 %type <ast> retorno;
-%type <ast> nil;
 %type <ast> numero;
 %type <ast> expUnaria;
 
@@ -121,7 +112,13 @@ TIPO:
     TIPO_INT {
         $$ = criaNo("INT");
         strcpy($$->tipo, "INT");
-        tipo += 0;
+        tipo = 0;
+    }
+    | VOID {
+        $$ = criaNo("VOID");
+        strcpy($$->tipo, "VOID");
+        printf("dentro do void =+++++++++");
+        tipo = 1;
     }
 ;
 
@@ -141,7 +138,7 @@ declaracaoVariavel:
     TIPO ID PONTOVIRGULA {
         $$ = criaNo("Declaracao de Variavel");
         $$->pai = $1;
-        id = insereSimbolo(id, $2.escopo, $2.id, "Variavel", tipos[tipo], $2.linha, $2.coluna, 0);
+        id = insereSimbolo(id, $2.escopo, $2.id, "Variavel", $1->tipo, $2.linha, $2.coluna, 0);
         strcpy($1->simbolo, $2.id);
         sprintf($$->tableTac, "\t%s %s%d", tiposTac[tipo], $2.id, $2.escopo);
         tipo = 0;
@@ -154,7 +151,8 @@ declaracaoFuncao:
         $$->pai = $1;
         $1->filho = $4;
         $4->filho = $6;
-        id = insereSimbolo(id, $2.escopo, $2.id, "Funcao", tipos[tipo], $2.linha, $2.coluna, 0);
+        id = insereSimbolo(id, $2.escopo, $2.id, "Funcao", $1->tipo, $2.linha, $2.coluna, 0);
+        // printf("\n---tipo = %s linha = %d --- %d\n", $1->tipo, $2.linha, tipo );
         strcpy($1->simbolo, $2.id);
         tipo = 0;
     }
@@ -237,11 +235,6 @@ expressao:
         castDeTudo($$->tipo, $$, $1);
         strcpy($$->simbolo, $1->simbolo);
     }
-    /*| expressaoList {
-        $$ = criaNo("expressao");
-        $$->pai = $1;
-        strcpy($$->tipo, $1->tipo);
-    }*/
     | ID ATRIBUICAO expressao {
         $$ = criaNo("ATRIBUICAO");
         $$->pai = $3;
@@ -252,17 +245,6 @@ expressao:
             strcpy($$->tipo, c->tipo);
             castDeTudo($$->tipo, $$, $3);
             strcpy($$->simbolo, $1.id);
-        }
-    }
-    | ID ATRIBUICAO nil {
-        $$ = criaNo("NULO");
-        $$->pai = $3;
-        TabelaSimbolo* c = procuraVariavel(id, $1.id);
-        if(c == 0){
-            printf("Linha: %d - Coluna: %d - Identificador: %s - Erro Semantico - Variavel nao declarada!!!\n", $1.linha, $1.coluna, $1.id);
-        } else{
-            strcpy($$->tipo, c->tipo);
-            castDeTudo($$->tipo, $$, $3);
         }
     }
 ;
@@ -308,24 +290,6 @@ exp:
         strcpy($$->simbolo, $2->simbolo);
     }
 ;
-/*
-expressaoList:
-    OP_LISTA ID PONTOVIRGULA {
-        $$ = criaNo("expressaoList");
-        strcpy($$->tipo, "OPERACAOLISTA");
-    }
-    | exp CONSTRUTOR_LISTA ID PONTOVIRGULA {
-        $$ = criaNo("expressaoList");
-        $$->pai = $1;
-        strcpy($$->tipo, "CONSTRUTORLISTA");
-    }
-    | exp FUNCOES_LISTA ID PONTOVIRGULA {
-        $$ = criaNo("expressaoList");
-        $$->pai = $1;
-        strcpy($$->tipo, "FUNCAOLISTA");
-    }
-;
-*/
 expressao_logica:
     expressao_logica OP_LOGICA_OR expressao_relacional {
         $$ = criaNo("expressaoLogica");
@@ -382,16 +346,7 @@ opSomaSub:
         strcpy($$->simbolo, $1->simbolo);
         castDeTudo($$->tipo, $$, $3);
         sprintf($$->codeTac, "\tadd %s, %s", $1->simbolo, $3->simbolo);
-    }
-    /* | opSomaSub OP_B_SOMA_SUB OP_LISTA opMultDiv {
-        $$ = criaNo("Operando SomaSub");
-        $$->pai = $1;
-        $1->filho = $4;
-        strcpy($$->tipo, $1->tipo);
-        strcpy($$->simbolo, $1->simbolo);
-        castDeTudo($$->tipo, $$, $4);
-    } */
-    
+    }    
 ;
 
 opMultDiv:
@@ -485,18 +440,6 @@ retorno:
     }
 ;
 
-nil:
-    NIL PONTOVIRGULA {
-        $$ = criaNo("NULO");
-        strcpy($$->tipo, "NULO");
-        strcpy($$->simbolo, $1.id);
-    }
-    | OP_B_RELACIONAIS NIL {
-        $$ = criaNo("NULO");
-        strcpy($$->tipo, "NULO");
-        strcpy($$->simbolo, $2.id);
-    }
-;
 
 numero:
     INT {
@@ -504,16 +447,12 @@ numero:
         strcpy($$->tipo, "INT");
         strcpy($$->simbolo, $1.id);
     }
-    /* | FLOAT {
-        $$ = criaNo("Numero");
-        strcpy($$->tipo, "FLOAT");
-        strcpy($$->simbolo, $1.id);
-    } */
 ;
 
 
 %%
 
+// IMPLEMENTAR VOID QUE DEU RUIM
 void yyerror(const char* s){
     fprintf(stderr, "Linha: %d - Coluna: %d - Token: %s - Erro: %s\n", yylval.token.linha, yylval.token.coluna, yylval.token.id, s);
 }

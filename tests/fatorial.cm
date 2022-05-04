@@ -8,8 +8,11 @@ int fatorial(int number) {
     return result;
 }
 
-int main() {
+void main() {
     int number;
-    number = 5;
+    number = 15;
+    int teste;
+    teste = 0;
+    int deu_bom;
     fatorial(number);
 }

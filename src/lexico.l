@@ -18,7 +18,8 @@
 
 COMENTARIO          "//".*|"/\*".*|"*/".*
 ID                  [a-zA-Z_][a-zA-Z0-9_]*
-INT                 (\+|\-)?[1-9]+[0-9]*
+INT                 ((\+|\-)?[1-9]+[0-9]*)|0
+VOID                "void"
 TIPO_INT            int
 OP_B_SOMA_SUB       \+|\-
 OP_B_MULT_DIV       "*"|"/"
@@ -30,7 +31,6 @@ IF                  if
 ELSE                else
 WHILE               while
 RETORNO             return
-NIL                 NIL
 ABRE_PARENTESES     "("
 FECHA_PARENTESES    ")"
 ABRE_CHAVES         "{"
@@ -72,6 +72,17 @@ TABESPACO           [\t]+|[ ]+
     strcpy(yylval.token.id, yytext);
     coluna += yyleng;
     return INT;
+}
+
+{VOID} {
+    // printf("Linha: %d, Coluna: %d\t", linha, coluna);
+    // printf("VOID: %s\n", yytext);
+    yylval.token.linha = linha;
+    yylval.token.coluna = coluna;
+    yylval.token.escopo = escopoL[escopoAtual];
+    strcpy(yylval.token.id, yytext);
+    coluna += yyleng;
+    return VOID;
 }
 
 {OP_B_SOMA_SUB} {
@@ -182,17 +193,6 @@ TABESPACO           [\t]+|[ ]+
     strcpy(yylval.token.id, yytext);
     coluna += yyleng;
     return RETORNO;
-}
-
-{NIL} {
-    // printf("Linha: %d, Coluna: %d\t", linha, coluna);
-    // printf("Constante NIL: %s\n", yytext);
-    yylval.token.linha = linha;
-    yylval.token.coluna = coluna;
-    yylval.token.escopo = escopoL[escopoAtual];
-    strcpy(yylval.token.id, yytext);
-    coluna += yyleng;
-    return NIL;
 }
 
 {ID} {
